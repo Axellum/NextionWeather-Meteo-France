@@ -10,7 +10,7 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 
 # Installation:
 
-- Installer l'intégration Météo France sur HA avec deux ville proche, régler en une sur les prévision par heures.
+- Installer l'intégration Météo France sur HA avec deux ville proche, réglez en une sur les prévision par heures.
 - Copié la partie Sensor du fichier configuration.yaml dans un éditeur de texte (notepad+++).
 - Faite un 'remplacer par' pour: 40_weather_alert avec votre 'région'_weather_alert.
 - Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather réglé sur jours.
@@ -18,9 +18,12 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 - Copié le tout dans la partie sensor de votre fichier configuration.yaml.
 - Tester les erreurs, redémarer.
 
+- Installer le fichier "Ecran 3.5"/"meteo35.yaml" dans votre écran Nextion basic 3.5.
+
 - Préparer votre ESP avec ESPHome.
-- Copié le texte à partir de " uart: ".
+- Copié le texte à partir de " uart: " du fichier "Ecran 3.5"/"NextionWeather 3.5.HMI" en plus du code généré par ESPHome.
 - Installer le code sur votre ESP relier à l'écran.
+- Redémarer.
 
 
 
