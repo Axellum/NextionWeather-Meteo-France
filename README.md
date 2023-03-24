@@ -17,8 +17,10 @@ Home assistant:
 - Faite un 'remplacer par' pour: saint_geours_de_maremne avec votre entitée weather réglé sur heures.
 - Copié le tout dans la partie sensor de votre fichier configuration.yaml.
 - Tester les erreurs, redémarer.
+
 Ecran Nextion:
 - Installer le fichier "Ecran 3.5"/"meteo35.yaml" dans votre écran Nextion basic 3.5.
+
 L'esp:
 - Préparer votre ESP avec ESPHome.
 - Copié le texte à partir de " uart: " du fichier "Ecran 3.5"/"NextionWeather 3.5.HMI" en plus du code généré par ESPHome.
