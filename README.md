@@ -23,7 +23,7 @@ Ecran Nextion:
 
 L'esp:
 - Préparer votre ESP avec ESPHome.
-- Copié le texte à partir de " uart: " du fichier "Ecran 3.5"/"NextionWeather 3.5.HMI" en plus du code généré par ESPHome.
+- Copié le texte à partir de " uart: " du fichier "Ecran 3.5"/"meteo35.yaml" en plus du code généré par ESPHome.
 - Installer le code sur votre ESP relier à l'écran.
 - Redémarer.
 
