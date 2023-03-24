@@ -19,7 +19,7 @@ Home assistant:
 - Tester les erreurs, redémarer.
 
 Ecran Nextion:
-- Installer le fichier "Ecran 3.5"/"meteo35.yaml" dans votre écran Nextion basic 3.5.
+- Installer le fichier "Ecran 3.5"/"NextionWeather 3.5.tft" dans votre écran Nextion basic 3.5.
 
 L'esp:
 - Préparer votre ESP avec ESPHome.
