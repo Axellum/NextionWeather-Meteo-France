@@ -4,9 +4,9 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 - prérequi:
 
  - Homa assistant
-  -ESPHome
-  -Un ecran Nextion 3.5 basic ou mieux
-  -Un module esp32
+ -ESPHome
+ -Un ecran Nextion 3.5 basic ou mieux
+ -Un module esp32
 
 
 
