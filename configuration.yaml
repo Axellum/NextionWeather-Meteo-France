@@ -14,9 +14,9 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-
 # --------------- Partie sensor----------------------------------------------------------------     (states['sensor.saint_vincent_de_tyrosse_next_rain'].attributes['1_hour_forecast']['0 min'] == 'Pluie modérée')
 sensor:
+# ------------------------------------------------------------------------------------------------ Partie a ajouter apres remplacement des capteurs de vos villes et region------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------ alerte meteo----------------------------------------------------------------
  - platform: template
    sensors:
@@ -329,9 +329,9 @@ sensor:
       value_template: >-
              {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
               {% if is_state("sensor.saint_vincent_de_tyrosse_next_rain", 'unknown') %}
-                Pas de pluie.
+                0
               {% else %}
-                {{ 'Averse dans ' }}{{ pluie }} mn
+                {{pluie}}
               {% endif %}
       friendly_name: Pluie
 # -------------------------------------------------------------------------------Icone des heures, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
@@ -735,7 +735,7 @@ sensor:
    sensors: 
      ville_meteo_j:
          value_template: "saint_vincent_de_tyrosse" 
-# Pour l affichage du jour et de l'heure - Merci à Paradis Artificiels
+# Pour l affichage du jour et de l'heure 
  - platform: time_date
    display_options:
      - 'time'
@@ -1493,8 +1493,31 @@ sensor:
       alerte_rain:
        value_template: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_rain_chance') | float  %}
-               {%- if alert > 30 -%}
-                1
+               {%- if alert < 9 -%}
+                80
+               {% elif alert < 40 %}
+                79
+               {% elif alert < 70 %}
+                78
+               {% elif alert < 101 %}
+                77
                {% else %}
-                0
+                80
+                {%- endif -%}
+
+ - platform: template
+   sensors:
+      uv_prob:
+       value_template: >-
+         {% set alert = states('sensor.saint_vincent_de_tyrosse_uv') | float  %}
+               {%- if alert < 2 -%}
+                85
+               {% elif alert < 5 %}
+                84
+               {% elif alert < 7 %}
+                83
+               {% elif alert < 9 %}
+                82
+               {% else %}
+                81
                 {%- endif -%}

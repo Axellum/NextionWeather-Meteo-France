@@ -15,7 +15,7 @@ logger:
 api:
 
 ota:
-  password: "hhhfffff"
+  password: "613c4870f0101981a29542c6f7738f42"
 
 wifi:
   ssid: !secret wifi_ssid
@@ -63,7 +63,7 @@ display:
                 it.send_command_printf("%s.picc=%.0f","gel",id(alerte_gel).state);
                 it.send_command_printf("%s.picc=%.0f","neige",id(alerte_neige).state);
                 it.set_component_value("alert_coul",id(alerte_coul).state);
-                it.send_command_printf("%s.picc=%.0f","alerte_rain",id(alerte_rain).state);
+                it.send_command_printf("%s.pic=%.0f","alerte_rain",id(alerte_rain).state);
                 it.send_command_printf("%s.pic=%.0f", "mn_0",id(pluie_0mn).state);
                 it.send_command_printf("%s.pic=%.0f", "mn_5",id(pluie_5mn).state);
                 it.send_command_printf("%s.pic=%.0f", "mn_10",id(pluie_10mn).state);
@@ -83,32 +83,45 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "alert_neig_ver",id(alert_neige_verglas).state);
                 it.send_command_printf("%s.pic=%.0f", "alert_froid",id(alert_grand_froid).state);
                 it.send_command_printf("%s.pic=%.0f", "alert_vagues",id(alert_vagues_submersion).state);
+                it.send_command_printf("%s.pic=%.0f", "uv",id(uv_prob).state);
+                it.set_component_text_printf("proc_plu","%.0f",id(pluie_proch).state);
+
+
 
 #----- Récupération des données à afficher-----------------------
 #-------------------------- sensor -----
 sensor:
 
+
+
+  - platform: homeassistant
+    id: pluie_proch
+    entity_id: sensor.pluie_proch
+
+  - platform: homeassistant
+    id: uv_prob 
+    entity_id: sensor.uv_prob
   - platform: homeassistant
     id: alert_vent 
-    entity_id: sensor.alert_vent 
+    entity_id: sensor.alert_vent
   - platform: homeassistant
-    id: alert_inondation 
-    entity_id: sensor.alert_inondation 
+    id: alert_inondation
+    entity_id: sensor.alert_inondation
   - platform: homeassistant
     id: alert_orages 
-    entity_id: sensor.alert_orages 
+    entity_id: sensor.alert_orages
   - platform: homeassistant
-    id: alert_pluie_inondation 
-    entity_id: sensor.alert_pluie_inondation 
+    id: alert_pluie_inondation
+    entity_id: sensor.alert_pluie_inondation
   - platform: homeassistant
-    id: alert_neige_verglas 
-    entity_id: sensor.alert_neige_verglas 
+    id: alert_neige_verglas
+    entity_id: sensor.alert_neige_verglas
   - platform: homeassistant
-    id: alert_grand_froid 
-    entity_id: sensor.alert_grand_froid 
+    id: alert_grand_froid
+    entity_id: sensor.alert_grand_froid
   - platform: homeassistant
-    id: alert_vagues_submersion 
-    entity_id: sensor.alert_vagues_submersion 
+    id: alert_vagues_submersion
+    entity_id: sensor.alert_vagues_submersion
 #--------Pour les alertes neige et gel----------------------------------
   - platform: homeassistant
     id: alerte_gel
