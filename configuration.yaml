@@ -18,6 +18,25 @@ scene: !include scenes.yaml
 sensor:
 # ------------------------------------------------------------------------------------------------ Partie a ajouter apres remplacement des capteurs de vos villes et region------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------ alerte meteo----------------------------------------------------------------
+
+
+
+# texte prevision de la prochaine pluie
+ - platform: template
+   sensors:
+     pluie_proch:
+      value_template: >-
+             {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
+              {% if is_state("sensor.saint_vincent_de_tyrosse_next_rain", 'unknown') %}
+                0
+              {% else %}
+                {%- set ts_event = as_timestamp(states.sensor.saint_vincent_de_tyrosse_next_rain.state) %}
+                {%- set ts_now = as_timestamp(now())|round(0) %}
+                {%- set ts_delta = ((ts_event - ts_now)/60) -120  %}
+                {{ ts_delta }}
+              {% endif %}
+      friendly_name: Pluie
+
  - platform: template
    sensors:
      alert_vent:
@@ -322,18 +341,7 @@ sensor:
           {% else %}42
           {% endif %}
        friendly_name: pluie_55mn
-# texte prevision de la prochaine pluie
- - platform: template
-   sensors:
-     pluie_proch:
-      value_template: >-
-             {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
-              {% if is_state("sensor.saint_vincent_de_tyrosse_next_rain", 'unknown') %}
-                0
-              {% else %}
-                {{pluie}}
-              {% endif %}
-      friendly_name: Pluie
+
 # -------------------------------------------------------------------------------Icone des heures, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #---------------------------Icone 1h meteo france -----------------
  - platform: template
@@ -722,19 +730,7 @@ sensor:
         value_template: >-
              {% set heure_temp_9 = state_attr("weather.saint_geours_de_maremne","forecast")[9].temperature | float %}
                 {{ heure_temp_9 }}
- - platform: template
-   sensors: 
-     #Capteur dont l'état est vide
-     vide:
-         value_template: ""
- - platform: template
-   sensors: 
-     ville_meteo_h:
-         value_template: "saint_geours_de_maremne"
- - platform: template
-   sensors: 
-     ville_meteo_j:
-         value_template: "saint_vincent_de_tyrosse" 
+
 # Pour l affichage du jour et de l'heure 
  - platform: time_date
    display_options:
@@ -776,18 +772,6 @@ sensor:
       icon_template: mdi:calendar-today
       value_template: >
          {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
-#exemple de formatage de la date sur les input_date, ecriture de sortie comme le premier exemple
- - platform: template
-   sensors:
-    date_fr2:
-      entity_id: input_datetime.both_date_and_time
-      friendly_name: "Date fr Input"
-      icon_template: mdi:calendar-today
-      value_template: >
-         {% set jour = states['input_datetime.both_date_and_time'].attributes.day %}
-         {% set mois = states['input_datetime.both_date_and_time'].attributes.month %}
-         {% set annee = states['input_datetime.both_date_and_time'].attributes.year %}
-         {{ jour }}{{" - "}}{{ mois }}{{" - "}}{{ annee }}
 #exemple de formatage sur sun.sun avec remplacement de caracteres 
  - platform: template
    sensors:
