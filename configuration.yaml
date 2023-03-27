@@ -740,7 +740,6 @@ sensor:
  - platform: template
    sensors:
     date_simple:
-      entity_id: sensor.date
       friendly_name: "Date du jour"
       icon_template: mdi:calendar-today
       value_template: >
@@ -748,7 +747,6 @@ sensor:
         {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]  %}
         {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
     date_court_fr:
-      entity_id: sensor.date
       friendly_name: "Date court"
       icon_template: mdi:calendar-today
       value_template: >
@@ -758,7 +756,6 @@ sensor:
  - platform: template
    sensors:
     date_fr:
-      entity_id: sensor.date
       friendly_name: "Date fr"
       icon_template: mdi:calendar-today
       value_template: >
@@ -767,7 +764,6 @@ sensor:
  - platform: template
    sensors:
     date_fr_final:
-      entity_id: sensor.date
       friendly_name: "Date fr + H:mn"
       icon_template: mdi:calendar-today
       value_template: >
@@ -780,13 +776,13 @@ sensor:
         value_template: >
           {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
         icon_template: mdi:weather-sunset-up
-        entity_id: sun.sun
+
       nextsunset:
         friendly_name: 'Coucher'
         value_template: >
           {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
         icon_template: mdi:weather-sunset-down
-        entity_id: sun.sun
+
 #************************************************* test ****************************************************************************************
 # Icone du jours meteo france
  - platform: template
