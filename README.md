@@ -3,6 +3,24 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 
 ![](/PXL_20230327_060610910.jpg)
 
+Au menu:
+- Date et horloge.
+- Temps actuel.
+- Détecteur gel, neige, couleur pour la quantitée d'U.V..
+- Prévision sur trois jours (+ du jour en cour), avec températures mini/maxi.
+- Luminositée de l'écran réglable sur les icones "Journée" et "3 jours".
+- Couleurs des températures des sondes en fonction de la valeur géré par l'écran.
+- Changement de couleur de texte et de l'icone de vigilence par l'écran, via un champ cacher.
+- Alerte vigilence Météo France par icones et couleur de la date.
+- Pluie sur 1h00, prochaine averce et icone de couleur pour la probabilitée.
+
+Vous trouverez sur ce git:
+- Le fichier GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
+- Le fichier HMI pour l'écran Nextion.
+- Le fichier yaml pour l'esp32, à adapter en fonction de ses capteurs / interrupteur.
+- Le fichier configuration.yaml de Home assistant, à adapter aussi avec son integration Météo France et ses capteurs.
+
+Les icônes viennent de https://icon-icons.com/fr/pack/The-Weather-is-Nice-Today/1370, création de Laura Reen. J'ai parfois apporté de légère modifications.
 
 # Prérequi:
 
