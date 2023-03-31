@@ -13,14 +13,16 @@ logger:
 
 # Enable Home Assistant API
 api:
-
+  services:
+    - service: update_tft
+      then:
+        - lambda: 'id(teplomer)->upload_tft();'
 ota:
   password: "613c4870f0101981a29542c6f7738f42"
 
 wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
-
 
 uart:
   tx_pin: GPIO1
@@ -40,6 +42,7 @@ display:
   - platform: nextion
     id: teplomer
     update_interval: 4s
+    tft_url: http://192.168.0.16:8123/local/nextion/nextion.tft
     lambda: |-
                 auto time = id(sntp_time).now();
                 it.set_component_text_printf("heure","%02d",time.hour);
@@ -85,14 +88,163 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "alert_vagues",id(alert_vagues_submersion).state);
                 it.send_command_printf("%s.pic=%.0f", "uv",id(uv_prob).state);
                 it.set_component_text_printf("proc_plu","%.0f",id(pluie_proch).state);
-
-
+                it.send_command_printf("%s.pic=%.0f", "Icon_4j",id(today_icon4).state);
+                it.set_component_text_printf("T_max_j4","%.0f",id(j4_tmax).state);
+                it.set_component_text_printf("T_min_j4","%.0f",id(j4_tmin).state);
+                it.send_command_printf("%s.pic=%.0f", "Icon_5j",id(today_icon5).state);
+                it.set_component_text_printf("T_max_j5","%.0f",id(j5_tmax).state);
+                it.set_component_text_printf("T_min_j5","%.0f",id(j5_tmin).state);
+                it.send_command_printf("%s.pic=%.0f", "Icon_6j",id(today_icon6).state);
+                it.set_component_text_printf("T_max_j6","%.0f",id(j6_tmax).state);
+                it.set_component_text_printf("T_min_j6","%.0f",id(j6_tmin).state);
+                it.send_command_printf("%s.pic=%.0f", "Icon_7j",id(today_icon7).state);
+                it.set_component_text_printf("T_max_j7","%.0f",id(j7_tmax).state);
+                it.set_component_text_printf("T_min_j7","%.0f",id(j7_tmin).state);
+                it.send_command_printf("%s.pic=%.0f", "Icon_8j",id(today_icon8).state);
+                it.set_component_text_printf("T_max_j8","%.0f",id(j8_tmax).state);
+                it.set_component_text_printf("T_min_j8","%.0f",id(j8_tmin).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h1",id(heure_icon_1).state);
+                it.set_component_text_printf("T_h0","%.0f",id(heure_t_1).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h2",id(heure_icon_2).state);
+                it.set_component_text_printf("T_h1","%.0f",id(heure_t_2).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h3",id(heure_icon_3).state);
+                it.set_component_text_printf("T_h2","%.0f",id(heure_t_3).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h4",id(heure_icon_4).state);
+                it.set_component_text_printf("T_h3","%.0f",id(heure_t_4).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h5",id(heure_icon_5).state);
+                it.set_component_text_printf("T_h4","%.0f",id(heure_t_5).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h6",id(heure_icon_6).state);
+                it.set_component_text_printf("T_h5","%.0f",id(heure_t_6).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h7",id(heure_icon_7).state);
+                it.set_component_text_printf("T_h6","%.0f",id(heure_t_7).state);
+                it.send_command_printf("%s.pic=%.0f", "icon_h8",id(heure_icon_8).state);
+                it.set_component_text_printf("T_h7","%.0f",id(heure_t_8).state);
 
 #----- Récupération des données à afficher-----------------------
 #-------------------------- sensor -----
 sensor:
 
 
+  - platform: homeassistant
+    id: heure_icon_1
+    entity_id: sensor.heure_icon_1
+  - platform: homeassistant
+    id: heure_t_1
+    entity_id: sensor.heure_temp_1
+
+  - platform: homeassistant
+    id: heure_icon_2
+    entity_id: sensor.heure_icon_2
+  - platform: homeassistant
+    id: heure_t_2
+    entity_id: sensor.heure_temp_2
+
+  - platform: homeassistant
+    id: heure_icon_3
+    entity_id: sensor.heure_icon_3
+  - platform: homeassistant
+    id: heure_t_3
+    entity_id: sensor.heure_temp_3
+
+  - platform: homeassistant
+    id: heure_icon_4
+    entity_id: sensor.heure_icon_4
+  - platform: homeassistant
+    id: heure_t_4
+    entity_id: sensor.heure_temp_4
+
+  - platform: homeassistant
+    id: heure_icon_5
+    entity_id: sensor.heure_icon_5
+  - platform: homeassistant
+    id: heure_t_5
+    entity_id: sensor.heure_temp_5
+
+  - platform: homeassistant
+    id: heure_icon_6
+    entity_id: sensor.heure_icon_6
+  - platform: homeassistant
+    id: heure_t_6
+    entity_id: sensor.heure_temp_6
+
+  - platform: homeassistant
+    id: heure_icon_7
+    entity_id: sensor.heure_icon_7
+  - platform: homeassistant
+    id: heure_t_7
+    entity_id: sensor.heure_temp_7
+
+  - platform: homeassistant
+    id: heure_icon_8
+    entity_id: sensor.heure_icon_8
+  - platform: homeassistant
+    id: heure_t_8
+    entity_id: sensor.heure_temp_8
+
+  - platform: homeassistant
+    id: today_icon4
+    entity_id: sensor.today_icon4
+  - platform: homeassistant
+    id: j4_tmax
+    entity_id: sensor.j4_tmax
+  - platform: homeassistant
+    id: j4_tmin
+    entity_id: sensor.j4_tmin
+  - platform: homeassistant
+    id: j4_pluis
+    entity_id: sensor.j4_pluis
+
+  - platform: homeassistant
+    id: today_icon5
+    entity_id: sensor.today_icon5
+  - platform: homeassistant
+    id: j5_tmax
+    entity_id: sensor.j5_tmax
+  - platform: homeassistant
+    id: j5_tmin
+    entity_id: sensor.j5_tmin
+  - platform: homeassistant
+    id: j5_pluis
+    entity_id: sensor.j5_pluis
+
+  - platform: homeassistant
+    id: today_icon6
+    entity_id: sensor.today_icon6
+  - platform: homeassistant
+    id: j6_tmax
+    entity_id: sensor.j6_tmax
+  - platform: homeassistant
+    id: j6_tmin
+    entity_id: sensor.j6_tmin
+  - platform: homeassistant
+    id: j6_pluis
+    entity_id: sensor.j6_pluis
+
+  - platform: homeassistant
+    id: today_icon7
+    entity_id: sensor.today_icon7
+  - platform: homeassistant
+    id: j7_tmax
+    entity_id: sensor.j7_tmax
+  - platform: homeassistant
+    id: j7_tmin
+    entity_id: sensor.j7_tmin
+  - platform: homeassistant
+    id: j7_pluis
+    entity_id: sensor.j7_pluis
+
+  - platform: homeassistant
+    id: today_icon8
+    entity_id: sensor.today_icon8
+  - platform: homeassistant
+    id: j8_tmax
+    entity_id: sensor.j8_tmax
+  - platform: homeassistant
+    id: j8_tmin
+    entity_id: sensor.j8_tmin
+  - platform: homeassistant
+    id: j8_pluis
+    entity_id: sensor.j8_pluis
 
   - platform: homeassistant
     id: pluie_proch
