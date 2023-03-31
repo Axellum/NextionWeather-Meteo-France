@@ -1,6 +1,8 @@
 # NextionWeather-Meteo-France
 Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votre région, pluie sur 1h00 de Météo France par ESPHome.
 
+
+
 ![](/PXL_20230327_060610910.jpg)
 
 Au menu:
@@ -13,6 +15,8 @@ Au menu:
 - Changement de couleur de texte et de l'icone de vigilence par l'écran, via un champ cacher.
 - Alerte vigilence Météo France par icones et couleur de la date.
 - Pluie sur 1h00, prochaine averce et icone de couleur pour la probabilitée.
+
+![](/Demo%20ecran%203.5.png)
 
 Vous trouverez sur ce git:
 - Le fichier GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
