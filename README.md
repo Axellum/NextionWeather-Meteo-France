@@ -9,7 +9,7 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 
 # Présentation:
 
-![](/PXL_20230327_060610910.jpg)
+![](/Demo%20ecran%203.5.png)
 
 Au menu:
 - Date et horloge.
@@ -22,7 +22,7 @@ Au menu:
 - Alerte vigilance Météo France par icones et couleur de la date.
 - Pluie sur 1h00, prochaine averse et icone de couleur pour la probabilité.
 
-![](/Demo%20ecran%203.5.png)
+![](/PXL_20230327_060610910.jpg)
 
 Vous trouverez sur ce git:
 - Le fichier GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
