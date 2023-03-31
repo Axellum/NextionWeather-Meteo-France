@@ -22,6 +22,12 @@ Au menu:
 - Alerte vigilance Météo France par icones et couleur de la date.
 - Pluie sur 1h00, prochaine averse et icone de couleur pour la probabilité.
 
+- Dev: Page de prévision sur 8 ou 12 jours.
+- Dev: Page de prévision sur 8h00 (ou 4h00 et deux jours en 1/2 journée).
+- Dev: Page d'infos pour les autres infos de l'API Météo France.
+- Dev: Affichage des jours de semaine en titre des prévisions.
+- Dev: Visuel des prévisions du cumul prévus de pluie.
+
 ![](/PXL_20230327_060610910.jpg)
 
 Vous trouverez sur ce git:
