@@ -18,7 +18,7 @@ Au menu:
 - Prévision sur trois jours (+ du jour en cour), avec températures mini/maxi.
 - Luminosité de l'écran réglable sur les icones "Journée" et "3 jours".
 - Couleurs des températures des sondes en fonction de la valeur géré par l'écran.
-- Changement de couleur de texte et de l'icone de vigilance par l'écran, via un champ cacher.
+- Changement de couleur de texte et de l'icone de vigilance par l'écran.
 - Alerte vigilance Météo France par icones et couleur de la date.
 - Pluie sur 1h00, prochaine averse et icone de couleur pour la probabilité.
 
@@ -27,8 +27,8 @@ Au menu:
 Vous trouverez sur ce git:
 - Le fichier GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
 - Le fichier HMI pour l'écran Nextion.
-- Le fichier yaml pour l'esp32, à adapter en fonction de ses capteurs / interrupteur.
-- Le fichier configuration.yaml de Home assistant, à adapter aussi avec son intégration Météo France et ses capteurs.
+- Le fichier yaml pour l'esp32.
+- Le fichier configuration.yaml de Home assistant, à adapter aussi avec son intégration Météo France.
 
 Les icônes viennent de https://icon-icons.com/fr/pack/The-Weather-is-Nice-Today/1370, création de Laura Reen. J'ai parfois apporté de légère modifications.
 
