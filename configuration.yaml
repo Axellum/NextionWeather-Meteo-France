@@ -32,7 +32,7 @@ sensor:
               {% else %}
                 {%- set ts_event = as_timestamp(states.sensor.saint_vincent_de_tyrosse_next_rain.state) %}
                 {%- set ts_now = as_timestamp(now())|round(0) %}
-                {%- set ts_delta = ((ts_event - ts_now)/60) -120  %}
+                {%- set ts_delta = ((ts_event - ts_now)/60) %}
                 {{ ts_delta }}
               {% endif %}
       friendly_name: Pluie
