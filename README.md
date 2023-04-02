@@ -65,3 +65,4 @@ L'esp:
 - Redémarrer.
 - Intégrer le nouvelle appareil dans Home Assistant.
 
+Merci à pbranly pour ça participation.
