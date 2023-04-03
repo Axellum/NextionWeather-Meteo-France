@@ -59,66 +59,66 @@ binary_sensor:
 
 
 
-  # 0. page - Overview
-  - platform: nextion
-    page_id: 0
-    component_id: 9
-    id: page1
-    on_press:
-      then:
-        - lambda: 'id(page)=3;'
-        - component.update: teplomer
+#   # 0. page - Overview
+#   - platform: nextion
+#     page_id: 0
+#     component_id: 9
+#     id: page1
+#     on_press:
+#       then:
+#         - lambda: 'id(page)=3;'
+#         - component.update: teplomer
 
         
-  # 1. page - Lights
-  - platform: nextion
-    page_id: 0
-    component_id: 27
-    id: page2
-    on_press:
-      then:
-        - lambda: 'id(page)=2;'
-        - component.update: teplomer
+#   # 1. page - Lights
+#   - platform: nextion
+#     page_id: 0
+#     component_id: 27
+#     id: page2
+#     on_press:
+#       then:
+#         - lambda: 'id(page)=2;'
+#         - component.update: teplomer
         
-  # 2. page - Media
-  - platform: nextion
-    page_id: 2
-    component_id: 2
-    id: page3
-    on_press:
-      then:
-        - lambda: 'id(page)=3;'
-        - component.update: teplomer
+#   # 2. page - Media
+#   - platform: nextion
+#     page_id: 2
+#     component_id: 2
+#     id: page3
+#     on_press:
+#       then:
+#         - lambda: 'id(page)=3;'
+#         - component.update: teplomer
         
-  # 3. page - Vacuum Cleaner  #Nothing to update here
-  - platform: nextion
-    page_id: 2
-    component_id: 48
-    id: page4
-    on_press:
-      then:
-        - lambda: 'id(page)=1;'
-        - component.update: teplomer
+#   # 3. page - Vacuum Cleaner  #Nothing to update here
+#   - platform: nextion
+#     page_id: 2
+#     component_id: 48
+#     id: page4
+#     on_press:
+#       then:
+#         - lambda: 'id(page)=1;'
+#         - component.update: teplomer
 
-  # 4. page - Media
-  - platform: nextion
-    page_id: 3
-    component_id: 2
-    id: page5
-    on_press:
-      then:
-        - lambda: 'id(page)=0;'
-        - component.update: teplomer
+#   # 4. page - Media
+#   - platform: nextion
+#     page_id: 3
+#     component_id: 2
+#     id: page5
+#     on_press:
+#       then:
+#         - lambda: 'id(page)=0;'
+#         - component.update: teplomer
         
-  # 5. page - Vacuum Cleaner  #Nothing to update here
-  - platform: nextion
-    page_id: 3
-    component_id: 40
-    id: page6
-    on_press:
-      then:
-        - lambda: 'id(page)=2;'
-        - component.update: teplomer
+#   # 5. page - Vacuum Cleaner  #Nothing to update here
+#   - platform: nextion
+#     page_id: 3
+#     component_id: 40
+#     id: page6
+#     on_press:
+#       then:
+#         - lambda: 'id(page)=2;'
+#         - component.update: teplomer
 
 
 
@@ -126,15 +126,15 @@ binary_sensor:
 
 sensor:
 
-  - platform: nextion
-    nextion_id: teplomer
-    name: "n0"
-    component_name: n0
+#   - platform: nextion
+#     nextion_id: teplomer
+#     name: "n0"
+#     component_name: n0
 
-  - platform: nextion
-    id: disppage
-    variable_name: dp
-    update_interval: 1s
+#   - platform: nextion
+#     id: disppage
+#     variable_name: dp
+#     update_interval: 1s
 
   - platform: homeassistant
     id: heure_icon_1
@@ -396,6 +396,8 @@ sensor:
   - platform: homeassistant
     id: alerte_coul
     entity_id:  sensor.alerte_coul
+
+
 #-------------------------- text_sensor ------------------------------------------------------------------------------------------
 #-----Pour la date
 text_sensor:
@@ -406,6 +408,10 @@ text_sensor:
     on_value:
        then:
          - component.update: teplomer
+
+  - platform: homeassistant
+    id: jour_sem
+    entity_id:  sensor.jour_sem
 
             
 switch:
@@ -422,11 +428,13 @@ switch:
 display:
   - platform: nextion
     id: teplomer
-    update_interval: 4s
+    update_interval: 8s
     tft_url: http://192.168.0.16:8123/local/nextion/nextion.tft
     lambda: |-
             auto time = id(sntp_time).now();
 
+
+                it.set_component_text_printf("t2",id(jour_sem).state.c_str());
                 it.set_component_text_printf("heure","%02d",time.hour);
                 it.set_component_text_printf("minute","%02d",time.minute);
                 it.set_component_text_printf("date",id(date_simple).state.c_str());

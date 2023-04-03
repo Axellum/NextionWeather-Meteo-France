@@ -710,12 +710,7 @@
   state: >-
         {% set heure_temp_9 = state_attr("weather.saint_geours_de_maremne","forecast")[9].temperature | float %}
         {{ heure_temp_9 }}
-        
-# Pour l affichage du jour et de l'heure 
-## - platform: time_date
-##   display_options:
-##     - 'time'
-##     - 'date'
+
 
 - name: date_simple
   icon: mdi:calendar-today
@@ -724,14 +719,19 @@
         {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]  %}
         {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
 
-- name: "Date court"
+- name: date_comp
   icon: mdi:calendar-today
   state: >
-        {% set months = ["Jan", "Fev", "Mar", "Avr", "Mai", "Juin", "Juil", "Août", "Sep", "Oct", "Nov", "Dec"] %}
-        {{ now().day | string + ' ' + months[now().month-1] }}
-#------------------------------exemple de formatage de la date-------
- 
-    
+        {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
+        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+
+- name: jour_sem
+  icon: mdi:calendar-today
+  state: >
+        {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
+        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+        {{ days[now().weekday()]}}
 
 - name: Date_fr
   icon: mdi:calendar-today
@@ -764,7 +764,7 @@
 #************************************************* test ****************************************************************************************
 # Icone du jours meteo france
  
-- name: meteo france   
+- name: icon_meteo   
   state: >-
           {% if is_state("weather.saint_vincent_de_tyrosse", 'clear-night') %}
             10
@@ -807,7 +807,7 @@
 #---------------------------Icone du demain meteo france -----------------
  
     
-- name: Jour
+- name: icon_jour_0
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'Clear' %}
             22
@@ -855,7 +855,7 @@
 #---------------------------Icone du jour1 meteo france -----------------
  
     
-- name: temps 1 jours
+- name: icon_jour_1
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'Clear' %}
             22
@@ -907,7 +907,7 @@
 #---------------------------Icone du jour2 meteo france -----------------
  
     
-- name: temps 2 jours
+- name: icon_jour_2
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'Clear' %}
             22
@@ -959,7 +959,7 @@
 #---------------------------Icone du jour3 meteo france -----------------
  
     
-- name: temps 3 jours
+- name: icon_jour_3
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'Clear' %}
             22
@@ -1011,7 +1011,7 @@
 #---------------------------Icone du jour4 meteo france -----------------
  
     
-- name: temps 4 jours
+- name: icon_jour_4
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'Clear' %}
             22
@@ -1065,7 +1065,7 @@
 #---------------------------Icone du jour5 meteo france -----------------
  
     
-- name: temps 5 jours
+- name: icon_jour_5
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'Clear' %}
             22
@@ -1119,7 +1119,7 @@
 #---------------------------Icone du jour6 meteo france -----------------
  
     
-- name: temps 6 jours
+- name: icon_jour_6
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'Clear' %}
             22
@@ -1173,7 +1173,7 @@
 #---------------------------Icone du jour7 meteo france -----------------
  
     
-- name: temps 7 jours
+- name: icon_jour_7
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'Clear' %}
             22
@@ -1227,7 +1227,7 @@
 #---------------------------Icone du jour8 meteo france -----------------
  
     
-- name: temps 8 jours
+- name: icon_jour_8
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'Clear' %}
             22
@@ -1281,7 +1281,7 @@
 #---------------------------Icone du jour9 meteo france -----------------
  
     
-- name: temps 9 jours
+- name: icon_jour_9
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'Clear' %}
             22
@@ -1335,7 +1335,7 @@
 #---------------------------Icone du jour10 meteo france -----------------
  
     
-- name: temps 10 jours
+- name: icon_jour_10
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'Clear' %}
             22
