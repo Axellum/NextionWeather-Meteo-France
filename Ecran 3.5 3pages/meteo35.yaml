@@ -1,437 +1,1450 @@
-esphome:
-  name: meteo35
+# ------------------------------------------------------------------------------------------------ Partie a ajouter apres remplacement des capteurs de vos villes et region------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------ alerte meteo----------------------------------------------------------------
 
-esp32:
-  board: az-delivery-devkit-v4
-  framework:
-    type: arduino
 
-# Enable logging
-logger:
-  baud_rate: 0     # Disable UART logging (pins GPIO1/3 are used for Nextion communication)
-  level: VERY_VERBOSE
 
-# Enable Home Assistant API
-api:
-  services:
-    - service: update_tft
-      then:
-        - lambda: 'id(teplomer)->upload_tft();'
-ota:
-  password: "613c4870f0101981a29542c6f7738f42"
+# texte prevision de la prochaine pluie
+ 
+    
+- name: Pluie_proch
+  state: >-
+             {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
+              {% if is_state("sensor.saint_vincent_de_tyrosse_next_rain", 'unknown') %}
+                0
+              {% else %}
+                {%- set ts_event = as_timestamp(states.sensor.saint_vincent_de_tyrosse_next_rain.state) %}
+                {%- set ts_now = as_timestamp(now())|round(0) %}
+                {%- set ts_delta = ((ts_event - ts_now)/60) %}
+                {{ ts_delta }}
+              {% endif %}
 
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
 
-uart:
-  tx_pin: GPIO1
-  rx_pin: GPIO3
-  baud_rate: 115200
-  rx_buffer_size: 1024
+ 
+    
+- name: alert_vent
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Vent violent') == 'Vert' %}
+            47
+          {% elif state_attr('sensor.40_weather_alert', 'Vent violent') == 'Jaune' %}
+            48
+          {% elif state_attr('sensor.40_weather_alert', 'Vent violent') == 'Orange' %}
+            49
+          {% elif state_attr('sensor.40_weather_alert', 'Vent violent') == 'Rouge' %}
+            50
+          {% else %}
+            47
+          {% endif %}
+
+ 
+    
+- name: alert_inondation
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Inondation') == 'Vert' %}
+            55
+          {% elif state_attr('sensor.40_weather_alert', 'Inondation') == 'Jaune' %}
+            56
+          {% elif state_attr('sensor.40_weather_alert', 'Inondation') == 'Orange' %}
+            57
+          {% elif state_attr('sensor.40_weather_alert', 'Inondation') == 'Rouge' %}
+            58
+          {% else %}
+            55
+          {% endif %}
+
+ 
+    
+- name: alert_orages
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Orages') == 'Vert' %}
+            59
+          {% elif state_attr('sensor.40_weather_alert', 'Orages') == 'Jaune' %}
+            60
+          {% elif state_attr('sensor.40_weather_alert', 'Orages') == 'Orange' %}
+            61
+          {% elif state_attr('sensor.40_weather_alert', 'Orages') == 'Rouge' %}
+            62
+          {% else %}
+            59
+          {% endif %}
+
+ 
+    
+- name: alert_pluie_inondation
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Pluie-inondation') == 'Vert' %}
+            71
+          {% elif state_attr('sensor.40_weather_alert', 'Pluie-inondation') == 'Jaune' %}
+            72
+          {% elif state_attr('sensor.40_weather_alert', 'Pluie-inondation') == 'Orange' %}
+            73
+          {% elif state_attr('sensor.40_weather_alert', 'Pluie-inondation') == 'Rouge' %}
+            74
+          {% else %}
+            71
+          {% endif %}
+
+ 
+    
+- name: alert_neige_verglas
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Neige-verglas') == 'Vert' %}
+            67
+          {% elif state_attr('sensor.40_weather_alert', 'Neige-verglas') == 'Jaune' %}
+            68
+          {% elif state_attr('sensor.40_weather_alert', 'Neige-verglas') == 'Orange' %}
+            69
+          {% elif state_attr('sensor.40_weather_alert', 'Neige-verglas') == 'Rouge' %}
+            70
+          {% else %}
+            67
+          {% endif %}
+
+ 
+    
+- name: alert_grand_froid
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Grand-froid') == 'Vert' %}
+            51
+          {% elif state_attr('sensor.40_weather_alert', 'Grand-froid') == 'Jaune' %}
+            52
+          {% elif state_attr('sensor.40_weather_alert', 'Grand-froid') == 'Orange' %}
+            53
+          {% elif state_attr('sensor.40_weather_alert', 'Grand-froid') == 'Rouge' %}
+            54
+          {% else %}
+            51
+          {% endif %}
+
+ 
+    
+- name: alert_vagues_submersion
+  state: >-
+          {% if  state_attr('sensor.40_weather_alert', 'Vagues-submersion') == 'Vert' %}
+            63
+          {% elif state_attr('sensor.40_weather_alert', 'Vagues-submersion') == 'Jaune' %}
+            64
+          {% elif state_attr('sensor.40_weather_alert', 'Vagues-submersion') == 'Orange' %}
+            65
+          {% elif state_attr('sensor.40_weather_alert', 'Vagues-submersion') == 'Rouge' %}
+            66
+          {% else %}
+            63
+          {% endif %}
+
+#-------------------------------------------------------------------------------------------------------------------------- Iconnes pour la pluie sur 1h  -----------------------------------------------
+ 
+    
+- name: pluie_0mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['0 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['0 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['0 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['0 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_5mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['5 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['5 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['5 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['5 min'] == 'Pluie trés forte' %}
+          '5 min'
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_10mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['10 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['10 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['10 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['10 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_15mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['15 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['15 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['15 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['15 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_20mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['20 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['20 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['20 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['20 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+ 
+
+- name: pluie_25mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_30mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['25 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_35mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_40mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['35 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_45mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_50mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['45 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}
+          42
+          {% endif %}
+
+ 
+    
+- name: pluie_55mn
+  state: >-
+          {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['55 min'] == 'Pluie faible' %}
+          43
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['55 min'] == 'Pluie modérée' %}
+          44
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['55 min'] == 'Pluie forte' %}
+          45
+          {% elif state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['55 min'] == 'Pluie trés forte' %}
+          46
+          {% else %}42
+          {% endif %}
+          
+          
+# -------------------------------------------------------------------------------Icone des heures, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
+#---------------------------Icone 1h meteo france -----------------
+ 
+    
+- name: heure_icon_1
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+    
+- name: heure_temp_1
+  state: >-
+             {% set heure_temp_1 = state_attr("weather.saint_geours_de_maremne","forecast")[1].temperature | float %}
+                {{ heure_temp_1 }}
+#---------------------------Icone 2h meteo france -----------------
+ 
+    
+- name: heure_icon_2
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_2    
+  state: >-
+             {% set heure_temp_2 = state_attr("weather.saint_geours_de_maremne","forecast")[2].temperature | float %}
+                {{ heure_temp_2 }}
+#---------------------------Icone du 3h meteo france -----------------
+ 
+    
+- name: heure_icon_3
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_3    
+  state: >-
+             {% set heure_temp_3 = state_attr("weather.saint_geours_de_maremne","forecast")[3].temperature | float %}
+                {{ heure_temp_3 }}
+#---------------------------Icone du 4h meteo france -----------------
+ 
+    
+- name: heure_icon_4
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+- name: heure_temp_4
+  state: >-
+             {% set heure_temp_4 = state_attr("weather.saint_geours_de_maremne","forecast")[4].temperature | float %}
+                {{ heure_temp_4 }}
+#---------------------------Icone 5h meteo france -----------------
+ 
+    
+- name: heure_icon_5
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_5    
+  state: >-
+             {% set heure_temp_5 = state_attr("weather.saint_geours_de_maremne","forecast")[5].temperature | float %}
+                {{ heure_temp_5 }}
+#---------------------------Icone du 6h meteo france -----------------
+ 
+    
+- name: heure_icon_6
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_6    
+  state: >-
+             {% set heure_temp_6 = state_attr("weather.saint_geours_de_maremne","forecast")[6].temperature | float %}
+                {{ heure_temp_6 }}
+#---------------------------Icone du 7h meteo france -----------------
+ 
+    
+- name: heure_icon_7
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_7    
+  state: >-
+             {% set heure_temp_7 = state_attr("weather.saint_geours_de_maremne","forecast")[7].temperature | float %}
+                {{ heure_temp_7 }}
+#---------------------------Icone 8h meteo france -----------------
+ 
+    
+- name: heure_icon_8
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_8
+  state: >-
+             {% set heure_temp_8 = state_attr("weather.saint_geours_de_maremne","forecast")[8].temperature | float %}
+                {{ heure_temp_8 }}
+#---------------------------Icone du 3h meteo france -----------------
+ 
+    
+- name: heure_icon_9
+  state: >-
+          {% if state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
+
+ 
+
+- name: heure_temp_9 
+  state: >-
+        {% set heure_temp_9 = state_attr("weather.saint_geours_de_maremne","forecast")[9].temperature | float %}
+        {{ heure_temp_9 }}
+
+
+- name: date_simple
+  icon: mdi:calendar-today
+  state: >
+        {% set months = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"] %}
+        {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]  %}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+
+- name: date_comp
+  icon: mdi:calendar-today
+  state: >
+        {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
+        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+
+    
+
+- name: Date_fr
+  icon: mdi:calendar-today
+  state: >
+         {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
+#exemple de formatage de la date, pour formaté en 1 ligne plusieurs donné (ici ca donnerai: 04 - 05 - 2050, 05:03)
+ 
+    
+
+- name: date_fr_final
+  icon: mdi:calendar-today
+  state: >
+         {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
+#exemple de formatage sur sun.sun avec remplacement de caracteres 
+ 
+    
+
+- name: nextsunrise
+  state: >
+          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
+  icon: mdi:weather-sunset-up
+
+
+- name: nextset
+  state: >
+          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
+  icon: mdi:weather-sunset-down
   
-time:
-  - platform: sntp
-    id: sntp_time
-    timezone: Europe/Paris
-globals:
- - id: display_on
-   type: bool
-#---------- Envois des données récupéré sur les différentes zones de l'ecran---------------
-display:
-  - platform: nextion
-    id: teplomer
-    update_interval: 4s
-    tft_url: http://192.168.0.16:8123/local/nextion/nextion.tft
-    lambda: |-
+  
+#************************************************* test ****************************************************************************************
+# Icone du jours meteo france
+ 
+- name: icon_meteo   
+  state: >-
+          {% if is_state("weather.saint_vincent_de_tyrosse", 'clear-night') %}
+            10
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'cloudy') %}
+            4
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'fog') %}
+            8
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'hail') %}
+            13
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'lightning') %}
+            16
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'lightning-rainy') %}
+            9
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'Clear') %}
+            7
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'pouring') %}
+            12
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'partlycloudy') %}
+            5
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'rainy') %}
+            11
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'snowy') %}
+            14
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'windy') %}
+            17
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'snowy-rainy') %}
+            15
+          {% elif is_state("weather.saint_vincent_de_tyrosse", 'sunny') %}
+            7
+          {% else %}
+            2
+          {% endif %}
 
-            if (id(page0).state) {
-                auto time = id(sntp_time).now();
-                it.set_component_text_printf("heure","%02d",time.hour);
-                it.set_component_text_printf("minute","%02d",time.minute);
-                it.set_component_text_printf("date",id(date_simple).state.c_str());
-                it.send_command_printf("%s.pic=%.0f", "icon",id(today_icon).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_jour",id(today_jour).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_dem",id(today_icon1).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_2j",id(today_icon2).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_3j",id(today_icon3).state);
-                it.set_component_text_printf("T_min_jour","%.0f",id(jour_tmin).state);
-                it.set_component_text_printf("T_max_jour","%.0f",id(jour_tmax).state);
-                it.set_component_text_printf("T_min_dem","%.0f",id(dem_tmin).state);
-                it.set_component_text_printf("T_max_dem","%.0f",id(dem_tmax).state);
-                it.set_component_text_printf("T_min_j2","%.0f",id(j2_tmin).state);
-                it.set_component_text_printf("T_max_j2","%.0f",id(j2_tmax).state);
-                it.set_component_text_printf("T_min_j3","%.0f",id(j3_tmin).state);
-                it.set_component_text_printf("T_max_j3","%.0f",id(j3_tmax).state);
-                it.set_component_value("temp_1",id(sonde_ext_temp).state);
-                it.set_component_value("hum_1",id(sonde_humi_ext).state);
-                it.send_command_printf("%s.picc=%.0f","gel",id(alerte_gel).state);
-                it.send_command_printf("%s.picc=%.0f","neige",id(alerte_neige).state);
-                it.set_component_value("alert_coul",id(alerte_coul).state);
-                it.send_command_printf("%s.pic=%.0f","alerte_rain",id(alerte_rain).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_0",id(pluie_0mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_5",id(pluie_5mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_10",id(pluie_10mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_15",id(pluie_15mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_20",id(pluie_20mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_25",id(pluie_25mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_30",id(pluie_30mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_35",id(pluie_35mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_40",id(pluie_40mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_45",id(pluie_45mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_50",id(pluie_50mn).state);
-                it.send_command_printf("%s.pic=%.0f", "mn_55",id(pluie_55mn).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_vent",id(alert_vent).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_inondat",id(alert_inondation).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_orages",id(alert_orages).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_pluie_in",id(alert_pluie_inondation).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_neig_ver",id(alert_neige_verglas).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_froid",id(alert_grand_froid).state);
-                it.send_command_printf("%s.pic=%.0f", "alert_vagues",id(alert_vagues_submersion).state);
-                it.send_command_printf("%s.pic=%.0f", "uv",id(uv_prob).state);
-                it.set_component_text_printf("proc_plu","%.0f",id(pluie_proch).state);
-            }
-            if (id(page1).state) {
+ 
+- name: temp_ext    
+  state: "{{ state_attr('weather.saint_vincent_de_tyrosse', 'temperature') }}"
+ 
+- name: humi_ext    
+  state: "{{ state_attr('weather.saint_vincent_de_tyrosse', 'humidity') }}"
+#---------------------------Icone du demain meteo france -----------------
+ 
+    
+- name: icon_jour_0
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
-            }
-            if (id(page2).state) {
-                it.send_command_printf("%s.pic=%.0f", "Icon_4j",id(today_icon4).state);
-                it.set_component_text_printf("T_max_j4","%.0f",id(j4_tmax).state);
-                it.set_component_text_printf("T_min_j4","%.0f",id(j4_tmin).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_5j",id(today_icon5).state);
-                it.set_component_text_printf("T_max_j5","%.0f",id(j5_tmax).state);
-                it.set_component_text_printf("T_min_j5","%.0f",id(j5_tmin).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_6j",id(today_icon6).state);
-                it.set_component_text_printf("T_max_j6","%.0f",id(j6_tmax).state);
-                it.set_component_text_printf("T_min_j6","%.0f",id(j6_tmin).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_7j",id(today_icon7).state);
-                it.set_component_text_printf("T_max_j7","%.0f",id(j7_tmax).state);
-                it.set_component_text_printf("T_min_j7","%.0f",id(j7_tmin).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_8j",id(today_icon8).state);
-                it.set_component_text_printf("T_max_j8","%.0f",id(j8_tmax).state);
-                it.set_component_text_printf("T_min_j8","%.0f",id(j8_tmin).state);
+ 
+- name: jour_tmin    
+  state: >-
+             {% set jour_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[0]. templow | float %}
+                {{ jour_tmin }}
+ 
+- name: Jour_tmax    
+  state: >-
+             {% set jour_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].temperature | float %}
+                {{ jour_tmax }}
+# Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
+#---------------------------Icone du jour1 meteo france -----------------
+ 
+    
+- name: icon_jour_1
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
-            }
-            if (id(page3).state) {
-                it.send_command_printf("%s.pic=%.0f", "icon_h1",id(heure_icon_1).state);
-                it.set_component_text_printf("T_h0","%.0f",id(heure_t_1).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h2",id(heure_icon_2).state);
-                it.set_component_text_printf("T_h1","%.0f",id(heure_t_2).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h3",id(heure_icon_3).state);
-                it.set_component_text_printf("T_h2","%.0f",id(heure_t_3).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h4",id(heure_icon_4).state);
-                it.set_component_text_printf("T_h3","%.0f",id(heure_t_4).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h5",id(heure_icon_5).state);
-                it.set_component_text_printf("T_h4","%.0f",id(heure_t_5).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h6",id(heure_icon_6).state);
-                it.set_component_text_printf("T_h5","%.0f",id(heure_t_6).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h7",id(heure_icon_7).state);
-                it.set_component_text_printf("T_h6","%.0f",id(heure_t_7).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_h8",id(heure_icon_8).state);
-                it.set_component_text_printf("T_h7","%.0f",id(heure_t_8).state);
-            }
+ 
+- name: dem_tmin    
+  state: >-
+             {% set dem_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1]. templow | float %}
+                {{ dem_tmin }}
+ 
+- name: dem_tmax    
+  state: >-
+             {% set dem_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].temperature | float %}
+                {{ dem_tmax }}
+ 
+- name: dem_pluie    
+  state: >-
+             {% set dem_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].precipitation | float %}
+                {{ dem_pluie }}
+#---------------------------Icone du jour2 meteo france -----------------
+ 
+    
+- name: icon_jour_2
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
-#----- Récupération des données à afficher-----------------------
-#-------------------------- sensor -----
+ 
+- name: j2_tmin    
+  state: >-
+             {% set j2_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2]. templow | float %}
+                {{ j2_tmin }}
+ 
+- name: j2_tmax    
+  state: >-
+             {% set j2_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].temperature | float %}
+                {{ j2_tmax }}
+ 
+- name: j2_pluie    
+  state: >-
+             {% set j2_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].precipitation | float %}
+                {{ j2_pluie }}
+#---------------------------Icone du jour3 meteo france -----------------
+ 
+    
+- name: icon_jour_3
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
+ 
+- name: j3_tmin
+  state: >-
+             {% set j3_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3]. templow | float %}
+                {{ j3_tmin }}
+ 
+- name: j3_tmax    
+  state: >-
+             {% set j3_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].temperature | float %}
+                {{ j3_tmax }}
+ 
+- name: j3_pluie    
+  state: >-
+             {% set j3_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].precipitation | float %}
+                {{ j3_pluie }}
+#---------------------------Icone du jour4 meteo france -----------------
+ 
+    
+- name: icon_jour_4
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
-binary_sensor:
-  # 0. page - Home
-  - platform: nextion
-    page_id: 0
-    component_id: 2
-    id: page0
-    on_press:
-      then:
-        - component.update: teplomer
-  # 1. page - Lights
-  - platform: nextion
-    page_id: 1
-    component_id: 3
-    id: page1
-    on_press:
-      then:
-        - component.update: teplomer
-  # 2. page - Volets
-  - platform: nextion
-    page_id: 2
-    component_id: 1
-    id: page2
-    on_press:
-      then:
-        - component.update: teplomer
-  # 3. page - Temperature
-  - platform: nextion
-    page_id: 3
-    component_id: 4
-    id: page3
-    on_press:
-      then:
-        - component.update: teplomer
-#
+ 
+- name: j4_tmin
+  state: >-
+             {% set j4_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4]. templow | float %}
+                {{ j4_tmin }}
+ 
+    
+- name: j4_tmax
+  state: >-
+             {% set j4_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].temperature | float %}
+                {{ j4_tmax }}
+ 
+    
+- name: j4_pluie
+  state: >-
+             {% set j4_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].precipitation | float %}
+                {{ j4_pluie }}
+#---------------------------Icone du jour5 meteo france -----------------
+ 
+    
+- name: icon_jour_5
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
+ 
+- name: j5_tmin
+  state: >-
+             {% set j5_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5]. templow | float %}
+                {{ j5_tmin }}
+ 
+    
+- name: j5_tmax
+  state: >-
+             {% set j5_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].temperature | float %}
+                {{ j5_tmax }}
+ 
+    
+- name: j5_pluie
+  state: >-
+             {% set j5_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].precipitation | float %}
+                {{ j5_pluie }}
+#---------------------------Icone du jour6 meteo france -----------------
+ 
+    
+- name: icon_jour_6
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
+ 
+- name: j6_tmin
+  state: >-
+             {% set j6_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6]. templow | float %}
+                {{ j6_tmin }}
+ 
+    
+- name: j6_tmax
+  state: >-
+             {% set j6_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].temperature | float %}
+                {{ j6_tmax }}
+ 
+    
+- name: j6_pluie
+  state: >-
+             {% set j6_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].precipitation | float %}
+                {{ j6_pluie }}
+#---------------------------Icone du jour7 meteo france -----------------
+ 
+    
+- name: icon_jour_7
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
+ 
+- name: j7_tmin
+  state: >-
+             {% set j7_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7]. templow | float %}
+                {{ j7_tmin }}
+ 
+    
+- name: j7_tmax
+  state: >-
+             {% set j7_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].temperature | float %}
+                {{ j7_tmax }}
+ 
+    
+- name: j7_pluie
+  state: >-
+             {% set j7_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].precipitation | float %}
+                {{ j7_pluie }}
+#---------------------------Icone du jour8 meteo france -----------------
+ 
+    
+- name: icon_jour_8
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
+ 
+- name: j8_tmin
+  state: >-
+             {% set j8_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8]. templow | float %}
+                {{ j8_tmin }}
+ 
+    
+- name: j8_tmax
+  state: >-
+             {% set j8_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].temperature | float %}
+                {{ j8_tmax }}
+ 
+    
+- name: j8_pluie
+  state: >-
+             {% set j8_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].precipitation | float %}
+                {{ j8_pluie }}
+#---------------------------Icone du jour9 meteo france -----------------
+ 
+    
+- name: icon_jour_9
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
-sensor:
+ 
+- name: j9_tmin
+  state: >-
+             {% set j9_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[9]. templow | float %}
+                {{ j9_tmin }}
+ 
+    
+- name: j9_tmax
+  state: >-
+             {% set j9_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].temperature | float %}
+                {{ j9_tmax }}
+ 
+    
+- name: j9_pluie
+  state: >-
+             {% set j9_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].precipitation | float %}
+                {{ j9_pluie }}
+#---------------------------Icone du jour10 meteo france -----------------
+ 
+    
+- name: icon_jour_10
+  state: >-
+          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'Clear' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'sunny' %}
+            22
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'clear-night' %}
+            25
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'cloudy' %}
+            19
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'fog' %}
+            23
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'hail' %}
+            28
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'lightning' %}
+            31
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'lightning-rainy' %}
+            24
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'partlycloudy' %}
+            20
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'rainy' %}
+            26
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'pouring' %}
+            27
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'snowy' %}
+            29
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'snowy-rainy' %}
+            30
+          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'windy' %}
+            32
+          {% else %}
+            3
+          {% endif %}
 
+ 
+- name: j10_tmin
+  state: >-
+             {% set j10_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10]. templow | float %}
+                {{ j10_tmin }}
+ 
+    
+- name: j10_tmax
+  state: >-
+             {% set j10_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].temperature | float %}
+                {{ j10_tmax }}
+ 
+    
+- name: j10_pluie
+  state: >-
+             {% set j10_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].precipitation | float %}
+                {{ j10_pluie }}
+#---------------------------# # Alerte meteo
+ 
+    
+- name: Alerte Meteo France
+  state: >-
+          {% if is_state("sensor.40_weather_alert", 'Vert') %}
+            35
+          {% elif is_state("sensor.40_weather_alert", 'Jaune') %}
+            36
+          {% elif is_state("sensor.40_weather_alert", 'Orange') %}
+            37
+          {% elif is_state("sensor.40_weather_alert", 'Rouge') %}
+            38
+          {% else %}
+            34
+          {% endif %}
 
-  - platform: homeassistant
-    id: heure_icon_1
-    entity_id: sensor.heure_icon_1
-  - platform: homeassistant
-    id: heure_t_1
-    entity_id: sensor.heure_temp_1
-
-  - platform: homeassistant
-    id: heure_icon_2
-    entity_id: sensor.heure_icon_2
-  - platform: homeassistant
-    id: heure_t_2
-    entity_id: sensor.heure_temp_2
-
-  - platform: homeassistant
-    id: heure_icon_3
-    entity_id: sensor.heure_icon_3
-  - platform: homeassistant
-    id: heure_t_3
-    entity_id: sensor.heure_temp_3
-
-  - platform: homeassistant
-    id: heure_icon_4
-    entity_id: sensor.heure_icon_4
-  - platform: homeassistant
-    id: heure_t_4
-    entity_id: sensor.heure_temp_4
-
-  - platform: homeassistant
-    id: heure_icon_5
-    entity_id: sensor.heure_icon_5
-  - platform: homeassistant
-    id: heure_t_5
-    entity_id: sensor.heure_temp_5
-
-  - platform: homeassistant
-    id: heure_icon_6
-    entity_id: sensor.heure_icon_6
-  - platform: homeassistant
-    id: heure_t_6
-    entity_id: sensor.heure_temp_6
-
-  - platform: homeassistant
-    id: heure_icon_7
-    entity_id: sensor.heure_icon_7
-  - platform: homeassistant
-    id: heure_t_7
-    entity_id: sensor.heure_temp_7
-
-  - platform: homeassistant
-    id: heure_icon_8
-    entity_id: sensor.heure_icon_8
-  - platform: homeassistant
-    id: heure_t_8
-    entity_id: sensor.heure_temp_8
-
-  - platform: homeassistant
-    id: today_icon4
-    entity_id: sensor.today_icon4
-  - platform: homeassistant
-    id: j4_tmax
-    entity_id: sensor.j4_tmax
-  - platform: homeassistant
-    id: j4_tmin
-    entity_id: sensor.j4_tmin
-  - platform: homeassistant
-    id: j4_pluis
-    entity_id: sensor.j4_pluis
-
-  - platform: homeassistant
-    id: today_icon5
-    entity_id: sensor.today_icon5
-  - platform: homeassistant
-    id: j5_tmax
-    entity_id: sensor.j5_tmax
-  - platform: homeassistant
-    id: j5_tmin
-    entity_id: sensor.j5_tmin
-  - platform: homeassistant
-    id: j5_pluis
-    entity_id: sensor.j5_pluis
-
-  - platform: homeassistant
-    id: today_icon6
-    entity_id: sensor.today_icon6
-  - platform: homeassistant
-    id: j6_tmax
-    entity_id: sensor.j6_tmax
-  - platform: homeassistant
-    id: j6_tmin
-    entity_id: sensor.j6_tmin
-  - platform: homeassistant
-    id: j6_pluis
-    entity_id: sensor.j6_pluis
-
-  - platform: homeassistant
-    id: today_icon7
-    entity_id: sensor.today_icon7
-  - platform: homeassistant
-    id: j7_tmax
-    entity_id: sensor.j7_tmax
-  - platform: homeassistant
-    id: j7_tmin
-    entity_id: sensor.j7_tmin
-  - platform: homeassistant
-    id: j7_pluis
-    entity_id: sensor.j7_pluis
-
-  - platform: homeassistant
-    id: today_icon8
-    entity_id: sensor.today_icon8
-  - platform: homeassistant
-    id: j8_tmax
-    entity_id: sensor.j8_tmax
-  - platform: homeassistant
-    id: j8_tmin
-    entity_id: sensor.j8_tmin
-  - platform: homeassistant
-    id: j8_pluis
-    entity_id: sensor.j8_pluis
-
-  - platform: homeassistant
-    id: pluie_proch
-    entity_id: sensor.pluie_proch
-
-  - platform: homeassistant
-    id: uv_prob 
-    entity_id: sensor.uv_prob
-  - platform: homeassistant
-    id: alert_vent 
-    entity_id: sensor.alert_vent
-  - platform: homeassistant
-    id: alert_inondation
-    entity_id: sensor.alert_inondation
-  - platform: homeassistant
-    id: alert_orages 
-    entity_id: sensor.alert_orages
-  - platform: homeassistant
-    id: alert_pluie_inondation
-    entity_id: sensor.alert_pluie_inondation
-  - platform: homeassistant
-    id: alert_neige_verglas
-    entity_id: sensor.alert_neige_verglas
-  - platform: homeassistant
-    id: alert_grand_froid
-    entity_id: sensor.alert_grand_froid
-  - platform: homeassistant
-    id: alert_vagues_submersion
-    entity_id: sensor.alert_vagues_submersion
-#--------Pour les alertes neige et gel----------------------------------
-  - platform: homeassistant
-    id: alerte_gel
-    entity_id: sensor.alerte_gel
-  - platform: homeassistant
-    id: alerte_neige
-    entity_id: sensor.alerte_neige
-  - platform: homeassistant
-    id: alerte_rain
-    entity_id: sensor.alerte_rain
-#--------Pour les averses sur 1h00----------------------------------
-  - platform: homeassistant
-    id: pluie_0mn 
-    entity_id: sensor.pluie_0mn 
-  - platform: homeassistant
-    id: pluie_5mn
-    entity_id: sensor.pluie_5mn
-  - platform: homeassistant
-    id: pluie_10mn 
-    entity_id: sensor.pluie_10mn 
-  - platform: homeassistant
-    id: pluie_15mn
-    entity_id: sensor.pluie_15mn
-  - platform: homeassistant
-    id: pluie_20mn 
-    entity_id: sensor.pluie_20mn 
-  - platform: homeassistant
-    id: pluie_25mn
-    entity_id: sensor.pluie_25mn
-  - platform: homeassistant
-    id: pluie_30mn 
-    entity_id: sensor.pluie_30mn 
-  - platform: homeassistant
-    id: pluie_35mn
-    entity_id: sensor.pluie_35mn
-  - platform: homeassistant
-    id: pluie_40mn 
-    entity_id: sensor.pluie_40mn 
-  - platform: homeassistant
-    id: pluie_45mn
-    entity_id: sensor.pluie_45mn
-  - platform: homeassistant
-    id: pluie_50mn 
-    entity_id: sensor.pluie_50mn 
-  - platform: homeassistant
-    id: pluie_55mn
-    entity_id: sensor.pluie_55mn
-#------------------------Pour les icones des prévisions préparé dans le configuration.yaml, pour le choix du numero des images à afficher en f() du temps
-  - platform: homeassistant
-    id: today_icon
-    entity_id: sensor.today_icon
-  - platform: homeassistant
-    id: today_jour
-    entity_id: sensor.jour
-  - platform: homeassistant
-    id: today_icon1
-    entity_id: sensor.today_icon1
-  - platform: homeassistant
-    id: today_icon2
-    entity_id: sensor.today_icon2
-  - platform: homeassistant
-    id: today_icon3
-    entity_id: sensor.today_icon3
-  - platform: homeassistant
-    id: jour_tmax
-#--------Pour les minima maxima des temperatures prevus
-    entity_id: sensor.jour_tmax
-  - platform: homeassistant
-    id: jour_tmin
-    entity_id: sensor.jour_tmin
-  - platform: homeassistant
-    id: dem_tmax
-    entity_id: sensor.dem_tmax
-  - platform: homeassistant
-    id: dem_tmin
-    entity_id: sensor.dem_tmin
-  - platform: homeassistant
-    id: j2_tmax
-    entity_id: sensor.j2_tmax
-  - platform: homeassistant
-    id: j2_tmin
-    entity_id: sensor.j2_tmin
-  - platform: homeassistant
-    id: j3_tmax
-    entity_id: sensor.j3_tmax
-  - platform: homeassistant
-    id: j3_tmin
-    entity_id: sensor.j3_tmin
-#------Pour les capteurs de sondes météo, à remplacer par vos sondes
-  - platform: homeassistant
-    id: sonde_ext_temp
-    entity_id: sensor.temp_ext
-  - platform: homeassistant
-    id: text_alert
-    entity_id: sensor.text_alert
-  - platform: homeassistant
-    id: sonde_humi_ext
-    entity_id: sensor.humi_ext
-#---------Définition de la couleur de l'alerte météo
-  - platform: homeassistant
-    id: alerte_coul
-    entity_id:  sensor.alerte_coul
-#-------------------------- text_sensor ------------------------------------------------------------------------------------------
-#-----Pour la date
-text_sensor:
-  - platform: homeassistant
-    id: date_simple
-    entity_id: sensor.date_simple
-#---------Retour d'informations pour le statut des interrupteurs, stocker dans des variable global à definir plus haut
+ 
+- name: alerte_gel
+  state: >-
+         {% set alert = states('sensor.saint_vincent_de_tyrosse_freeze_chance') | float  %}
+              {%- if alert > 10 -%}
+                1
+              {% else %}
+                0
+                {%- endif -%}
+ 
+    
+- name: alerte_neige
+  state: >-
+         {% set alert = states('sensor.saint_vincent_de_tyrosse_snow_chance') | float  %}
+              {%- if alert > 10 -%}
+                1
+              {% else %}
+                0
+                {%- endif -%}
+ 
+    
+- name: alerte_rain
+  state: >-
+         {% set alert = states('sensor.saint_vincent_de_tyrosse_rain_chance') | float  %}
+               {%- if alert < 9 -%}
+                80
+               {% elif alert < 40 %}
+                79
+               {% elif alert < 70 %}
+                78
+               {% elif alert < 101 %}
+                77
+               {% else %}
+                80
+                {%- endif -%}
+ 
+- name: uv_prob
+  state: >-
+         {% set alert = states('sensor.saint_vincent_de_tyrosse_uv') | float  %}
+               {%- if alert < 2 -%}
+                85
+               {% elif alert < 5 %}
+                84
+               {% elif alert < 7 %}
+                83
+               {% elif alert < 9 %}
+                82
+               {% else %}
+                81
+                {%- endif -%}
