@@ -4,7 +4,7 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 
 # Mise en garde:
 
-- 03/04/2023: Dev en 3pages, non stable a débug. Vers 3.5 1 page a modif suite modification des templates.
+- 03/04/2023: Dev en 3pages, en test. Vers 3.5 1 page à modif suite modification des templates.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc. Le fichier contient mon code de travail, pas mal de lignes sont inutile pour cette version, mais peut permetre de compléter plus tard l'écran. Il y as beaucoup de répition que devrait être fais par des boucles, peut être pour plus tard.
 
 # Présentation:
