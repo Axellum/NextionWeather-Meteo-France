@@ -25,7 +25,10 @@ wifi:
   ssid: !secret wifi_ssid
   password: !secret wifi_password
   fast_connect: true
-
+#-------------------------- ---------------------------------------------------------------------------------------------------
+#-----                                 Copier sur votre fichier créer par ESPHome a partir de la      ----------------------
+#-------------------------- ---------------------------------------------------------------------------------------------------
+#-------------------------- ---------------------------------------------------------------------------------------------------
 uart:
   tx_pin: GPIO1
   rx_pin: GPIO3
@@ -364,12 +367,6 @@ text_sensor:
     id: jour_sem
     entity_id:  sensor.jour_sem
 
-switch:
-  - platform: restart
-    name: Reboot Nextion3.5
-    id: reboot
-#
-#
 #---------- Envois des données récupéré sur les différentes zones de l'ecran---------------
 display:
   - platform: nextion
@@ -447,8 +444,3 @@ display:
                 it.set_component_text_printf("pl_t1","%.0f",id(heure_pluvio_2).state);
                 it.set_component_text_printf("pl_t2","%.0f",id(heure_pluvio_3).state);
                 it.set_component_text_printf("pl_t3","%.0f",id(heure_pluvio_4).state);
-
-
-
-                
-                
