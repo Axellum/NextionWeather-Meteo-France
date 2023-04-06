@@ -2,6 +2,53 @@
 # ------------------------------------------------------------------------------------------------ alerte meteo----------------------------------------------------------------
 
 
+- name: date_simple
+  icon: mdi:calendar-today
+  state: >
+        {% set months = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"] %}
+        {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]  %}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+
+- name: date_comp
+  icon: mdi:calendar-today
+  state: >
+        {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
+        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+
+- name: jour_sem
+  icon: mdi:calendar-today
+  state: >
+        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+        {{ days[now().weekday()] }}
+
+- name: Date_fr
+  icon: mdi:calendar-today
+  state: >
+         {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
+         
+#exemple de formatage de la date, pour formaté en 1 ligne plusieurs donné (ici ca donnerai: 04 - 05 - 2050, 05:03)
+
+- name: date_fr_final
+  icon: mdi:calendar-today
+  state: >
+         {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
+#exemple de formatage sur sun.sun avec remplacement de caracteres 
+ 
+    
+
+- name: nextsunrise
+  state: >
+          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
+  icon: mdi:weather-sunset-up
+
+
+- name: nextset
+  state: >
+          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
+  icon: mdi:weather-sunset-down
+  
+  
 
 # texte prevision de la prochaine pluie
  
@@ -361,8 +408,20 @@
             3
           {% endif %}
 
+
+# - name: titre_heure_meteo_1
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_heure = state_attr("weather.saint_geours_de_maremne","forecast")[2].datetime  %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_heure.weekday()] + ' ' + titre_heure.hour | string + 'h00:' }}
+
+
+- name: heure_pluvio_1
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[1].precipitation | float %}
+                {{ heure_pluvio }}
  
-    
 - name: heure_temp_1
   state: >-
              {% set heure_temp_1 = state_attr("weather.saint_geours_de_maremne","forecast")[1].temperature | float %}
@@ -404,6 +463,11 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_2
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[2].precipitation | float %}
+                {{ heure_pluvio }}
  
 
 - name: heure_temp_2    
@@ -447,6 +511,11 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_3
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[3].precipitation | float %}
+                {{ heure_pluvio }}
  
 
 - name: heure_temp_3    
@@ -490,7 +559,13 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_4
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[4].precipitation | float %}
+                {{ heure_pluvio }}
  
+
 - name: heure_temp_4
   state: >-
              {% set heure_temp_4 = state_attr("weather.saint_geours_de_maremne","forecast")[4].temperature | float %}
@@ -532,6 +607,11 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_5
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[5].precipitation | float %}
+                {{ heure_pluvio }}
  
 
 - name: heure_temp_5    
@@ -575,6 +655,11 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_6
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[6].precipitation | float %}
+                {{ heure_pluvio }}
  
 
 - name: heure_temp_6    
@@ -618,6 +703,11 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_7
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[7].precipitation | float %}
+                {{ heure_pluvio }}
  
 
 - name: heure_temp_7    
@@ -661,6 +751,11 @@
             3
           {% endif %}
 
+
+- name: heure_pluvio_8
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[8].precipitation | float %}
+                {{ heure_pluvio }}
  
 
 - name: heure_temp_8
@@ -704,7 +799,12 @@
             3
           {% endif %}
 
- 
+
+- name: heure_pluvio_9
+  state: >-
+             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[9].precipitation | float %}
+                {{ heure_pluvio }}
+
 
 - name: heure_temp_9 
   state: >-
@@ -712,55 +812,6 @@
         {{ heure_temp_9 }}
 
 
-- name: date_simple
-  icon: mdi:calendar-today
-  state: >
-        {% set months = ["Janvier", "Fevrier", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Decembre"] %}
-        {% set days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]  %}
-        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
-
-- name: date_comp
-  icon: mdi:calendar-today
-  state: >
-        {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
-        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
-        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
-
-- name: jour_sem
-  icon: mdi:calendar-today
-  state: >
-        {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
-        {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
-        {{ days[now().weekday()]}}
-
-- name: Date_fr
-  icon: mdi:calendar-today
-  state: >
-         {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
-#exemple de formatage de la date, pour formaté en 1 ligne plusieurs donné (ici ca donnerai: 04 - 05 - 2050, 05:03)
- 
-    
-
-- name: date_fr_final
-  icon: mdi:calendar-today
-  state: >
-         {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
-#exemple de formatage sur sun.sun avec remplacement de caracteres 
- 
-    
-
-- name: nextsunrise
-  state: >
-          {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
-  icon: mdi:weather-sunset-up
-
-
-- name: nextset
-  state: >
-          {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
-  icon: mdi:weather-sunset-down
-  
-  
 #************************************************* test ****************************************************************************************
 # Icone du jours meteo france
  
@@ -889,7 +940,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_1
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: dem_tmin    
   state: >-
              {% set dem_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1]. templow | float %}
@@ -941,7 +1000,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_2
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j2_tmin    
   state: >-
              {% set j2_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2]. templow | float %}
@@ -993,7 +1060,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_3
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j3_tmin
   state: >-
              {% set j3_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3]. templow | float %}
@@ -1045,7 +1120,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_4
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j4_tmin
   state: >-
              {% set j4_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4]. templow | float %}
@@ -1099,7 +1182,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_5
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j5_tmin
   state: >-
              {% set j5_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5]. templow | float %}
@@ -1153,7 +1244,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_6
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j6_tmin
   state: >-
              {% set j6_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6]. templow | float %}
@@ -1207,7 +1306,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_7
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j7_tmin
   state: >-
              {% set j7_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7]. templow | float %}
@@ -1261,7 +1368,15 @@
             3
           {% endif %}
 
- 
+
+- name: titre_jour_meteo_8
+  icon: mdi:calendar-today
+  state: >
+        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].datetime %}
+        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+
+
 - name: j8_tmin
   state: >-
              {% set j8_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8]. templow | float %}
