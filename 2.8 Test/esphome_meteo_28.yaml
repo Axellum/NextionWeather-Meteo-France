@@ -343,7 +343,7 @@ sensor:
 text_sensor:
   - platform: homeassistant
     id: date_simple
-    entity_id: sensor.date_simple
+    entity_id: sensor.date_comp
     on_value:
        then:
          - component.update: teplomer
@@ -403,13 +403,6 @@ display:
                 it.set_component_text_printf("minute","%02d",time.minute);
                 it.set_component_text_printf("date",id(date_simple).state.c_str());
                 it.send_command_printf("%s.pic=%.0f", "icon",id(icon_meteo).state);
-                it.send_command_printf("%s.pic=%.0f", "icon_dem",id(icon_jour_1).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_2j",id(icon_jour_2).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_3j",id(icon_jour_3).state);
-                it.set_component_text_printf("T_min_jour","%.0f",id(jour_tmin).state);
-                it.set_component_text_printf("T_max_jour","%.0f",id(jour_tmax).state);
-                it.set_component_text_printf("T_min_dem","%.0f",id(dem_tmin).state);
-                it.set_component_text_printf("T_max_dem","%.0f",id(dem_tmax).state);
                 it.set_component_value("alert_coul",id(alerte_coul).state);
                 it.send_command_printf("%s.pic=%.0f","alerte_rain",id(alerte_rain).state);
                 it.send_command_printf("%s.pic=%.0f", "mn_0",id(pluie_0mn).state);
