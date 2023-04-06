@@ -39,18 +39,6 @@ time:
 globals:
  - id: display_on
    type: bool
- - id: current_brightness             # Is display on?
-   type: float
-   restore_value: no
-   initial_value: '-1.0'
- - id: disp_page
-   type: int
-   restore_value: no
-   initial_value: '0'
- - id: page
-   type: int
-   restore_value: no
-   initial_value: '0'
    
    
 #----- Récupération des données à afficher-----------------------
