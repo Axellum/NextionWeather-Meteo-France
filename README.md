@@ -12,6 +12,8 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 
 ![](/Demo%20ecran%203.5.png)
 
+Sur les icones de prévisions en bas ce trouve les "boutons": au centre la luminositée, à droite les prévisions sur 8 jours, à gauche sur 8h00. L'icone principale du temps, l'heure et la date peuvent faire des boutons, pour des pages, interupteurs, apelle de script ex..
+
 Au menu:
 - Date et horloge.
 - Temps actuel.
