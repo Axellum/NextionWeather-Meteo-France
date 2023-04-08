@@ -328,7 +328,7 @@ sensor:
     entity_id: sensor.pluie_proch
 #------Temperature, hydro
   - platform: homeassistant
-    id: sonde_ext_temp
+    id: T_act
     entity_id: sensor.temp_ext
   - platform: homeassistant
     id: sonde_humi_ext
@@ -408,6 +408,7 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "icon_dem",id(icon_jour_1).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_2j",id(icon_jour_2).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_3j",id(icon_jour_3).state);
+                
                 it.set_component_text_printf("T_min_jour","%.0f",id(jour_tmin).state);
                 it.set_component_text_printf("T_max_jour","%.0f",id(jour_tmax).state);
                 it.set_component_text_printf("T_min_dem","%.0f",id(dem_tmin).state);
@@ -416,12 +417,14 @@ display:
                 it.set_component_text_printf("T_max_j2","%.0f",id(j2_tmax).state);
                 it.set_component_text_printf("T_min_j3","%.0f",id(j3_tmin).state);
                 it.set_component_text_printf("T_max_j3","%.0f",id(j3_tmax).state);
-                it.set_component_value("temp_1",id(sonde_ext_temp).state);
+                it.set_component_value("temp_1",id(T_act).state);
+                
                 it.set_component_value("hum_1",id(sonde_humi_ext).state);
                 it.send_command_printf("%s.picc=%.0f","gel",id(alerte_gel).state);
                 it.send_command_printf("%s.picc=%.0f","neige",id(alerte_neige).state);
                 it.set_component_value("alert_coul",id(alerte_coul).state);
                 it.send_command_printf("%s.pic=%.0f","alerte_rain",id(alerte_rain).state);
+                
                 it.send_command_printf("%s.pic=%.0f", "mn_0",id(pluie_0mn).state);
                 it.send_command_printf("%s.pic=%.0f", "mn_5",id(pluie_5mn).state);
                 it.send_command_printf("%s.pic=%.0f", "mn_10",id(pluie_10mn).state);
