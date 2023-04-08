@@ -31,7 +31,11 @@ Au menu:
 - Dev: Affichage des jours de semaine en titre des prévisions. OK
 - Dev: Visuel des prévisions du cumul prévus de pluie.
 
-![](/PXL_20230327_060610910.jpg)
+Ecran 3.5:
+![Nextion meteo france 3.5](/PXL_20230327_060610910.jpg)
+Ecran 2.8:          
+![Nextion meteo france 2.8](/PXL_20230408_131318487.jpg)
+
 
 Vous trouverez sur ce git:
 - Le fichier GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
