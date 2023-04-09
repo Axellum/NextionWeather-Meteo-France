@@ -124,9 +124,6 @@ sensor:
   - platform: homeassistant
     id: icon_meteo
     entity_id: sensor.icon_meteo
-    on_value:
-       then:
-         - lambda: 'id(teplomer).send_command_printf("%s.pic=%.0f", "icon",id(icon_meteo).state);'
 
   - platform: homeassistant
     id: icon_jour_0
@@ -384,7 +381,6 @@ display:
                 it.set_component_text_printf("t34",id(titre_jour_meteo_7).state.c_str());
                 it.set_component_text_printf("t39",id(titre_jour_meteo_8).state.c_str());
                 
-                it.set_component_text_printf("t2",id(jour_sem).state.c_str());
                 it.set_component_text_printf("heure","%02d",time.hour);
                 it.set_component_text_printf("minute","%02d",time.minute);
                 it.set_component_text_printf("date",id(date_simple).state.c_str());
