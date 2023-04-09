@@ -1,6 +1,6 @@
 
 # NextionWeather-Meteo-France
-Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votre région, pluie sur 1h00 de Météo France par ESPHome. Code préparé sous Home assistant, passage sur un ESP32 par ESPHome, affichage sur écran Nextion 3.5 basic.
+Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votre région, pluie sur 1h00 de Météo France par ESPHome. Code préparé sous Home assistant, passage sur un ESP32 par ESPHome, affichage sur écran Nextion 3.5 basic ou 2.8 basic (adaptable à votre diagonele).
 
 # Mise en garde:
 
@@ -49,7 +49,7 @@ Les icônes viennent de https://icon-icons.com/fr/pack/The-Weather-is-Nice-Today
 
 - Homa assistant.
 - ESPHome.
-- Un écran Nextion 3.5 basic ou mieux.
+- Un écran Nextion 3.5 ou 2.8 basic ou mieux.
 - Un module esp32.
 
 # Installation:
