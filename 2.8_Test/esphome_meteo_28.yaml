@@ -387,8 +387,8 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "icon",id(icon_meteo).state);
                 it.set_component_value("alert_coul",id(alerte_coul).state);
                 it.send_command_printf("%s.pic=%.0f","alerte_rain",id(alerte_rain).state);
-                it.send_command_printf("%s.picc=%.0f","gel",id(alerte_gel).state);
-                it.send_command_printf("%s.picc=%.0f","neige",id(alerte_neige).state);
+                it.send_command_printf("%s.pic=%.0f","gel",id(alerte_gel).state);
+                it.send_command_printf("%s.pic=%.0f","neige",id(alerte_neige).state);
                 it.set_component_value("temp_1",id(T_act).state);
                 
                 it.send_command_printf("%s.pic=%.0f", "mn_0",id(pluie_0mn).state);

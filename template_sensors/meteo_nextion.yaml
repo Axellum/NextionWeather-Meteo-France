@@ -1522,20 +1522,32 @@
 - name: alerte_gel
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_freeze_chance') | float  %}
-              {%- if alert > 10 -%}
-                1
+              {%- if alert < 5 -%}
+                87
+              {% elif alert < 50 %}
+                88
+              {% elif alert < 90 %}
+                89
+              {% elif alert < 100 %}
+                77
               {% else %}
-                0
+                99
                 {%- endif -%}
  
     
 - name: alerte_neige
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_snow_chance') | float  %}
-              {%- if alert > 10 -%}
-                1
+              {%- if alert < 5 -%}
+                91
+              {% elif alert < 50 %}
+                92
+              {% elif alert < 90 %}
+                93
+              {% elif alert < 100 %}
+                94
               {% else %}
-                0
+                99
                 {%- endif -%}
  
     
