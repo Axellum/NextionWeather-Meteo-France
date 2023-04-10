@@ -1504,7 +1504,7 @@
 #---------------------------# # Alerte meteo
  
     
-- name: Alerte Meteo France
+- name: alerte_coul
   state: >-
           {% if is_state("sensor.40_weather_alert", 'Vert') %}
             35
