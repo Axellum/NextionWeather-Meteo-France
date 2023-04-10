@@ -1528,7 +1528,7 @@
                 88
               {% elif alert < 90 %}
                 89
-              {% elif alert < 100 %}
+              {% elif alert < 101 %}
                 89
               {% else %}
                 99
@@ -1544,7 +1544,7 @@
                 92
               {% elif alert < 90 %}
                 93
-              {% elif alert < 100 %}
+              {% elif alert < 101 %}
                 94
               {% else %}
                 99
@@ -1569,13 +1569,13 @@
 - name: uv_prob
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_uv') | float  %}
-               {%- if alert < 6 -%}
+               {%- if alert < 5 -%}
                 85
                {% elif alert < 7 %}
                 84
-               {% elif alert < 8 %}
+               {% elif alert < 9 %}
                 83
-               {% elif alert < 10 %}
+               {% elif alert < 11 %}
                 82
                {% else %}
                 81
