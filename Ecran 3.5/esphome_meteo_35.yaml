@@ -13,10 +13,6 @@ logger:
 
 # Enable Home Assistant API
 api:
-  services:
-    - service: update_tft
-      then:
-        - lambda: 'id(teplomer)->upload_tft();'
 
 ota:
   password: "613c4870f0101981a29542c6f7738f42"
@@ -39,19 +35,6 @@ time:
 globals:
  - id: display_on
    type: bool
- - id: current_brightness             # Is display on?
-   type: float
-   restore_value: no
-   initial_value: '-1.0'
- - id: disp_page
-   type: int
-   restore_value: no
-   initial_value: '0'
- - id: page
-   type: int
-   restore_value: no
-   initial_value: '0'
-   
    
 #----- Récupération des données à afficher-----------------------
 #-------------------------- sensor -----
@@ -133,9 +116,6 @@ sensor:
   - platform: homeassistant
     id: icon_meteo
     entity_id: sensor.icon_meteo
-    on_value:
-       then:
-         - lambda: 'id(teplomer).send_command_printf("%s.pic=%.0f", "icon",id(icon_meteo).state);'
 
   - platform: homeassistant
     id: icon_jour_0
@@ -344,9 +324,7 @@ text_sensor:
   - platform: homeassistant
     id: date_simple
     entity_id: sensor.date_simple
-    on_value:
-       then:
-         - component.update: teplomer
+
 #---------Titres pour les jours de semaine-----------------
   - platform: homeassistant
     id: titre_jour_meteo_1
@@ -376,18 +354,11 @@ text_sensor:
     id: jour_sem
     entity_id:  sensor.jour_sem
 
-switch:
-  - platform: restart
-    name: Reboot Nextion3.5
-    id: reboot
-#
-#
 #---------- Envois des données récupéré sur les différentes zones de l'ecran---------------
 display:
   - platform: nextion
     id: teplomer
-    update_interval: 8s
-    tft_url: http://192.168.0.16:8123/local/nextion/nextion.tft
+    update_interval: 15s
     lambda: |-
             auto time = id(sntp_time).now();
                 it.set_component_text_printf("t3",id(titre_jour_meteo_1).state.c_str());
@@ -443,23 +414,11 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "alert_vagues",id(alert_vagues_submersion).state);
                 it.send_command_printf("%s.pic=%.0f", "uv",id(uv_prob).state);
                 it.set_component_text_printf("proc_plu","%.0f",id(pluie_proch).state);
-
-                it.send_command_printf("%s.pic=%.0f", "icon_dem",id(icon_jour_1).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_2j",id(icon_jour_2).state);
-                it.send_command_printf("%s.pic=%.0f", "Icon_3j",id(icon_jour_3).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_4j",id(icon_jour_4).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_5j",id(icon_jour_5).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_6j",id(icon_jour_6).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_7j",id(icon_jour_7).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_8j",id(icon_jour_8).state);
-                it.set_component_text_printf("T_min_jour","%.0f",id(jour_tmin).state);
-                it.set_component_text_printf("T_max_jour","%.0f",id(jour_tmax).state);
-                it.set_component_text_printf("T_min_dem","%.0f",id(dem_tmin).state);
-                it.set_component_text_printf("T_max_dem","%.0f",id(dem_tmax).state);
-                it.set_component_text_printf("T_min_j2","%.0f",id(j2_tmin).state);
-                it.set_component_text_printf("T_max_j2","%.0f",id(j2_tmax).state);
-                it.set_component_text_printf("T_min_j3","%.0f",id(j3_tmin).state);
-                it.set_component_text_printf("T_max_j3","%.0f",id(j3_tmax).state);
                 it.set_component_text_printf("T_max_j4","%.0f",id(j4_tmax).state);
                 it.set_component_text_printf("T_min_j4","%.0f",id(j4_tmin).state);
                 it.set_component_text_printf("T_max_j5","%.0f",id(j5_tmax).state);
@@ -470,7 +429,6 @@ display:
                 it.set_component_text_printf("T_min_j7","%.0f",id(j7_tmin).state);
                 it.set_component_text_printf("T_max_j8","%.0f",id(j8_tmax).state);
                 it.set_component_text_printf("T_min_j8","%.0f",id(j8_tmin).state);
-
                 it.send_command_printf("%s.pic=%.0f", "icon_h0",id(heure_icon_1).state);
                 it.set_component_text_printf("T_h0","%.0f",id(heure_t_1).state);
                 it.send_command_printf("%s.pic=%.0f", "icon_h1",id(heure_icon_2).state);
