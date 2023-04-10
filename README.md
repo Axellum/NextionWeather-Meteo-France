@@ -4,8 +4,9 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votr
 
 # Mise en garde:
 
-- 07/04/2023: Passage sur trois pages, gestion en global. Ajout des jours de semaine en titre des prévision. Version 2.8 basique à tester.
-
+- 10/04/2023: A quelques coquilles prêt (et quelques ajouts), la version pour 3.5 commence à resembler à ce que je voulais. La 2.8 devrait elle aussi fonctionner carrectement. 
+- Le chargement de la premiére page est trés long (faudra une page d'accueil), le premier chargement des autres pages est long aussi, ensuite c'est casi instentaner avec la gestion en global. 
+- En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc. Le fichier contient mon code de travail, pas mal de lignes sont inutile pour cette version, mais peut permetre de compléter plus tard l'écran. Il y as beaucoup de répition que devrait être fais par des boucles, peut être pour plus tard.
 
 # Présentation:
@@ -24,11 +25,11 @@ Au menu:
 - Changement de couleur de texte et de l'icone de vigilance par l'écran.
 - Alerte vigilance Météo France par icones et couleur de la date.
 - Pluie sur 1h00, prochaine averse et icone de couleur pour la probabilité.
+- Affichage des jours de semaine en titre des prévisions.
+- Page de prévision sur 8 jours.
+- Page de prévision sur 8h00.
 
-- Dev: Page de prévision sur 8 jours. OK
-- Dev: Page de prévision sur 8h00. OK
 - Dev: Page d'infos pour les autres infos de l'API Météo France.
-- Dev: Affichage des jours de semaine en titre des prévisions. OK
 - Dev: Visuel des prévisions du cumul prévus de pluie.
 
 Ecran 3.5:
@@ -38,9 +39,9 @@ Ecran 2.8:
 
 
 Vous trouverez sur ce git:
-- Le fichier GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
-- Le fichier HMI pour l'écran Nextion.
-- Le fichier yaml pour l'esp32.
+- Les fichiers GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
+- Les fichiers HMI pour les écrans Nextion.
+- Les fichiers yaml pour les esp32.
 - Le fichier configuration.yaml de Home assistant, à adapter aussi avec son intégration Météo France.
 
 Les icônes viennent de https://icon-icons.com/fr/pack/The-Weather-is-Nice-Today/1370, création de Laura Reen. J'ai parfois apporté de légère modifications.
