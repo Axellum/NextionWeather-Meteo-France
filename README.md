@@ -32,11 +32,13 @@ Au menu:
 - Dev: Page d'infos pour les autres infos de l'API Météo France.
 - Dev: Visuel des prévisions du cumul prévus de pluie.
 
-Ecran 3.5:
-![Nextion meteo france 3.5](/PXL_20230327_060610910.jpg)
-Ecran 2.8:          
-![Nextion meteo france 2.8](/PXL_20230408_131318487.jpg)
-
+Ecran 3.5:         
+![Nextion meteo france 3.5](/NextionWeather35P0.jpg)
+![Nextion meteo france 3.5](/NextionWeather35P2.jpg)
+![Nextion meteo france 3.5](/NextionWeather35P3.jpg)
+Ecran 2.8:        
+![Nextion meteo france 2.8](/NextionWeather28P0.jpg)
+![Nextion meteo france 2.8](/NextionWeather28P2.jpg)
 
 Vous trouverez sur ce git:
 - Les fichiers GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
