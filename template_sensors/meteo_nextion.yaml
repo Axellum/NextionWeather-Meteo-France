@@ -14,7 +14,7 @@
   state: >
         {% set months = ["Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"] %}
         {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
-        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] }}
+        {{ days[now().weekday()] + ' ' + now().day | string + ' ' + months[now().month-1] + ' ' + now().year | string + ' ' + now().hour | string  + ' ' + now().minute | string }}
 
 - name: jour_sem
   icon: mdi:calendar-today
@@ -22,20 +22,9 @@
         {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
         {{ days[now().weekday()] }}
 
-- name: Date_fr
-  icon: mdi:calendar-today
-  state: >
-         {{ now().day }}{{ ' ' }}{{ now().month }}{{ ' ' }}{{ now().year }}
-         
-#exemple de formatage de la date, pour formaté en 1 ligne plusieurs donné (ici ca donnerai: 04 - 05 - 2050, 05:03)
 
-- name: date_fr_final
-  icon: mdi:calendar-today
-  state: >
-         {{ '{:02} - {:02} - {:04}, {:02}:{:02}'.format( now().day, now().month, now().year, now().hour, now().minute) }}
-#exemple de formatage sur sun.sun avec remplacement de caracteres 
- 
-    
+#exemple de formatage sur sun.sun avec remplacement de caracteres
+
 
 - name: nextsunrise
   state: >
@@ -409,12 +398,16 @@
           {% endif %}
 
 
-# - name: titre_heure_meteo_1
-#   icon: mdi:calendar-today
-#   state: >
-#         {% set titre_heure = state_attr("weather.saint_geours_de_maremne","forecast")[2].datetime  %}
-#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-#         {{ days[titre_heure.weekday()] + ' ' + titre_heure.hour | string + 'h00:' }}
+- name: titre_heure_meteo_1
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[1].datetime) %}
+          {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+          {% if days[time.weekday()] == days[now().weekday()] %}
+              {{ time.hour | string + 'H:' }}
+          {% else %}
+              {{ days[time.weekday()] + ' ' + time.hour | string + 'H:' }}
+          {%- endif -%}
 
 
 - name: heure_pluvio_1
