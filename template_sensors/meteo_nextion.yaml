@@ -408,16 +408,22 @@
           {% endif %}
 
 #---------------------------Préparation des titres pour la prevision en heures, pas pour prévoir de nouvelles pages -----------------
+# - name: titre_heure_meteo_1
+#   icon: mdi:calendar-today
+#   state: >
+#           {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[1].datetime) %}
+#           {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
+#           {% if days[time.weekday()] == days[now().weekday()] %}
+#               {{ time.hour | string + 'H:' }}
+#           {% else %}
+#               {{ days[time.weekday()] + ' ' + time.hour | string + 'H:' }}
+#           {%- endif -%}
+
 - name: titre_heure_meteo_1
   icon: mdi:calendar-today
   state: >
           {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[1].datetime) %}
-          {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
-          {% if days[time.weekday()] == days[now().weekday()] %}
-              {{ time.hour | string + 'H:' }}
-          {% else %}
-              {{ days[time.weekday()] + ' ' + time.hour | string + 'H:' }}
-          {%- endif -%}
+              {{ time.hour | string }}
 
 
 - name: heure_pluvio_1
