@@ -1,7 +1,5 @@
 # ------------------------------------------------------------------------------------------------ Partie a ajouter apres remplacement des capteurs de vos villes et region------------------------------------------------------------------------
 # ------------------------------------------------------------------------------------------------ alerte meteo----------------------------------------------------------------
-
-
 - name: date_simple
   icon: mdi:calendar-today
   state: >
@@ -23,25 +21,21 @@
         {{ days[now().weekday()] }}
 
 
-#exemple de formatage sur sun.sun avec remplacement de caracteres
-
+#------------------exemple de formatage sur sun.sun avec remplacement de caracteres---------------------------------
 
 - name: nextsunrise
   state: >
           {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
   icon: mdi:weather-sunset-up
 
-
 - name: nextset
   state: >
           {{ as_timestamp(states.sun.sun.attributes.next_setting) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
   icon: mdi:weather-sunset-down
-  
-  
 
-# texte prevision de la prochaine pluie
- 
-    
+
+
+# ---------------------texte prevision de la prochaine pluie---------------------------
 - name: Pluie_proch
   state: >-
              {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
@@ -55,8 +49,8 @@
               {% endif %}
 
 
- 
-    
+
+#---------------------------------------- Alertes meteo france -----------------------------------------------------------------------------------
 - name: alert_vent
   state: >-
           {% if  state_attr('sensor.40_weather_alert', 'Vent violent') == 'Vert' %}
@@ -71,8 +65,8 @@
             47
           {% endif %}
 
- 
-    
+
+
 - name: alert_inondation
   state: >-
           {% if  state_attr('sensor.40_weather_alert', 'Inondation') == 'Vert' %}
@@ -87,8 +81,8 @@
             55
           {% endif %}
 
- 
-    
+
+
 - name: alert_orages
   state: >-
           {% if  state_attr('sensor.40_weather_alert', 'Orages') == 'Vert' %}
@@ -103,8 +97,8 @@
             59
           {% endif %}
 
- 
-    
+
+
 - name: alert_pluie_inondation
   state: >-
           {% if  state_attr('sensor.40_weather_alert', 'Pluie-inondation') == 'Vert' %}
@@ -361,7 +355,23 @@
           
 # -------------------------------------------------------------------------------Icone des heures, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #---------------------------Icone 1h meteo france -----------------
- 
+
+
+# - name: titr_test
+#   state: >-
+#           {% set dates = state_attr("weather.saint_geours_de_maremne","forecast").condition %}
+#           {% for i in range(0, dates | count, 1) %}
+#           {{ state_attr("weather.saint_geours_de_maremne","forecast")[i].condition }}
+#           {% endfor %}
+
+- name: titr_test2
+  state: >-
+          {% for i in range(0, 8, 1) %}
+          {{ state_attr("weather.saint_vincent_de_tyrosse","forecast")[i].condition }}
+          {% endfor %}
+
+
+
     
 - name: heure_icon_1
   state: >-
@@ -397,7 +407,7 @@
             3
           {% endif %}
 
-
+#---------------------------Préparation des titres pour la prevision en heures, pas pour prévoir de nouvelles pages -----------------
 - name: titre_heure_meteo_1
   icon: mdi:calendar-today
   state: >
@@ -805,9 +815,9 @@
         {{ heure_temp_9 }}
 
 
-#************************************************* test ****************************************************************************************
+#************************************************* Pour la prevision en jours ****************************************************************************************
+
 # Icone du jours meteo france
- 
 - name: icon_meteo   
   state: >-
           {% if is_state("weather.saint_vincent_de_tyrosse", 'clear-night') %}
@@ -848,9 +858,9 @@
  
 - name: humi_ext    
   state: "{{ state_attr('weather.saint_vincent_de_tyrosse', 'humidity') }}"
-#---------------------------Icone du demain meteo france -----------------
+
  
-    
+#-------------------------------------------------------------------------Icone du demain meteo france ------------------------------------------------
 - name: icon_jour_0
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'Clear' %}
@@ -895,10 +905,9 @@
   state: >-
              {% set jour_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].temperature | float %}
                 {{ jour_tmax }}
-# Icone des trois jours suivant, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
+
+#-------------------------------------------------------- Icone des trois jours suivant-----------------------------------------------
 #---------------------------Icone du jour1 meteo france -----------------
- 
-    
 - name: icon_jour_1
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'Clear' %}
@@ -958,7 +967,7 @@
                 {{ dem_pluie }}
 #---------------------------Icone du jour2 meteo france -----------------
  
-    
+
 - name: icon_jour_2
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'Clear' %}
@@ -1018,7 +1027,7 @@
                 {{ j2_pluie }}
 #---------------------------Icone du jour3 meteo france -----------------
  
-    
+
 - name: icon_jour_3
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'Clear' %}
@@ -1078,7 +1087,7 @@
                 {{ j3_pluie }}
 #---------------------------Icone du jour4 meteo france -----------------
  
-    
+
 - name: icon_jour_4
   state: >-
           {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'Clear' %}
@@ -1494,9 +1503,9 @@
   state: >-
              {% set j10_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].precipitation | float %}
                 {{ j10_pluie }}
-#---------------------------# # Alerte meteo
- 
-    
+#---------------------------------------- Alertes meteo probabilitées -----------------------------------------------------------------------------------
+# #
+
 - name: alerte_coul
   state: >-
           {% if is_state("sensor.40_weather_alert", 'Vert') %}
@@ -1511,7 +1520,7 @@
             34
           {% endif %}
 
- 
+
 - name: alerte_gel
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_freeze_chance') | float  %}
@@ -1527,7 +1536,7 @@
                 95
                 {%- endif -%}
  
-    
+
 - name: alerte_neige
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_snow_chance') | float  %}
@@ -1543,7 +1552,7 @@
                 95
                 {%- endif -%}
  
-    
+
 - name: alerte_rain
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_rain_chance') | float  %}
@@ -1558,7 +1567,8 @@
                {% else %}
                 80
                 {%- endif -%}
- 
+
+
 - name: uv_prob
   state: >-
          {% set alert = states('sensor.saint_vincent_de_tyrosse_uv') | float  %}

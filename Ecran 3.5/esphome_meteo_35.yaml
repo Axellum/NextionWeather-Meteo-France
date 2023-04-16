@@ -354,6 +354,10 @@ text_sensor:
     id: jour_sem
     entity_id:  sensor.jour_sem
 
+  - platform: homeassistant
+    id: titre_heur
+    entity_id:  sensor.titre_heure_meteo_1
+
 #---------- Envois des données récupéré sur les différentes zones de l'ecran---------------
 display:
   - platform: nextion
@@ -364,15 +368,6 @@ display:
                 it.set_component_text_printf("date",id(date_simple).state.c_str());
                 it.set_component_text_printf("heure","%02d",time.hour);
                 it.set_component_text_printf("minute","%02d",time.minute);
-                it.set_component_text_printf("t2",id(jour_sem).state.c_str());
-                it.set_component_text_printf("t3",id(titre_jour_meteo_1).state.c_str());
-                it.set_component_text_printf("t4",id(titre_jour_meteo_2).state.c_str());
-                it.set_component_text_printf("t5",id(titre_jour_meteo_3).state.c_str());
-                it.set_component_text_printf("t31",id(titre_jour_meteo_4).state.c_str());
-                it.set_component_text_printf("t23",id(titre_jour_meteo_5).state.c_str());
-                it.set_component_text_printf("t29",id(titre_jour_meteo_6).state.c_str());
-                it.set_component_text_printf("t34",id(titre_jour_meteo_7).state.c_str());
-                it.set_component_text_printf("t39",id(titre_jour_meteo_8).state.c_str());
                 it.send_command_printf("%s.pic=%.0f", "icon",id(icon_meteo).state);
                 it.send_command_printf("%s.pic=%.0f", "icon_jour",id(icon_jour_0).state);
                 it.send_command_printf("%s.pic=%.0f", "icon_dem",id(icon_jour_1).state);
@@ -386,6 +381,11 @@ display:
                 it.set_component_text_printf("T_max_j2","%.0f",id(j2_tmax).state);
                 it.set_component_text_printf("T_min_j3","%.0f",id(j3_tmin).state);
                 it.set_component_text_printf("T_max_j3","%.0f",id(j3_tmax).state);
+                it.set_component_text_printf("t2",id(jour_sem).state.c_str());
+                it.set_component_text_printf("t9",id(titre_heur).state.c_str());
+                it.set_component_text_printf("t3",id(titre_jour_meteo_1).state.c_str());
+                it.set_component_text_printf("t4",id(titre_jour_meteo_2).state.c_str());
+                it.set_component_text_printf("t5",id(titre_jour_meteo_3).state.c_str());
                 it.set_component_value("temp_1",id(sonde_ext_temp).state);
                 it.set_component_value("hum_1",id(sonde_humi_ext).state);
                 it.send_command_printf("%s.pic=%.0f","gel",id(alerte_gel).state);
@@ -418,6 +418,11 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "Icon_6j",id(icon_jour_6).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_7j",id(icon_jour_7).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_8j",id(icon_jour_8).state);
+                it.set_component_text_printf("t31",id(titre_jour_meteo_4).state.c_str());
+                it.set_component_text_printf("t23",id(titre_jour_meteo_5).state.c_str());
+                it.set_component_text_printf("t29",id(titre_jour_meteo_6).state.c_str());
+                it.set_component_text_printf("t34",id(titre_jour_meteo_7).state.c_str());
+                it.set_component_text_printf("t39",id(titre_jour_meteo_8).state.c_str());
                 it.set_component_text_printf("T_max_j4","%.0f",id(j4_tmax).state);
                 it.set_component_text_printf("T_min_j4","%.0f",id(j4_tmin).state);
                 it.set_component_text_printf("T_max_j5","%.0f",id(j5_tmax).state);
