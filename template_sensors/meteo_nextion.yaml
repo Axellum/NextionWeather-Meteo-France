@@ -364,11 +364,11 @@
 #           {{ state_attr("weather.saint_geours_de_maremne","forecast")[i].condition }}
 #           {% endfor %}
 
-- name: titr_test2
-  state: >-
-          {% for i in range(0, 8, 1) %}
-          {{ state_attr("weather.saint_vincent_de_tyrosse","forecast")[i].condition }}
-          {% endfor %}
+# - name: titr_test2
+#   state: >-
+#           {% for i in range(0, 8, 1) %}
+#           {{ state_attr("weather.saint_vincent_de_tyrosse","forecast")[i].condition }}
+#           {% endfor %}
 
 
 
@@ -419,11 +419,12 @@
 #               {{ days[time.weekday()] + ' ' + time.hour | string + 'H:' }}
 #           {%- endif -%}
 
+#---------------------------Préparation des titres pour la prevision en heures, version plus basique -----------------
 - name: titre_heure_meteo_1
   icon: mdi:calendar-today
   state: >
           {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[1].datetime) %}
-              {{ time.hour | string }}
+              {{ time.hour | string + ':00' }}
 
 
 - name: heure_pluvio_1
@@ -472,6 +473,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_2
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[2].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_2
   state: >-
@@ -520,6 +526,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_3
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[3].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_3
   state: >-
@@ -568,6 +579,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_4
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[4].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_4
   state: >-
@@ -616,6 +632,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_5
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[5].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_5
   state: >-
@@ -664,6 +685,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_6
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[6].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_6
   state: >-
@@ -712,6 +738,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_7
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[7].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_7
   state: >-
@@ -760,6 +791,11 @@
             3
           {% endif %}
 
+- name: titre_heure_meteo_8
+  icon: mdi:calendar-today
+  state: >
+          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[8].datetime) %}
+              {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_8
   state: >-
@@ -771,54 +807,58 @@
   state: >-
              {% set heure_temp_8 = state_attr("weather.saint_geours_de_maremne","forecast")[8].temperature | float %}
                 {{ heure_temp_8 }}
-#---------------------------Icone du 3h meteo france -----------------
- 
-    
-- name: heure_icon_9
-  state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'Clear' %}
-            22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'sunny' %}
-            22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'clear-night' %}
-            25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'cloudy' %}
-            19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'fog' %}
-            23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'hail' %}
-            28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning' %}
-            31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning-rainy' %}
-            24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'partlycloudy' %}
-            20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'rainy' %}
-            26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'pouring' %}
-            27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy' %}
-            29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy-rainy' %}
-            30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'windy' %}
-            32
-          {% else %}
-            3
-          {% endif %}
 
 
-- name: heure_pluvio_9
-  state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[9].precipitation | float %}
-                {{ heure_pluvio }}
+# - name: heure_icon_9
+#   state: >-
+#           {% if state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'Clear' %}
+#             22
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'sunny' %}
+#             22
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'clear-night' %}
+#             25
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'cloudy' %}
+#             19
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'fog' %}
+#             23
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'hail' %}
+#             28
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning' %}
+#             31
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning-rainy' %}
+#             24
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'partlycloudy' %}
+#             20
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'rainy' %}
+#             26
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'pouring' %}
+#             27
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy' %}
+#             29
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy-rainy' %}
+#             30
+#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'windy' %}
+#             32
+#           {% else %}
+#             3
+#           {% endif %}
+
+# - name: titre_heure_meteo_9
+#   icon: mdi:calendar-today
+#   state: >
+#           {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[9].datetime) %}
+#               {{ time.hour | string }}
+
+# - name: heure_pluvio_9
+#   state: >-
+#              {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[9].precipitation | float %}
+#                 {{ heure_pluvio }}
 
 
-- name: heure_temp_9 
-  state: >-
-        {% set heure_temp_9 = state_attr("weather.saint_geours_de_maremne","forecast")[9].temperature | float %}
-        {{ heure_temp_9 }}
+# - name: heure_temp_9 
+#   state: >-
+#         {% set heure_temp_9 = state_attr("weather.saint_geours_de_maremne","forecast")[9].temperature | float %}
+#         {{ heure_temp_9 }}
 
 
 #************************************************* Pour la prevision en jours ****************************************************************************************

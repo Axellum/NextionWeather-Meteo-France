@@ -357,6 +357,27 @@ text_sensor:
   - platform: homeassistant
     id: titre_heur
     entity_id:  sensor.titre_heure_meteo_1
+  - platform: homeassistant
+    id: titre_heur_2
+    entity_id:  sensor.titre_heure_meteo_2
+  - platform: homeassistant
+    id: titre_heur_3
+    entity_id:  sensor.titre_heure_meteo_3
+  - platform: homeassistant
+    id: titre_heur_4
+    entity_id:  sensor.titre_heure_meteo_4
+  - platform: homeassistant
+    id: titre_heur_5
+    entity_id:  sensor.titre_heure_meteo_5
+  - platform: homeassistant
+    id: titre_heur_6
+    entity_id:  sensor.titre_heure_meteo_6
+  - platform: homeassistant
+    id: titre_heur_7
+    entity_id:  sensor.titre_heure_meteo_7
+  - platform: homeassistant
+    id: titre_heur_8
+    entity_id:  sensor.titre_heure_meteo_8
 
 #---------- Envois des données récupéré sur les différentes zones de l'ecran---------------
 display:
@@ -383,6 +404,13 @@ display:
                 it.set_component_text_printf("T_max_j3","%.0f",id(j3_tmax).state);
                 it.set_component_text_printf("t2",id(jour_sem).state.c_str());
                 it.set_component_text_printf("t9",id(titre_heur).state.c_str());
+                it.set_component_text_printf("t12",id(titre_heur_2).state.c_str());
+                it.set_component_text_printf("t14",id(titre_heur_3).state.c_str());
+                it.set_component_text_printf("t51",id(titre_heur_4).state.c_str());
+                it.set_component_text_printf("t60",id(titre_heur_5).state.c_str());
+                it.set_component_text_printf("t66",id(titre_heur_6).state.c_str());
+                it.set_component_text_printf("t71",id(titre_heur_7).state.c_str());
+                it.set_component_text_printf("t76",id(titre_heur_8).state.c_str());
                 it.set_component_text_printf("t3",id(titre_jour_meteo_1).state.c_str());
                 it.set_component_text_printf("t4",id(titre_jour_meteo_2).state.c_str());
                 it.set_component_text_printf("t5",id(titre_jour_meteo_3).state.c_str());
