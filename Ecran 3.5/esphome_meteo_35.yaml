@@ -402,7 +402,7 @@ display:
                 it.set_component_text_printf("T_max_j2","%.0f",id(j2_tmax).state);
                 it.set_component_text_printf("T_min_j3","%.0f",id(j3_tmin).state);
                 it.set_component_text_printf("T_max_j3","%.0f",id(j3_tmax).state);
-                it.set_component_text_printf("t2",id(jour_sem).state.c_str());
+                it.set_component_text_printf("tit_0",id(jour_sem).state.c_str());
                 it.set_component_text_printf("t9",id(titre_heur).state.c_str());
                 it.set_component_text_printf("t12",id(titre_heur_2).state.c_str());
                 it.set_component_text_printf("t14",id(titre_heur_3).state.c_str());
@@ -411,9 +411,9 @@ display:
                 it.set_component_text_printf("t66",id(titre_heur_6).state.c_str());
                 it.set_component_text_printf("t71",id(titre_heur_7).state.c_str());
                 it.set_component_text_printf("t76",id(titre_heur_8).state.c_str());
-                it.set_component_text_printf("t3",id(titre_jour_meteo_1).state.c_str());
-                it.set_component_text_printf("t4",id(titre_jour_meteo_2).state.c_str());
-                it.set_component_text_printf("t5",id(titre_jour_meteo_3).state.c_str());
+                it.set_component_text_printf("tit_1",id(titre_jour_meteo_1).state.c_str());
+                it.set_component_text_printf("tit_2",id(titre_jour_meteo_2).state.c_str());
+                it.set_component_text_printf("tit_3",id(titre_jour_meteo_3).state.c_str());
                 it.set_component_value("temp_1",id(sonde_ext_temp).state);
                 it.set_component_value("hum_1",id(sonde_humi_ext).state);
                 it.send_command_printf("%s.pic=%.0f","gel",id(alerte_gel).state);
@@ -446,11 +446,11 @@ display:
                 it.send_command_printf("%s.pic=%.0f", "Icon_6j",id(icon_jour_6).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_7j",id(icon_jour_7).state);
                 it.send_command_printf("%s.pic=%.0f", "Icon_8j",id(icon_jour_8).state);
-                it.set_component_text_printf("t31",id(titre_jour_meteo_4).state.c_str());
-                it.set_component_text_printf("t23",id(titre_jour_meteo_5).state.c_str());
-                it.set_component_text_printf("t29",id(titre_jour_meteo_6).state.c_str());
-                it.set_component_text_printf("t34",id(titre_jour_meteo_7).state.c_str());
-                it.set_component_text_printf("t39",id(titre_jour_meteo_8).state.c_str());
+                it.set_component_text_printf("tit_4",id(titre_jour_meteo_4).state.c_str());
+                it.set_component_text_printf("tit_5",id(titre_jour_meteo_5).state.c_str());
+                it.set_component_text_printf("tit_6",id(titre_jour_meteo_6).state.c_str());
+                it.set_component_text_printf("tit_7",id(titre_jour_meteo_7).state.c_str());
+                it.set_component_text_printf("tit_8",id(titre_jour_meteo_8).state.c_str());
                 it.set_component_text_printf("T_max_j4","%.0f",id(j4_tmax).state);
                 it.set_component_text_printf("T_min_j4","%.0f",id(j4_tmin).state);
                 it.set_component_text_printf("T_max_j5","%.0f",id(j5_tmax).state);
