@@ -1,3 +1,5 @@
+Le 06/07/2024: Les previsions ne marche plus suite a une mise à jour de l'API. Une solution m'as etait donner ici: https://forum.hacf.fr/t/nextion-meteo-france/22525/23 . Merci à Nico_206 de HACF.
+
 
 # NextionWeather-Meteo-France
 Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votre région, pluie sur 1h00 de Météo France par ESPHome. Code préparé sous Home assistant, passage sur un ESP32 par ESPHome, affichage sur écran Nextion 3.5 basic ou 2.8 basic (adaptable à votre diagonele).
