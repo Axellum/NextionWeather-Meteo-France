@@ -359,9 +359,9 @@
 
 # - name: titr_test
 #   state: >-
-#           {% set dates = state_attr("weather.saint_geours_de_maremne","forecast").condition %}
+#           {% set dates = state_attr(" sensor.Prevision_Meteo_Nextion_J","forecast").condition %}
 #           {% for i in range(0, dates | count, 1) %}
-#           {{ state_attr("weather.saint_geours_de_maremne","forecast")[i].condition }}
+#           {{ state_attr(" sensor.Prevision_Meteo_Nextion_J","forecast")[i].condition }}
 #           {% endfor %}
 
 # - name: titr_test2
@@ -375,33 +375,33 @@
     
 - name: heure_icon_1
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[1].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].condition == 'windy' %}
             32
           {% else %}
             3
@@ -411,7 +411,7 @@
 # - name: titre_heure_meteo_1
 #   icon: mdi:calendar-today
 #   state: >
-#           {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[1].datetime) %}
+#           {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].datetime) %}
 #           {% set days = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"]  %}
 #           {% if days[time.weekday()] == days[now().weekday()] %}
 #               {{ time.hour | string + 'H:' }}
@@ -423,51 +423,51 @@
 - name: titre_heure_meteo_1
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[1].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].datetime) %}
               {{ time.hour | string + ':00' }}
 
 
 - name: heure_pluvio_1
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[1].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].precipitation | float %}
                 {{ heure_pluvio }}
  
 - name: heure_temp_1
   state: >-
-             {% set heure_temp_1 = state_attr("weather.saint_geours_de_maremne","forecast")[1].temperature | float %}
+             {% set heure_temp_1 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].temperature | float %}
                 {{ heure_temp_1 }}
 #---------------------------Icone 2h meteo france -----------------
  
     
 - name: heure_icon_2
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[2].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'windy' %}
             32
           {% else %}
             3
@@ -476,51 +476,51 @@
 - name: titre_heure_meteo_2
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[2].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_2
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[2].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_2    
   state: >-
-             {% set heure_temp_2 = state_attr("weather.saint_geours_de_maremne","forecast")[2].temperature | float %}
+             {% set heure_temp_2 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].temperature | float %}
                 {{ heure_temp_2 }}
 #---------------------------Icone du 3h meteo france -----------------
  
     
 - name: heure_icon_3
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[3].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'windy' %}
             32
           {% else %}
             3
@@ -529,51 +529,51 @@
 - name: titre_heure_meteo_3
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[3].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_3
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[3].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_3    
   state: >-
-             {% set heure_temp_3 = state_attr("weather.saint_geours_de_maremne","forecast")[3].temperature | float %}
+             {% set heure_temp_3 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].temperature | float %}
                 {{ heure_temp_3 }}
 #---------------------------Icone du 4h meteo france -----------------
  
     
 - name: heure_icon_4
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[4].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].condition == 'windy' %}
             32
           {% else %}
             3
@@ -582,51 +582,51 @@
 - name: titre_heure_meteo_4
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[4].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_4
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[4].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_4
   state: >-
-             {% set heure_temp_4 = state_attr("weather.saint_geours_de_maremne","forecast")[4].temperature | float %}
+             {% set heure_temp_4 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].temperature | float %}
                 {{ heure_temp_4 }}
 #---------------------------Icone 5h meteo france -----------------
  
     
 - name: heure_icon_5
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[5].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].condition == 'windy' %}
             32
           {% else %}
             3
@@ -635,51 +635,51 @@
 - name: titre_heure_meteo_5
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[5].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_5
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[5].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_5    
   state: >-
-             {% set heure_temp_5 = state_attr("weather.saint_geours_de_maremne","forecast")[5].temperature | float %}
+             {% set heure_temp_5 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].temperature | float %}
                 {{ heure_temp_5 }}
 #---------------------------Icone du 6h meteo france -----------------
  
     
 - name: heure_icon_6
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[6].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].condition == 'windy' %}
             32
           {% else %}
             3
@@ -688,51 +688,51 @@
 - name: titre_heure_meteo_6
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[6].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_6
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[6].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_6    
   state: >-
-             {% set heure_temp_6 = state_attr("weather.saint_geours_de_maremne","forecast")[6].temperature | float %}
+             {% set heure_temp_6 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].temperature | float %}
                 {{ heure_temp_6 }}
 #---------------------------Icone du 7h meteo france -----------------
  
     
 - name: heure_icon_7
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[7].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].condition == 'windy' %}
             32
           {% else %}
             3
@@ -741,51 +741,51 @@
 - name: titre_heure_meteo_7
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[7].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_7
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[7].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_7    
   state: >-
-             {% set heure_temp_7 = state_attr("weather.saint_geours_de_maremne","forecast")[7].temperature | float %}
+             {% set heure_temp_7 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].temperature | float %}
                 {{ heure_temp_7 }}
 #---------------------------Icone 8h meteo france -----------------
  
     
 - name: heure_icon_8
   state: >-
-          {% if state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_geours_de_maremne","forecast")[8].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].condition == 'windy' %}
             32
           {% else %}
             3
@@ -794,50 +794,50 @@
 - name: titre_heure_meteo_8
   icon: mdi:calendar-today
   state: >
-          {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[8].datetime) %}
+          {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].datetime) %}
               {{ time.hour | string + ':00' }}
 
 - name: heure_pluvio_8
   state: >-
-             {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[8].precipitation | float %}
+             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].precipitation | float %}
                 {{ heure_pluvio }}
  
 
 - name: heure_temp_8
   state: >-
-             {% set heure_temp_8 = state_attr("weather.saint_geours_de_maremne","forecast")[8].temperature | float %}
+             {% set heure_temp_8 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].temperature | float %}
                 {{ heure_temp_8 }}
 
 
 # - name: heure_icon_9
 #   state: >-
-#           {% if state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'Clear' %}
+#           {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'Clear' %}
 #             22
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'sunny' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'sunny' %}
 #             22
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'clear-night' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'clear-night' %}
 #             25
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'cloudy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'cloudy' %}
 #             19
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'fog' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'fog' %}
 #             23
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'hail' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'hail' %}
 #             28
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'lightning' %}
 #             31
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'lightning-rainy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'lightning-rainy' %}
 #             24
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'partlycloudy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'partlycloudy' %}
 #             20
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'rainy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'rainy' %}
 #             26
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'pouring' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'pouring' %}
 #             27
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'snowy' %}
 #             29
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'snowy-rainy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'snowy-rainy' %}
 #             30
-#           {% elif state_attr("weather.saint_geours_de_maremne","forecast")[9].condition == 'windy' %}
+#           {% elif state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].condition == 'windy' %}
 #             32
 #           {% else %}
 #             3
@@ -846,18 +846,18 @@
 # - name: titre_heure_meteo_9
 #   icon: mdi:calendar-today
 #   state: >
-#           {% set time = as_datetime(state_attr("weather.saint_geours_de_maremne","forecast")[9].datetime) %}
+#           {% set time = as_datetime(state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].datetime) %}
 #               {{ time.hour | string }}
 
 # - name: heure_pluvio_9
 #   state: >-
-#              {% set heure_pluvio = state_attr("weather.saint_geours_de_maremne","forecast")[9].precipitation | float %}
+#              {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].precipitation | float %}
 #                 {{ heure_pluvio }}
 
 
 # - name: heure_temp_9 
 #   state: >-
-#         {% set heure_temp_9 = state_attr("weather.saint_geours_de_maremne","forecast")[9].temperature | float %}
+#         {% set heure_temp_9 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[9].temperature | float %}
 #         {{ heure_temp_9 }}
 
 
@@ -866,39 +866,43 @@
 # Icone du jours meteo france
 - name: icon_meteo   
   state: >-
-          {% if is_state("weather.saint_vincent_de_tyrosse", 'clear-night') %}
+          {% if is_state("sensor.Prevision_Meteo_Nextion_J", 'clear-night') %}
             10
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'cloudy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'cloudy') %}
             4
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'fog') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'fog') %}
             8
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'hail') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'hail') %}
             13
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'lightning') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'lightning') %}
             16
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'lightning-rainy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'lightning-rainy') %}
             9
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'Clear') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'Clear') %}
             7
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'pouring') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'pouring') %}
             12
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'partlycloudy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'partlycloudy') %}
             5
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'rainy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'rainy') %}
             11
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'snowy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'snowy') %}
             14
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'windy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'windy') %}
             17
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'snowy-rainy') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'snowy-rainy') %}
             15
-          {% elif is_state("weather.saint_vincent_de_tyrosse", 'sunny') %}
+          {% elif is_state("sensor.Prevision_Meteo_Nextion_J", 'sunny') %}
             7
           {% else %}
             2
           {% endif %}
 
- 
+#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
+#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
+#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
+#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
+#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
 - name: temp_ext    
   state: "{{ state_attr('weather.saint_vincent_de_tyrosse', 'temperature') }}"
  
@@ -909,33 +913,33 @@
 #-------------------------------------------------------------------------Icone du demain meteo france ------------------------------------------------
 - name: icon_jour_0
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].condition == 'windy' %}
             32
           {% else %}
             3
@@ -944,535 +948,535 @@
  
 - name: jour_tmin    
   state: >-
-             {% set jour_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[0]. templow | float %}
+             {% set jour_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0]. templow | float %}
                 {{ jour_tmin }}
  
 - name: Jour_tmax    
   state: >-
-             {% set jour_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[0].temperature | float %}
+             {% set jour_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].temperature | float %}
                 {{ jour_tmax }}
 
 #-------------------------------------------------------- Icone des trois jours suivant-----------------------------------------------
 #---------------------------Icone du jour1 meteo france -----------------
 - name: icon_jour_1
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_1
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+#- name: titre_jour_meteo_1
+#  icon: mdi:calendar-today
+#  state: >
+#        {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].datetime %}
+#        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: dem_tmin    
   state: >-
-             {% set dem_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1]. templow | float %}
+             {% set dem_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1]. templow | float %}
                 {{ dem_tmin }}
  
 - name: dem_tmax    
   state: >-
-             {% set dem_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].temperature | float %}
+             {% set dem_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].temperature | float %}
                 {{ dem_tmax }}
  
 - name: dem_pluie    
   state: >-
-             {% set dem_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[1].precipitation | float %}
+             {% set dem_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].precipitation | float %}
                 {{ dem_pluie }}
 #---------------------------Icone du jour2 meteo france -----------------
  
 
 - name: icon_jour_2
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_2
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_2
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j2_tmin    
   state: >-
-             {% set j2_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2]. templow | float %}
+             {% set j2_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2]. templow | float %}
                 {{ j2_tmin }}
  
 - name: j2_tmax    
   state: >-
-             {% set j2_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].temperature | float %}
+             {% set j2_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].temperature | float %}
                 {{ j2_tmax }}
  
 - name: j2_pluie    
   state: >-
-             {% set j2_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[2].precipitation | float %}
+             {% set j2_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].precipitation | float %}
                 {{ j2_pluie }}
 #---------------------------Icone du jour3 meteo france -----------------
  
 
 - name: icon_jour_3
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_3
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_3
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j3_tmin
   state: >-
-             {% set j3_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3]. templow | float %}
+             {% set j3_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3]. templow | float %}
                 {{ j3_tmin }}
  
 - name: j3_tmax    
   state: >-
-             {% set j3_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].temperature | float %}
+             {% set j3_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].temperature | float %}
                 {{ j3_tmax }}
  
 - name: j3_pluie    
   state: >-
-             {% set j3_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[3].precipitation | float %}
+             {% set j3_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].precipitation | float %}
                 {{ j3_pluie }}
 #---------------------------Icone du jour4 meteo france -----------------
  
 
 - name: icon_jour_4
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_4
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_4
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j4_tmin
   state: >-
-             {% set j4_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4]. templow | float %}
+             {% set j4_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4]. templow | float %}
                 {{ j4_tmin }}
  
     
 - name: j4_tmax
   state: >-
-             {% set j4_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].temperature | float %}
+             {% set j4_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].temperature | float %}
                 {{ j4_tmax }}
  
     
 - name: j4_pluie
   state: >-
-             {% set j4_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[4].precipitation | float %}
+             {% set j4_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].precipitation | float %}
                 {{ j4_pluie }}
 #---------------------------Icone du jour5 meteo france -----------------
  
     
 - name: icon_jour_5
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_5
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_5
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j5_tmin
   state: >-
-             {% set j5_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5]. templow | float %}
+             {% set j5_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5]. templow | float %}
                 {{ j5_tmin }}
  
     
 - name: j5_tmax
   state: >-
-             {% set j5_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].temperature | float %}
+             {% set j5_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].temperature | float %}
                 {{ j5_tmax }}
  
     
 - name: j5_pluie
   state: >-
-             {% set j5_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[5].precipitation | float %}
+             {% set j5_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].precipitation | float %}
                 {{ j5_pluie }}
 #---------------------------Icone du jour6 meteo france -----------------
  
     
 - name: icon_jour_6
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_6
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_6
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j6_tmin
   state: >-
-             {% set j6_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6]. templow | float %}
+             {% set j6_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6]. templow | float %}
                 {{ j6_tmin }}
  
     
 - name: j6_tmax
   state: >-
-             {% set j6_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].temperature | float %}
+             {% set j6_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].temperature | float %}
                 {{ j6_tmax }}
  
     
 - name: j6_pluie
   state: >-
-             {% set j6_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[6].precipitation | float %}
+             {% set j6_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].precipitation | float %}
                 {{ j6_pluie }}
 #---------------------------Icone du jour7 meteo france -----------------
  
     
 - name: icon_jour_7
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_7
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_7
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j7_tmin
   state: >-
-             {% set j7_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7]. templow | float %}
+             {% set j7_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7]. templow | float %}
                 {{ j7_tmin }}
  
     
 - name: j7_tmax
   state: >-
-             {% set j7_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].temperature | float %}
+             {% set j7_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].temperature | float %}
                 {{ j7_tmax }}
  
     
 - name: j7_pluie
   state: >-
-             {% set j7_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[7].precipitation | float %}
+             {% set j7_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].precipitation | float %}
                 {{ j7_pluie }}
 #---------------------------Icone du jour8 meteo france -----------------
  
     
 - name: icon_jour_8
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].condition == 'windy' %}
             32
           {% else %}
             3
           {% endif %}
 
 
-- name: titre_jour_meteo_8
-  icon: mdi:calendar-today
-  state: >
-        {% set titre_jour = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].datetime %}
-        {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
-        {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
+# - name: titre_jour_meteo_8
+#   icon: mdi:calendar-today
+#   state: >
+#         {% set titre_jour = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].datetime %}
+#         {% set days = ["Lund.", "Mard.", "Merc.", "Jeud.", "Vend.", "Same.", "Dima."]  %}
+#         {{ days[titre_jour.weekday()] + ' ' + titre_jour.day | string + ':' }}
 
 
 - name: j8_tmin
   state: >-
-             {% set j8_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8]. templow | float %}
+             {% set j8_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8]. templow | float %}
                 {{ j8_tmin }}
  
     
 - name: j8_tmax
   state: >-
-             {% set j8_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].temperature | float %}
+             {% set j8_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].temperature | float %}
                 {{ j8_tmax }}
  
     
 - name: j8_pluie
   state: >-
-             {% set j8_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[8].precipitation | float %}
+             {% set j8_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].precipitation | float %}
                 {{ j8_pluie }}
 #---------------------------Icone du jour9 meteo france -----------------
  
     
 - name: icon_jour_9
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].condition == 'windy' %}
             32
           {% else %}
             3
@@ -1481,52 +1485,52 @@
  
 - name: j9_tmin
   state: >-
-             {% set j9_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[9]. templow | float %}
+             {% set j9_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9]. templow | float %}
                 {{ j9_tmin }}
  
     
 - name: j9_tmax
   state: >-
-             {% set j9_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].temperature | float %}
+             {% set j9_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].temperature | float %}
                 {{ j9_tmax }}
  
     
 - name: j9_pluie
   state: >-
-             {% set j9_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[9].precipitation | float %}
+             {% set j9_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].precipitation | float %}
                 {{ j9_pluie }}
 #---------------------------Icone du jour10 meteo france -----------------
  
     
 - name: icon_jour_10
   state: >-
-          {% if state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'Clear' %}
+          {% if state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'Clear' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'sunny' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'sunny' %}
             22
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'clear-night' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'clear-night' %}
             25
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'cloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'cloudy' %}
             19
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'fog' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'fog' %}
             23
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'hail' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'hail' %}
             28
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'lightning' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'lightning' %}
             31
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'lightning-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'lightning-rainy' %}
             24
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'partlycloudy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'partlycloudy' %}
             20
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'rainy' %}
             26
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'pouring' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'pouring' %}
             27
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'snowy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'snowy' %}
             29
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'snowy-rainy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'snowy-rainy' %}
             30
-          {% elif state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].condition == 'windy' %}
+          {% elif state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].condition == 'windy' %}
             32
           {% else %}
             3
@@ -1535,19 +1539,19 @@
  
 - name: j10_tmin
   state: >-
-             {% set j10_tmin = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10]. templow | float %}
+             {% set j10_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10]. templow | float %}
                 {{ j10_tmin }}
  
     
 - name: j10_tmax
   state: >-
-             {% set j10_tmax = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].temperature | float %}
+             {% set j10_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].temperature | float %}
                 {{ j10_tmax }}
  
     
 - name: j10_pluie
   state: >-
-             {% set j10_pluie = state_attr("weather.saint_vincent_de_tyrosse","forecast")[10].precipitation | float %}
+             {% set j10_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].precipitation | float %}
                 {{ j10_pluie }}
 #---------------------------------------- Alertes meteo probabilitées -----------------------------------------------------------------------------------
 # #
