@@ -61,7 +61,7 @@ Les icônes viennent de https://icon-icons.com/fr/pack/The-Weather-is-Nice-Today
 
 # Installation:
 Home assistant:
-- Installer l'intégration Météo France sur HA avec deux ville proche, réglez en une sur les prévision par heures.
+- Installer l'intégration Météo France sur HA avec votre ville.
 - Ouvrer le fichier "template_sensors/meteo_nextion.yaml" dans un éditeur de texte (notepad+++).
 - Faite un 'remplacer par' pour: 40_weather_alert avec votre 'région'_weather_alert.
 - Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather.
