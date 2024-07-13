@@ -1,5 +1,3 @@
-Le 06/07/2024: Les previsions ne marche plus suite a une mise à jour de l'API. Une solution m'as etait donner ici: https://forum.hacf.fr/t/nextion-meteo-france/22525/23 . Merci à Nico_206 de HACF.
-
 
 # NextionWeather-Meteo-France
 Ecran Nextion pour l'affichage des prévisions météo, alertes météo sur votre région, pluie sur 1h00 de Météo France par ESPHome. Code préparé sous Home assistant, passage sur un ESP32 par ESPHome, affichage sur écran Nextion 3.5 basic ou 2.8 basic (adaptable à votre diagonele).
@@ -8,7 +6,7 @@ https://forum.hacf.fr/t/nextion-meteo-france/22525
 
 # Mise en garde:
 
-- Le 13/07/2024: Suite à une mise à jours de l'API, les prévisions ne fontionnaient plus depuis déjà pas mal de mois. La derniére mise à jour rectifie ce problem. L'API integre desormer les prévision météo jours et heures dans un template (plus besoin de faire un doublon). Du coup, on vas récupérer les infos dans un premier temps avec le fichier configuration.yaml, dans lequel il vous faudra aussi changer saint_vincent_de_tyrosse par votre ville, en plus du fichier meteo_nextion.yaml. L'affichage des jours de la semaine en titre des previsions est HS aussi, je verrais, si j'ai le temps, pour y remedier.
+- Le 13/07/2024: Suite à une mise à jours de l'API, les prévisions ne fontionnaient plus depuis déjà pas mal de mois. La derniére mise à jour rectifie ce problem. L'API integre desormer les prévision météo jours et heures dans un template (plus besoin de faire un doublon). Du coup, on vas récupérer les infos dans un premier temps avec le fichier configuration.yaml, dans lequel il vous faudra aussi changer saint_vincent_de_tyrosse par votre ville, en plus du fichier meteo_nextion.yaml. L'affichage des jours de la semaine en titre des previsions est HS aussi, je verrais, si j'ai le temps, pour y remedier. Merci à Nico_206 de HACF.
 
 
 - 10/04/2023: A quelques coquilles prêt (et quelques ajouts), la version pour 3.5 commence à resembler à ce que je voulais. La 2.8 devrait elle aussi fonctionner carrectement. 
