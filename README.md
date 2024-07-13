@@ -8,8 +8,10 @@ https://forum.hacf.fr/t/nextion-meteo-france/22525
 
 # Mise en garde:
 
+- Le 13/07/2024: Suite à une mise à jours de l'API, les prévisions ne fontionnaient plus depuis déjà pas mal de mois. La derniére mise à jour rectifie ce problem. L'API integre desormer les prévision météo jours et heures dans un template (plus besoin de faire un doublon). Du coup, on vas récupérer les infos dans un premier temps avec le fichier configuration.yaml, dans lequel il vous faudra aussi changer saint_vincent_de_tyrosse par votre ville, en plus du fichier meteo_nextion.yaml. L'affichage des jours de la semaine en titre des previsions est HS aussi, je verrais, si j'ai le temps, pour y remedier.
+
+
 - 10/04/2023: A quelques coquilles prêt (et quelques ajouts), la version pour 3.5 commence à resembler à ce que je voulais. La 2.8 devrait elle aussi fonctionner carrectement. 
-- Le chargement de la premiére page est trés long (faudra une page d'accueil), le premier chargement des autres pages est long aussi, ensuite c'est casi instentaner avec la gestion en global. 
 - En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc. Le fichier contient mon code de travail, pas mal de lignes sont inutile pour cette version, mais peut permetre de compléter plus tard l'écran. Il y as beaucoup de répition que devrait être fais par des boucles, peut être pour plus tard.
 
@@ -64,10 +66,10 @@ Home assistant:
 - Installer l'intégration Météo France sur HA avec deux ville proche, réglez en une sur les prévision par heures.
 - Ouvrer le fichier "template_sensors/meteo_nextion.yaml" dans un éditeur de texte (notepad+++).
 - Faite un 'remplacer par' pour: 40_weather_alert avec votre 'région'_weather_alert.
-- Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather réglé sur jours.
-- Faite un 'remplacer par' pour: saint_geours_de_maremne avec votre entitée weather réglé sur heures.
+- Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather.
 - Créer un dossier template_sensors/ au niveau de votre fichier configuration.yaml et placer votre fichier meteo_nextion.yaml modifié.
 - Ajouter les ligne "template: / binary_sensor: !include_dir_merge_list template_binary_sensors" comme dans le fichier configuration.yaml.
+- Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather dans le fichier configuration.yaml.
 - Tester les erreurs, redémarrer.
 
 Ecran Nextion:
