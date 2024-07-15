@@ -6,10 +6,7 @@ https://forum.hacf.fr/t/nextion-meteo-france/22525
 
 # Mise en garde:
 
-- Le 13/07/2024: Suite à une mise à jours de l'API, les prévisions ne fontionnaient plus depuis déjà pas mal de mois. La derniére mise à jour rectifie ce problem. L'API integre desormer les prévision météo jours et heures dans un template (plus besoin de faire un doublon). Du coup, on vas récupérer les infos dans un premier temps avec le fichier configuration.yaml, dans lequel il vous faudra aussi changer saint_vincent_de_tyrosse par votre ville, en plus du fichier meteo_nextion.yaml. L'affichage des jours de la semaine en titre des previsions est HS aussi, je verrais, si j'ai le temps, pour y remedier. Merci à Nico_206 de HACF.
-
-
-- 10/04/2023: A quelques coquilles prêt (et quelques ajouts), la version pour 3.5 commence à resembler à ce que je voulais. La 2.8 devrait elle aussi fonctionner carrectement. 
+- Le 15/07/2024: Remise en marche des prévisions suite au changement de l'API et débug des titres des prévisions journaliére. Bref, la version 3.5 remarche!
 - En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc. Le fichier contient mon code de travail, pas mal de lignes sont inutile pour cette version, mais peut permetre de compléter plus tard l'écran. Il y as beaucoup de répition que devrait être fais par des boucles, peut être pour plus tard.
 
@@ -45,7 +42,7 @@ Ecran 2.8:
 ![Nextion meteo france 2.8](/NextionWeather28P2.jpg)
 
 Vous trouverez sur ce git:
-- Les fichiers GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex.
+- Les fichiers GIMP afin de pouvoir modifier l'esthétique, adapter les icones ex. avec pas mal d'iconnes.
 - Les fichiers HMI pour les écrans Nextion.
 - Les fichiers yaml pour les esp32.
 - Le fichier configuration.yaml de Home assistant, à adapter aussi avec son intégration Météo France.
@@ -66,18 +63,18 @@ Home assistant:
 - Faite un 'remplacer par' pour: 40_weather_alert avec votre 'région'_weather_alert.
 - Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather.
 - Créer un dossier template_sensors/ au niveau de votre fichier configuration.yaml et placer votre fichier meteo_nextion.yaml modifié.
-- Ajouter les ligne "template: / binary_sensor: !include_dir_merge_list template_binary_sensors" comme dans le fichier configuration.yaml.
+- Ajouter les lignes nécessesaire comme dans le fichier configuration.yaml sur la racine du git dans votre fichier de configuration.
 - Faite un 'remplacer par' pour: saint_vincent_de_tyrosse avec votre entitée weather dans le fichier configuration.yaml.
-- Tester les erreurs, redémarrer.
+- Vérifier le code, tester les erreurs, redémarrer.
 
 Ecran Nextion:
-- Installer le fichier "Ecran 3.5"/"NextionWeather_3.5_3pages_v01.tft" dans votre écran Nextion basic 3.5 (ou "2.8_Test/NextionWeather_2.8_3pages_v01.tft" pour les 2.8 basique, ou avec le .tft générer par les fichier .hmi présent dans outils aprés modifications).
+- Installer le fichier "Ecran 3.5"/"NextionWeather_3.5_3pages_v01.tft" dans votre écran Nextion basic 3.5.
 
 L'esp:
 - Préparer votre ESP avec ESPHome.
-- Copié le texte à partir de " uart: " du fichier "Ecran 3.5"/"meteo35.yaml" (ou 2.8_test/esphome_meteo_28.yaml) en plus du code généré par ESPHome précédament créer.
+- Copié le texte à partir de " uart: " du fichier "Ecran 3.5"/"meteo35.yaml" en plus du code généré par ESPHome précédament créer.
 - Installer le code sur votre ESP relier à l'écran.
 - Redémarrer.
 - Intégrer le nouvelle appareil dans Home Assistant.
 
-Merci à pbranly pour ça participation.
+Merci à pbranly, Nico_206 pour leurs participation.
