@@ -1,5 +1,11 @@
-# ------------------------------------------------------------------------------------------------ Partie a ajouter apres remplacement des capteurs de vos villes et region------------------------------------------------------------------------
-# ------------------------------------------------------------------------------------------------ alerte meteo----------------------------------------------------------------
+#####  NextionWeather-Meteo-France
+#####
+####################################################     Remplacer saint_vincent_de_tyrosse et 40_weather_alert par votre ville et region
+#####   lier a l integration meteo france
+#####   creation des sensor pour les recuperer avec meteo35.yaml dans ESPhome, puis les afficher avec NextionWeather_3.5_-3pages_v01.HMI
+#####
+############################################################## 
+# ---------------------------------------------------------------------------- alerte meteo----------------------------------------------------------------
 - name: date_simple
   icon: mdi:calendar-today
   state: >
@@ -21,7 +27,6 @@
         {{ days[now().weekday()] }}
 
 #------------------exemple de formatage sur sun.sun avec remplacement de caracteres---------------------------------
-
 - name: nextsunrise
   state: >
           {{ as_timestamp(states.sun.sun.attributes.next_rising) | timestamp_custom('(%H/%M)') | replace("(0", "") | replace("(", "") | replace("/", ":") | replace (")", "") }}
@@ -35,7 +40,7 @@
 # ---------------------texte prevision de la prochaine pluie---------------------------
 - name: Pluie_proch
   state: >-
-             {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
+          {% set pluie = states('sensor.saint_vincent_de_tyrosse_next_rain') %}
               {% if is_state("sensor.saint_vincent_de_tyrosse_next_rain", 'unknown') %}
                 0
               {% else %}
@@ -144,8 +149,7 @@
             63
           {% endif %}
 
-#-------------------------------------------------------------------------------------------------------------------------- Iconnes pour la pluie sur 1h  -----------------------------------------------
-
+#------------------------------------------------------------------------------------------- Iconnes pour la pluie sur 1h  -----------------------------------------------
 - name: pluie_0mn
   state: >-
           {% if state_attr("sensor.saint_vincent_de_tyrosse_next_rain","1_hour_forecast")['0 min'] == 'Pluie faible' %}
@@ -315,7 +319,6 @@
 
 # -------------------------------------------------------------------------------Icone des heures, vérifié que les iconnes correspondent au temps qu il fait, et que tout les termes soit les bons.
 #---------------------------Icone 1h meteo france -----------------
-
 # - name: titr_test
 #   state: >-
 #           {% set dates = state_attr(" sensor.Prevision_Meteo_Nextion_J","forecast").condition %}
@@ -328,7 +331,6 @@
 #           {% for i in range(0, 8, 1) %}
 #           {{ state_attr("weather.saint_vincent_de_tyrosse","forecast")[i].condition }}
 #           {% endfor %}
-
 
 - name: heure_icon_1
   state: >-
@@ -386,15 +388,15 @@
 
 - name: heure_pluvio_1
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_1
   state: >-
-             {% set heure_temp_1 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].temperature | float %}
+          {% set heure_temp_1 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[1].temperature | float %}
                 {{ heure_temp_1 }}
-#---------------------------Icone 2h meteo france -----------------
 
+#---------------------------Icone 2h meteo france -----------------
 - name: heure_icon_2
   state: >-
           {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].condition == 'Clear' %}
@@ -437,15 +439,15 @@
 
 - name: heure_pluvio_2
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_2
   state: >-
-             {% set heure_temp_2 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].temperature | float %}
+          {% set heure_temp_2 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[2].temperature | float %}
                 {{ heure_temp_2 }}
-#---------------------------Icone du 3h meteo france -----------------
 
+#---------------------------Icone du 3h meteo france -----------------
 - name: heure_icon_3
   state: >-
           {% if state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].condition == 'Clear' %}
@@ -488,12 +490,12 @@
 
 - name: heure_pluvio_3
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_3
   state: >-
-             {% set heure_temp_3 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].temperature | float %}
+          {% set heure_temp_3 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[3].temperature | float %}
                 {{ heure_temp_3 }}
 #---------------------------Icone du 4h meteo france -----------------
 
@@ -539,12 +541,12 @@
 
 - name: heure_pluvio_4
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_4
   state: >-
-             {% set heure_temp_4 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].temperature | float %}
+          {% set heure_temp_4 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[4].temperature | float %}
                 {{ heure_temp_4 }}
 #---------------------------Icone 5h meteo france -----------------
 
@@ -590,12 +592,12 @@
 
 - name: heure_pluvio_5
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_5
   state: >-
-             {% set heure_temp_5 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].temperature | float %}
+          {% set heure_temp_5 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[5].temperature | float %}
                 {{ heure_temp_5 }}
 #---------------------------Icone du 6h meteo france -----------------
 
@@ -641,12 +643,12 @@
 
 - name: heure_pluvio_6
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_6
   state: >-
-             {% set heure_temp_6 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].temperature | float %}
+          {% set heure_temp_6 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[6].temperature | float %}
                 {{ heure_temp_6 }}
 #---------------------------Icone du 7h meteo france -----------------
 
@@ -692,12 +694,12 @@
 
 - name: heure_pluvio_7
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_7
   state: >-
-             {% set heure_temp_7 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].temperature | float %}
+          {% set heure_temp_7 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[7].temperature | float %}
                 {{ heure_temp_7 }}
 #---------------------------Icone 8h meteo france -----------------
 
@@ -743,12 +745,12 @@
 
 - name: heure_pluvio_8
   state: >-
-             {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].precipitation | float %}
+          {% set heure_pluvio = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].precipitation | float %}
                 {{ heure_pluvio }}
 
 - name: heure_temp_8
   state: >-
-             {% set heure_temp_8 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].temperature | float %}
+          {% set heure_temp_8 = state_attr("sensor.Prevision_Meteo_Nextion_H","forecast")[8].temperature | float %}
                 {{ heure_temp_8 }}
 
 
@@ -841,11 +843,6 @@
             2
           {% endif %}
 
-#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
-#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
-#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
-#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
-#************************************************* !!!!! a modifier !!!!!!!!!! **************************************************************************************** !!!!! a modifier !!!!!!!!!!
 - name: temp_ext
   state: "{{ state_attr('weather.saint_vincent_de_tyrosse', 'temperature') }}"
 
@@ -889,12 +886,12 @@
 
 - name: jour_tmin
   state: >-
-             {% set jour_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0]. templow | float %}
+          {% set jour_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0]. templow | float %}
                 {{ jour_tmin }}
 
 - name: Jour_tmax
   state: >-
-             {% set jour_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].temperature | float %}
+          {% set jour_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[0].temperature | float %}
                 {{ jour_tmax }}
 
 #-------------------------------------------------------- Icone des trois jours suivant-----------------------------------------------
@@ -942,17 +939,17 @@
 
 - name: dem_tmin    
   state: >-
-             {% set dem_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1]. templow | float %}
+          {% set dem_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1]. templow | float %}
                 {{ dem_tmin }}
 
 - name: dem_tmax    
   state: >-
-             {% set dem_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].temperature | float %}
+          {% set dem_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].temperature | float %}
                 {{ dem_tmax }}
 
 - name: dem_pluie    
   state: >-
-             {% set dem_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].precipitation | float %}
+          {% set dem_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[1].precipitation | float %}
                 {{ dem_pluie }}
 #---------------------------Icone du jour2 meteo france -----------------
 
@@ -1001,17 +998,17 @@
 
 - name: j2_tmin
   state: >-
-             {% set j2_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2]. templow | float %}
+          {% set j2_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2]. templow | float %}
                 {{ j2_tmin }}
 
 - name: j2_tmax
   state: >-
-             {% set j2_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].temperature | float %}
+          {% set j2_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].temperature | float %}
                 {{ j2_tmax }}
 
 - name: j2_pluie
   state: >-
-             {% set j2_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].precipitation | float %}
+          {% set j2_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[2].precipitation | float %}
                 {{ j2_pluie }}
 #---------------------------Icone du jour3 meteo france -----------------
 
@@ -1059,17 +1056,17 @@
 
 - name: j3_tmin
   state: >-
-             {% set j3_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3]. templow | float %}
+          {% set j3_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3]. templow | float %}
                 {{ j3_tmin }}
 
 - name: j3_tmax
   state: >-
-             {% set j3_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].temperature | float %}
+          {% set j3_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].temperature | float %}
                 {{ j3_tmax }}
 
 - name: j3_pluie
   state: >-
-             {% set j3_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].precipitation | float %}
+          {% set j3_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[3].precipitation | float %}
                 {{ j3_pluie }}
 #---------------------------Icone du jour4 meteo france -----------------
 
@@ -1116,17 +1113,17 @@
 
 - name: j4_tmin
   state: >-
-             {% set j4_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4]. templow | float %}
+          {% set j4_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4]. templow | float %}
                 {{ j4_tmin }}
 
 - name: j4_tmax
   state: >-
-             {% set j4_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].temperature | float %}
+          {% set j4_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].temperature | float %}
                 {{ j4_tmax }}
 
 - name: j4_pluie
   state: >-
-             {% set j4_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].precipitation | float %}
+          {% set j4_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[4].precipitation | float %}
                 {{ j4_pluie }}
 #---------------------------Icone du jour5 meteo france -----------------
 
@@ -1173,17 +1170,17 @@
 
 - name: j5_tmin
   state: >-
-             {% set j5_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5]. templow | float %}
+          {% set j5_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5]. templow | float %}
                 {{ j5_tmin }}
 
 - name: j5_tmax
   state: >-
-             {% set j5_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].temperature | float %}
+          {% set j5_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].temperature | float %}
                 {{ j5_tmax }}
 
 - name: j5_pluie
   state: >-
-             {% set j5_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].precipitation | float %}
+          {% set j5_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[5].precipitation | float %}
                 {{ j5_pluie }}
 #---------------------------Icone du jour6 meteo france -----------------
 
@@ -1230,17 +1227,17 @@
 
 - name: j6_tmin
   state: >-
-             {% set j6_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6]. templow | float %}
+          {% set j6_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6]. templow | float %}
                 {{ j6_tmin }}
 
 - name: j6_tmax
   state: >-
-             {% set j6_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].temperature | float %}
+          {% set j6_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].temperature | float %}
                 {{ j6_tmax }}
 
 - name: j6_pluie
   state: >-
-             {% set j6_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].precipitation | float %}
+          {% set j6_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[6].precipitation | float %}
                 {{ j6_pluie }}
 #---------------------------Icone du jour7 meteo france -----------------
 
@@ -1287,17 +1284,17 @@
 
 - name: j7_tmin
   state: >-
-             {% set j7_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7]. templow | float %}
+          {% set j7_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7]. templow | float %}
                 {{ j7_tmin }}
 
 - name: j7_tmax
   state: >-
-             {% set j7_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].temperature | float %}
+          {% set j7_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].temperature | float %}
                 {{ j7_tmax }}
 
 - name: j7_pluie
   state: >-
-             {% set j7_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].precipitation | float %}
+          {% set j7_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[7].precipitation | float %}
                 {{ j7_pluie }}
 #---------------------------Icone du jour8 meteo france -----------------
 
@@ -1344,17 +1341,17 @@
 
 - name: j8_tmin
   state: >-
-             {% set j8_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8]. templow | float %}
+          {% set j8_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8]. templow | float %}
                 {{ j8_tmin }}
 
 - name: j8_tmax
   state: >-
-             {% set j8_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].temperature | float %}
+          {% set j8_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].temperature | float %}
                 {{ j8_tmax }}
 
 - name: j8_pluie
   state: >-
-             {% set j8_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].precipitation | float %}
+          {% set j8_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[8].precipitation | float %}
                 {{ j8_pluie }}
 #---------------------------Icone du jour9 meteo france -----------------
 
@@ -1394,17 +1391,17 @@
 
 - name: j9_tmin
   state: >-
-             {% set j9_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9]. templow | float %}
+          {% set j9_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9]. templow | float %}
                 {{ j9_tmin }}
 
 - name: j9_tmax
   state: >-
-             {% set j9_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].temperature | float %}
+          {% set j9_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].temperature | float %}
                 {{ j9_tmax }}
 
 - name: j9_pluie
   state: >-
-             {% set j9_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].precipitation | float %}
+          {% set j9_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[9].precipitation | float %}
                 {{ j9_pluie }}
 #---------------------------Icone du jour10 meteo france -----------------
 
@@ -1444,17 +1441,17 @@
 
 - name: j10_tmin
   state: >-
-             {% set j10_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10]. templow | float %}
+          {% set j10_tmin = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10]. templow | float %}
                 {{ j10_tmin }}
 
 - name: j10_tmax
   state: >-
-             {% set j10_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].temperature | float %}
+          {% set j10_tmax = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].temperature | float %}
                 {{ j10_tmax }}
 
 - name: j10_pluie
   state: >-
-             {% set j10_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].precipitation | float %}
+          {% set j10_pluie = state_attr("sensor.Prevision_Meteo_Nextion_J","forecast")[10].precipitation | float %}
                 {{ j10_pluie }}
 #---------------------------------------- Alertes meteo probabilitées -----------------------------------------------------------------------------------
 # #
@@ -1476,7 +1473,7 @@
 
 - name: alerte_gel
   state: >-
-         {% set alert = states('sensor.saint_vincent_de_tyrosse_freeze_chance') | float  %}
+          {% set alert = states('sensor.saint_vincent_de_tyrosse_freeze_chance') | float  %}
               {%- if alert < 5 -%}
                 91
               {% elif alert < 50 %}
@@ -1491,7 +1488,7 @@
 
 - name: alerte_neige
   state: >-
-         {% set alert = states('sensor.saint_vincent_de_tyrosse_snow_chance') | float  %}
+          {% set alert = states('sensor.saint_vincent_de_tyrosse_snow_chance') | float  %}
               {%- if alert < 5 -%}
                 87
               {% elif alert < 50 %}
@@ -1506,30 +1503,30 @@
 
 - name: alerte_rain
   state: >-
-         {% set alert = states('sensor.saint_vincent_de_tyrosse_rain_chance') | float  %}
-               {%- if alert < 9 -%}
+          {% set alert = states('sensor.saint_vincent_de_tyrosse_rain_chance') | float  %}
+              {%- if alert < 9 -%}
                 80
-               {% elif alert < 40 %}
+              {% elif alert < 40 %}
                 79
-               {% elif alert < 70 %}
+              {% elif alert < 70 %}
                 78
-               {% elif alert < 101 %}
+              {% elif alert < 101 %}
                 77
-               {% else %}
+              {% else %}
                 80
                 {%- endif -%}
 
 - name: uv_prob
   state: >-
-         {% set alert = states('sensor.saint_vincent_de_tyrosse_uv') | float  %}
-               {%- if alert < 5 -%}
+          {% set alert = states('sensor.saint_vincent_de_tyrosse_uv') | float  %}
+              {%- if alert < 5 -%}
                 85
-               {% elif alert < 7 %}
+              {% elif alert < 7 %}
                 84
-               {% elif alert < 9 %}
+              {% elif alert < 9 %}
                 83
-               {% elif alert < 11 %}
+              {% elif alert < 11 %}
                 82
-               {% else %}
+              {% else %}
                 81
                 {%- endif -%}
