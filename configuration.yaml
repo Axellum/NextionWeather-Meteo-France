@@ -14,48 +14,44 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
-
 ##############################################################
 template:
- - binary_sensor: !include_dir_merge_list template_binary_sensors
- - sensor: !include_dir_merge_list template_sensors
+  - binary_sensor: !include_dir_merge_list template_binary_sensors
+  - sensor: !include_dir_merge_list template_sensors
 
- 
-#############################################################          #Prevition nextion jour
- - trigger:
+###################################          #Prevition nextion jour recuperation des infos dans Prevision_Meteo_Nextion_J
+  - trigger:
       - platform: time_pattern
         hours: /1
       - platform: homeassistant
         event: start
-   action:
+    action:
       - service: weather.get_forecasts
         data:
-          #type: hourly
           type: daily
         target:
           entity_id: weather.saint_vincent_de_tyrosse
         response_variable: daily_var
-   sensor:
+    sensor:
       - name: Prevision_Meteo_Nextion_J
         unique_id: nextion_weather_forcast_daily
         state: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[0].condition }}"
         attributes:
           forecast: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast }}"
-#############################################################          #Prevition nextion heure
- - trigger:
+#################################          #Prevition nextion heure recuperation des infos dans Prevision_Meteo_Nextion_H
+  - trigger:
       - platform: time_pattern
         hours: /1
       - platform: homeassistant
         event: start
-   action:
+    action:
       - service: weather.get_forecasts
         data:
           type: hourly
-          #type: daily
         target:
           entity_id: weather.saint_vincent_de_tyrosse
         response_variable: hourly_var
-   sensor:
+    sensor:
       - name: Prevision_Meteo_Nextion_H
         unique_id: nextion_weather_forcast_hourly
         state: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[0].condition }}"
@@ -65,7 +61,7 @@ template:
 # --------------- Partie sensor----------------------------------------------------------------     (states['sensor.saint_vincent_de_tyrosse_next_rain'].attributes['1_hour_forecast']['0 min'] == 'Pluie modérée')
 sensor:
 
- - platform: time_date
-   display_options:
-     - 'time'
-     - 'date'
+  - platform: time_date
+    display_options:
+    - 'time'
+    - 'date'
