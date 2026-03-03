@@ -5,8 +5,8 @@ On peu en discuter ici:
 https://forum.hacf.fr/t/nextion-meteo-france/22525
 
 # Mise en garde:
-
-- Le 17/07/2024: envois des donner par pages: Les donner des page sont charge et change a chaque mise a jurs des capteurs, ca donne une meilleur reactivité. Le buffer du nextion est en overflow (mais pas de probleme visible d affichage), a voir si j arrive a resoudre le probleme.
+- Le 03/03/2026: Optimisations du code par Antiravity et Gemini: Meilleur syncronisation des donnée, codage moins volumineu et plus optimisé.
+- Le 17/07/2024: Envois des donner par pages: Les donner des page sont charge et change a chaque mise a jurs des capteurs, ca donne une meilleur reactivité. Le buffer du nextion est en overflow (mais pas de probleme visible d affichage), a voir si j arrive a resoudre le probleme.
 - Le 15/07/2024: Remise en marche des prévisions suite au changement de l'API et débug des titres des prévisions journaliére. Bref, la version 3.5 remarche!
 - En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc. Le fichier contient mon code de travail, pas mal de lignes sont inutile pour cette version, mais peut permetre de compléter plus tard l'écran. Il y as beaucoup de répition que devrait être fais par des boucles, peut être pour plus tard.
