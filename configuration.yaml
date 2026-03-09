@@ -1,4 +1,3 @@
-
 # Loads default set of integrations. Do not remove.
 default_config:
 
@@ -19,10 +18,10 @@ template:
   - binary_sensor: !include_dir_merge_list template_binary_sensors
   - sensor: !include_dir_merge_list template_sensors
 
-###################################          #Prevition nextion jour recuperation des infos dans Prevision_Meteo_Nextion_J
+  #########################################          #Prevition nextion jour recuperation des infos dans Prevision_Meteo_Nextion_J
   - trigger:
-      - platform: time_pattern
-        hours: /1
+      - platform: state
+        entity_id: weather.saint_vincent_de_tyrosse
       - platform: homeassistant
         event: start
     action:
@@ -38,10 +37,10 @@ template:
         state: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[0].condition }}"
         attributes:
           forecast: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast }}"
-#################################          #Prevition nextion heure recuperation des infos dans Prevision_Meteo_Nextion_H
+  #################################          #Prevition nextion heure recuperation des infos dans Prevision_Meteo_Nextion_H
   - trigger:
-      - platform: time_pattern
-        hours: /1
+      - platform: state
+        entity_id: weather.saint_vincent_de_tyrosse
       - platform: homeassistant
         event: start
     action:
@@ -60,8 +59,3 @@ template:
 
 # --------------- Partie sensor----------------------------------------------------------------     (states['sensor.saint_vincent_de_tyrosse_next_rain'].attributes['1_hour_forecast']['0 min'] == 'Pluie modérée')
 sensor:
-
-  - platform: time_date
-    display_options:
-    - 'time'
-    - 'date'
