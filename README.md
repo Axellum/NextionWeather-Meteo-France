@@ -5,7 +5,7 @@ Ecran Nextion pour l'affichage des prévisions météo, alertes météo locales 
 ## 🎯 Présentation des 4 Architectures
 Ce projet a évolué pour s'adapter à toutes les configurations matérielles et logicielles. Des plus simples (V1) aux plus performantes (V2) ou totalement indépendantes (V3/V4). Choisissez celle qui vous correspond dans les différents sous-dossiers !
 # Mise en garde:
-- Le 09/03/2026: Le projet passe sur Antigravity... Et du coup l"IA a fais deux trois changements - 100% du code vient de Gemini... Ainsi que la présentation :) ). Je test la V2 actuellement, pas encore tester les version sans HA.
+- Le 09/03/2026: Le projet passe sur Antigravity... Et du coup l"IA a fais deux trois changements ( 100% du code vient de Gemini... Ainsi que la présentation :) ). Je test la V2 actuellement, pas encore tester les version sans HA.
 - Le 15/07/2024: Remise en marche des prévisions suite au changement de l'API et débug des titres des prévisions journaliére. Bref, la version 3.5 remarche!
 - En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc.
