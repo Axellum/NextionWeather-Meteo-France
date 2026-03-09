@@ -1,0 +1,79 @@
+- alias: "MAJ Ecran Nextion Meteo35 ESPHome"
+  mode: single
+  id: nextion_meteo35_updater
+  trigger:
+    - platform: state
+      entity_id: weather.saint_vincent_de_tyrosse
+    - platform: state
+      entity_id: sensor.saint_vincent_de_tyrosse_next_rain # <--- ICI (Mise à jour immédiate de la pluie !)
+    - platform: time_pattern
+      minutes: "/15"
+
+  action:
+    # ------ 1. Alertes Globales et Prochaine pluie ------
+    - action: esphome.meteo35_maj_alerte_meteo_france
+      data:
+        minutes_prochaine_pluie: >-
+          {% if not has_value('sensor.saint_vincent_de_tyrosse_next_rain') %}
+            0
+          {% else %}
+            {% set ts_event = states('sensor.saint_vincent_de_tyrosse_next_rain') | as_timestamp(default=0) %}
+            {% set ts_delta = ((ts_event - now().timestamp()) / 60) | int(0) %}
+            {{ ts_delta if ts_delta > 0 else 0 }}
+          {% endif %}
+        globale: "{{ states('sensor.40_weather_alert') }}"
+        vent: "{{ state_attr('sensor.40_weather_alert', 'Vent violent') | default('Vert') }}"
+        inondation: "{{ state_attr('sensor.40_weather_alert', 'Inondation') | default('Vert') }}"
+        orages: "{{ state_attr('sensor.40_weather_alert', 'Orages') | default('Vert') }}"
+        pluie_inondation: "{{ state_attr('sensor.40_weather_alert', 'Pluie-inondation') | default('Vert') }}"
+        neige_verglas: "{{ state_attr('sensor.40_weather_alert', 'Neige-verglas') | default('Vert') }}"
+        grand_froid: "{{ state_attr('sensor.40_weather_alert', 'Grand-froid') | default('Vert') }}"
+        vagues_submersion: "{{ state_attr('sensor.40_weather_alert', 'Vagues-submersion') | default('Vert') }}"
+
+    # ------ 2. Pluie dans l'heure (12 périodes de 5min) ------
+    - repeat:
+        count: 12
+        sequence:
+          - action: esphome.meteo35_maj_pluie_1h
+            data:
+              index_5mn: "{{ repeat.index - 1 }}"
+              intensite: >
+                {% set fc = state_attr('sensor.saint_vincent_de_tyrosse_next_rain', '1_hour_forecast') %}
+                {{ fc.get(((repeat.index - 1) * 5) ~ ' min', 'Inconnu') if fc is not none else 'Inconnu' }}
+
+    # ------ 3. Prévisions Journalières ------
+    - action: weather.get_forecasts
+      data:
+        type: daily
+      target:
+        entity_id: weather.saint_vincent_de_tyrosse
+      response_variable: daily_var
+    - repeat:
+        count: 9
+        sequence:
+          - action: esphome.meteo35_maj_previsions_jours
+            data:
+              jour: "{{ repeat.index - 1 }}"
+              condition: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index - 1].condition | default('unknown') }}"
+              tmin: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index - 1].templow | float(0) }}"
+              tmax: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index - 1].temperature | float(0) }}"
+
+    # ------ 4. Prévisions Horaires ------
+    - action: weather.get_forecasts
+      data:
+        type: hourly
+      target:
+        entity_id: weather.saint_vincent_de_tyrosse
+      response_variable: hourly_var
+    - repeat:
+        count: 8
+        sequence:
+          - action: esphome.meteo35_maj_previsions_heures
+            data:
+              heure_index: "{{ repeat.index }}"
+              heure_texte: >
+                {% set dt = hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].datetime | as_datetime %}
+                {{ dt.strftime('%H:00') if dt else '00:00' }}
+              condition: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].condition | default('unknown') }}"
+              temp: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].temperature | float(0) }}"
+              pluvio: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].precipitation | float(0) }}"

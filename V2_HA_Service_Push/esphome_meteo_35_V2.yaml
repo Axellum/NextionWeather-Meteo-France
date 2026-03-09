@@ -1,0 +1,283 @@
+esphome:
+  name: meteo35
+
+esp32:
+  board: az-delivery-devkit-v4
+  framework:
+    type: arduino
+
+logger:
+  baud_rate: 0 # Disable UART logging (pins GPIO1/3 are used for Nextion communication)
+  level: VERY_VERBOSE
+
+api:
+  # ==============================================================
+  # SERVICES DÉDIÉS AUX PRÉVISIONS (Appelés par Home Assistant)
+  # ==============================================================
+  services:
+    - service: maj_alerte_meteo_france
+      variables:
+        minutes_prochaine_pluie: int
+        globale: string
+        vent: string
+        inondation: string
+        orages: string
+        pluie_inondation: string
+        neige_verglas: string
+        grand_froid: string
+        vagues_submersion: string
+      then:
+        - lambda: |-
+            id(teplomer).set_component_text_printf("p[0].proc_plu", "%d", minutes_prochaine_pluie);
+
+            auto get_alert_color = [](std::string state, int def) -> int {
+              if (state == "Jaune") return def + 1;
+              if (state == "Orange") return def + 2;
+              if (state == "Rouge") return def + 3;
+              return def; // Vert par defaut
+            };
+
+            // Globale (Vert:35, Jaune:36, Orange:37, Rouge:38) -> Défaut 34
+            int glob = 34;
+            if(globale == "Vert") glob=35; else if(globale == "Jaune") glob=36; else if(globale == "Orange") glob=37; else if(globale == "Rouge") glob=38;
+            id(teplomer).set_component_value("p[0].alert_coul", glob);
+
+            // Icônes alertes
+            id(teplomer).send_command_printf("p[0].alert_vent.pic=%d", get_alert_color(vent, 47));
+            id(teplomer).send_command_printf("p[0].alert_inondat.pic=%d", get_alert_color(inondation, 55));
+            id(teplomer).send_command_printf("p[0].alert_orages.pic=%d", get_alert_color(orages, 59));
+            id(teplomer).send_command_printf("p[0].alert_pluie_in.pic=%d", get_alert_color(pluie_inondation, 71));
+            id(teplomer).send_command_printf("p[0].alert_neig_ver.pic=%d", get_alert_color(neige_verglas, 67));
+            id(teplomer).send_command_printf("p[0].alert_froid.pic=%d", get_alert_color(grand_froid, 51));
+            id(teplomer).send_command_printf("p[0].alert_vagues.pic=%d", get_alert_color(vagues_submersion, 63));
+
+    - service: maj_pluie_1h
+      variables:
+        index_5mn: int
+        intensite: string
+      then:
+        - lambda: |-
+            int pic = 42;
+            if (intensite == "Pluie faible") pic = 43;
+            else if (intensite == "Pluie modérée") pic = 44;
+            else if (intensite == "Pluie forte") pic = 45;
+            else if (intensite == "Pluie trés forte") pic = 46; 
+
+            id(teplomer).send_command_printf("p[0].mn_%d.pic=%d", index_5mn * 5, pic);
+
+    - service: maj_previsions_jours
+      variables:
+        jour: int
+        condition: string
+        tmin: float
+        tmax: float
+      then:
+        - lambda: |-
+            int pic = 3;
+            if (condition == "Clear" || condition == "sunny") pic = 22;
+            else if (condition == "clear-night") pic = 25;
+            else if (condition == "cloudy") pic = 19;
+            else if (condition == "fog") pic = 23;
+            else if (condition == "hail") pic = 28;
+            else if (condition == "lightning") pic = 31;
+            else if (condition == "lightning-rainy") pic = 24;
+            else if (condition == "partlycloudy") pic = 20;
+            else if (condition == "rainy") pic = 26;
+            else if (condition == "pouring") pic = 27;
+            else if (condition == "snowy") pic = 29;
+            else if (condition == "snowy-rainy") pic = 30;
+            else if (condition == "windy") pic = 32;
+
+            if (jour == 0) {
+              id(teplomer).send_command_printf("p[0].icon_jour.pic=%d", pic);
+              id(teplomer).set_component_text_printf("p[0].T_min_jour", "%.0f", tmin);
+              id(teplomer).set_component_text_printf("p[0].T_max_jour", "%.0f", tmax);
+            } else if (jour == 1) {
+              id(teplomer).send_command_printf("p[0].icon_dem.pic=%d", pic);
+              id(teplomer).send_command_printf("p[2].icon_dem.pic=%d", pic);
+              id(teplomer).set_component_text_printf("p[0].T_min_dem", "%.0f", tmin);
+              id(teplomer).set_component_text_printf("p[2].T_min_dem", "%.0f", tmin);
+              id(teplomer).set_component_text_printf("p[0].T_max_dem", "%.0f", tmax);
+              id(teplomer).set_component_text_printf("p[2].T_max_dem", "%.0f", tmax);
+            } else if (jour >= 2 && jour <= 8) {
+              const char* fields[7] = {"2j", "3j", "4j", "5j", "6j", "7j", "8j"};
+              int f_idx = jour - 2;
+              int page = (jour <= 3) ? 0 : 2;
+              
+              id(teplomer).send_command_printf("p[%d].Icon_%s.pic=%d", page, fields[f_idx], pic);
+              id(teplomer).send_command_printf("p[%d].T_min_%s.txt=\"%.0f\"", page, fields[f_idx], tmin);
+              id(teplomer).send_command_printf("p[%d].T_max_%s.txt=\"%.0f\"", page, fields[f_idx], tmax);
+              
+              if (jour <= 3) {
+                id(teplomer).send_command_printf("p[2].Icon_%s.pic=%d", fields[f_idx], pic);
+                id(teplomer).send_command_printf("p[2].T_min_%s.txt=\"%.0f\"", fields[f_idx], tmin);
+                id(teplomer).send_command_printf("p[2].T_max_%s.txt=\"%.0f\"", fields[f_idx], tmax);
+              }
+            }
+
+    - service: maj_previsions_heures
+      variables:
+        heure_index: int
+        heure_texte: string
+        condition: string
+        temp: float
+        pluvio: float
+      then:
+        - lambda: |-
+            int pic = 3;
+            if (condition == "Clear" || condition == "sunny") pic = 22;
+            else if (condition == "clear-night") pic = 25;
+            else if (condition == "cloudy") pic = 19;
+            else if (condition == "fog") pic = 23;
+            else if (condition == "hail") pic = 28;
+            else if (condition == "lightning") pic = 31;
+            else if (condition == "lightning-rainy") pic = 24;
+            else if (condition == "partlycloudy") pic = 20;
+            else if (condition == "rainy") pic = 26;
+            else if (condition == "pouring") pic = 27;
+            else if (condition == "snowy") pic = 29;
+            else if (condition == "snowy-rainy") pic = 30;
+            else if (condition == "windy") pic = 32;
+
+            if (heure_index >= 1 && heure_index <= 8) {
+              const char* t_fields[8] = {"t9", "t12", "t14", "t51", "t60", "t66", "t71", "t76"};
+              int idx = heure_index - 1;
+              id(teplomer).send_command_printf("p[3].icon_h%d.pic=%d", idx, pic);
+              id(teplomer).send_command_printf("p[3].T_h%d.txt=\"%.0f\"", idx, temp);
+              id(teplomer).send_command_printf("p[3].pl_t%d.txt=\"%.1f\"", idx, pluvio);
+              id(teplomer).send_command_printf("p[3].%s.txt=\"%s\"", t_fields[idx], heure_texte.c_str());
+            }
+
+ota:
+  password: "****"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+
+uart:
+  tx_pin: GPIO1
+  rx_pin: GPIO3
+  baud_rate: 115200
+  rx_buffer_size: 2048
+
+time:
+  # Remplacement des templates HA par l'heure locale native
+  - platform: sntp
+    id: sntp_time
+    timezone: Europe/Paris
+    on_time:
+      - seconds: 0
+        minutes: "*"
+        then:
+          - lambda: |-
+              auto t_now = id(sntp_time).now();
+              id(teplomer).set_component_text_printf("p[0].heure", "%02d", t_now.hour);
+              id(teplomer).set_component_text_printf("p[0].minute", "%02d", t_now.minute);
+
+              if (t_now.is_valid()) {
+                const char* days[] = {"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"};
+                const char* months[] = {"Janv", "Fevr", "Mars", "Avri", "Mai", "Juin", "Juil", "Août", "Sept", "Octo", "Nove", "Dece"};
+                
+                char date_buf[32];
+                sprintf(date_buf, "%s %d %s %d %d %d", days[t_now.day_of_week - 1], t_now.day_of_month, months[t_now.month - 1], t_now.year, t_now.hour, t_now.minute);
+                
+                id(teplomer).set_component_text_printf("p[0].date", "%s %d %s", days[t_now.day_of_week - 1], t_now.day_of_month, months[t_now.month - 1]);
+                id(teplomer).set_component_text_printf("tit_0", "%s", days[t_now.day_of_week - 1]);
+              }
+
+globals:
+  - id: display_on
+    type: bool
+
+# ==================================
+# SENSORS HOME ASSISTANT (Capteurs natifs)
+# ==================================
+sensor:
+  # Météo actuelle
+  - platform: homeassistant
+    id: current_temperature
+    entity_id: weather.saint_vincent_de_tyrosse
+    attribute: temperature
+    on_value:
+      then:
+        - lambda: 'id(teplomer).set_component_value("p[0].temp_1", x);'
+
+  - platform: homeassistant
+    id: current_humidity
+    entity_id: weather.saint_vincent_de_tyrosse
+    attribute: humidity
+    on_value:
+      then:
+        - lambda: 'id(teplomer).set_component_value("p[0].hum_1", x);'
+
+  # Alertes Probabilités
+  - platform: homeassistant
+    id: proba_gel
+    entity_id: sensor.saint_vincent_de_tyrosse_freeze_chance
+    on_value:
+      then:
+        - lambda: |-
+            int pic = 91;
+            if (x < 5) pic = 91; else if (x < 50) pic = 92; else if (x < 90) pic = 93; else if (x <= 100) pic = 94; else pic = 95;
+            id(teplomer).send_command_printf("p[0].gel.pic=%d", pic);
+
+  - platform: homeassistant
+    id: proba_neige
+    entity_id: sensor.saint_vincent_de_tyrosse_snow_chance
+    on_value:
+      then:
+        - lambda: |-
+            int pic = 87;
+            if (x < 5) pic = 87; else if (x < 50) pic = 88; else if (x < 90) pic = 89; else if (x <= 100) pic = 90; else pic = 95;
+            id(teplomer).send_command_printf("p[0].neige.pic=%d", pic);
+
+  - platform: homeassistant
+    id: proba_pluie
+    entity_id: sensor.saint_vincent_de_tyrosse_rain_chance
+    on_value:
+      then:
+        - lambda: |-
+            int pic = 80;
+            if (x < 9) pic = 80; else if (x < 40) pic = 79; else if (x < 70) pic = 78; else if (x <= 100) pic = 77;
+            id(teplomer).send_command_printf("p[0].alerte_rain.pic=%d", pic);
+
+  - platform: homeassistant
+    id: proba_uv
+    entity_id: sensor.saint_vincent_de_tyrosse_uv
+    on_value:
+      then:
+        - lambda: |-
+            int pic = 85;
+            if (x < 5) pic = 85; else if (x < 7) pic = 84; else if (x < 9) pic = 83; else if (x < 11) pic = 82; else pic = 81;
+            id(teplomer).send_command_printf("p[0].uv.pic=%d", pic);
+
+text_sensor:
+  # Icône Météo Actuelle
+  - platform: homeassistant
+    id: current_icon
+    entity_id: weather.saint_vincent_de_tyrosse
+    on_value:
+      then:
+        - lambda: |-
+            int pic = 2; // Inconnu
+            if (x == "clear-night") pic = 10;
+            else if (x == "cloudy") pic = 4;
+            else if (x == "fog") pic = 8;
+            else if (x == "hail") pic = 13;
+            else if (x == "lightning") pic = 16;
+            else if (x == "lightning-rainy") pic = 9;
+            else if (x == "Clear" || x == "sunny") pic = 7;
+            else if (x == "pouring") pic = 12;
+            else if (x == "partlycloudy") pic = 5;
+            else if (x == "rainy") pic = 11;
+            else if (x == "snowy") pic = 14;
+            else if (x == "windy") pic = 17;
+            else if (x == "snowy-rainy") pic = 15;
+            id(teplomer).send_command_printf("p[0].icon.pic=%d", pic);
+
+display:
+  - platform: nextion
+    id: teplomer
+    update_interval: never
