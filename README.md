@@ -6,6 +6,12 @@ On peut en discuter ici : [Forum HACF - Nextion Météo France](https://forum.ha
 
 ## 🎯 Présentation des 4 Architectures
 Ce projet a évolué pour s'adapter à toutes les configurations matérielles et logicielles. Des plus simples (V1) aux plus performantes (V2) ou totalement indépendantes (V3/V4). Choisissez celle qui vous correspond dans les différents sous-dossiers !
+# Mise en garde:
+- Le 03/03/2026: Optimisations du code par Antiravity et Gemini: Meilleur syncronisation des donnée, codage moins volumineu et plus optimisé.
+- Le 17/07/2024: Envois des donner par pages: Les donner des page sont charge et change a chaque mise a jurs des capteurs, ca donne une meilleur reactivité. Le buffer du nextion est en overflow (mais pas de probleme visible d affichage), a voir si j arrive a resoudre le probleme.
+- Le 15/07/2024: Remise en marche des prévisions suite au changement de l'API et débug des titres des prévisions journaliére. Bref, la version 3.5 remarche!
+- En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
+- Le codage est à l'effigie de mon orthographe, fais de brique et de broc. Le fichier contient mon code de travail, pas mal de lignes sont inutile pour cette version, mais peut permetre de compléter plus tard l'écran. Il y as beaucoup de répition que devrait être fais par des boucles, peut être pour plus tard.
 
 ### 🏗️ V1 : L'Architecture Classique (HA Templates + ESPHome)
 *Idéale pour débuter et comprendre comment Home Assistant transmet ses états à ESPHome.*
