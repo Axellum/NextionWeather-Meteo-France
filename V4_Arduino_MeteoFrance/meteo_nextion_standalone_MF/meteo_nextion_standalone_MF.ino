@@ -22,12 +22,12 @@
 // ==============================================================================
 // 1. CONFIGURATION RÉSEAU ET MÉTÉO
 // ==============================================================================
-const char* ssid     = "TON_WIFI_SSID";
-const char* password = "TON_WIFI_PASSWORD";
+const char* ssid     = "Axel";
+const char* password = "axellumpopy6440";
 
-// Coordonnées GPS (Ex: Saint-Vincent-de-Tyrosse)
-const String LATITUDE  = "43.66";
-const String LONGITUDE = "-1.30";
+// Coordonnées GPS (Ex: Saint-Vincent-de-Tyrosse) 43.67348942494301, -1.284455246593643
+const String LATITUDE  = "43.67348942494301";
+const String LONGITUDE = "-1.284455246593643";
 const String DEPARTEMENT = "40"; // Code département pour les vigilances
 
 // Api Météo France Mobile
@@ -49,10 +49,14 @@ const char* ntpServer = "pool.ntp.org";
 const long  gmtOffset_sec = 3600;       // Décalage horaire (Paris = +1h)
 const int   daylightOffset_sec = 3600;  // Heure d'été (+1h)
 
-// Configuration Port Série Nextion (ESP32: RX=16, TX=17 pour Serial2)
-#define NEXTION_SERIAL Serial2
-#define NEXTION_RX 16
-#define NEXTION_TX 17
+// Configuration Port Série Nextion
+// Sur l'ESP32-S3 ("Seeed Studio XIAO ESP32-S3"),
+// la broche D6 correspond au GPIO 43 (TX) 
+// et la broche D7 correspond au GPIO 44 (RX).
+// On utilise `Serial1`.
+#define NEXTION_SERIAL Serial1
+#define NEXTION_RX 44 // D7 relié au TX de l'écran (fil jaune)
+#define NEXTION_TX 43 // D6 relié au RX de l'écran (fil bleu)
 
 // ==============================================================================
 // 2. FONCTONS UTILITAIRES NEXTION

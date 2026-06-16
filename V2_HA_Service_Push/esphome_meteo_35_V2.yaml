@@ -1,16 +1,60 @@
 esphome:
   name: meteo35
+  friendly_name: meteo35
 
 esp32:
-  board: az-delivery-devkit-v4
+  board: seeed_xiao_esp32s3
   framework:
     type: arduino
 
+# Enable logging
 logger:
   baud_rate: 0 # Disable UART logging (pins GPIO1/3 are used for Nextion communication)
-  level: VERY_VERBOSE
+  level: VERBOSE
+
+ota:
+  - platform: esphome
+    password: "19cf65269fb3827505e0f68fa220b5ee"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+
+uart:
+  id: uart_nextion
+  tx_pin: GPIO43
+  rx_pin: GPIO44
+  baud_rate: 115200
+  rx_buffer_size: 2048
 
 api:
+  encryption:
+    key: "qkvhGGofxqgHWw8xN57AhxCxFcmCfsHKG8oZJOUUQpU="
+
+  # Événement : Envoyer les valeurs actuelles à l'écran dès que l'API Home Assistant est connectée
+  on_client_connected:
+    - delay: 5s
+    - lambda: |-
+        // Met à jour la température si elle existe
+        if (id(current_temperature).has_state()) {
+          id(teplomer).set_component_value("p[0].temp_1", id(current_temperature).state);
+        }
+        // Met à jour l'humidité
+        if (id(current_humidity).has_state()) {
+          id(teplomer).set_component_value("p[0].hum_1", id(current_humidity).state);
+        }
+        // Résout l'icône météo C++
+        if (id(current_icon).has_state()) {
+          std::string x = id(current_icon).state;
+          int pic = 2;
+          if (x == "clear-night") pic = 10; else if (x == "cloudy") pic = 4; else if (x == "fog") pic = 8;
+          else if (x == "hail") pic = 13; else if (x == "lightning") pic = 16; else if (x == "lightning-rainy") pic = 9;
+          else if (x == "Clear" || x == "sunny") pic = 7; else if (x == "pouring") pic = 12; else if (x == "partlycloudy") pic = 5;
+          else if (x == "rainy") pic = 11; else if (x == "snowy") pic = 14; else if (x == "windy") pic = 17; else if (x == "snowy-rainy") pic = 15;
+          id(teplomer).send_command_printf("p[0].icon.pic=%d", pic);
+        }
+
   # ==============================================================
   # SERVICES DÉDIÉS AUX PRÉVISIONS (Appelés par Home Assistant)
   # ==============================================================
@@ -100,18 +144,20 @@ api:
               id(teplomer).set_component_text_printf("p[0].T_max_dem", "%.0f", tmax);
               id(teplomer).set_component_text_printf("p[2].T_max_dem", "%.0f", tmax);
             } else if (jour >= 2 && jour <= 8) {
-              const char* fields[7] = {"2j", "3j", "4j", "5j", "6j", "7j", "8j"};
+              const char* fields_icon[7] = {"2j", "3j", "4j", "5j", "6j", "7j", "8j"};
+              const char* fields_temp[7] = {"j2", "j3", "j4", "j5", "j6", "j7", "j8"};
               int f_idx = jour - 2;
-              int page = (jour <= 3) ? 0 : 2;
               
-              id(teplomer).send_command_printf("p[%d].Icon_%s.pic=%d", page, fields[f_idx], pic);
-              id(teplomer).send_command_printf("p[%d].T_min_%s.txt=\"%.0f\"", page, fields[f_idx], tmin);
-              id(teplomer).send_command_printf("p[%d].T_max_%s.txt=\"%.0f\"", page, fields[f_idx], tmax);
+              // Mise à jour de la page 2 (qui contient TOUS les jours de J+2 à J+8)
+              id(teplomer).send_command_printf("p[2].Icon_%s.pic=%d", fields_icon[f_idx], pic);
+              id(teplomer).send_command_printf("p[2].T_min_%s.txt=\"%.0f\"", fields_temp[f_idx], tmin);
+              id(teplomer).send_command_printf("p[2].T_max_%s.txt=\"%.0f\"", fields_temp[f_idx], tmax);
               
+              // Si c'est J+2 ou J+3, il faut AUSSI mettre à jour la page Principale (page 0)
               if (jour <= 3) {
-                id(teplomer).send_command_printf("p[2].Icon_%s.pic=%d", fields[f_idx], pic);
-                id(teplomer).send_command_printf("p[2].T_min_%s.txt=\"%.0f\"", fields[f_idx], tmin);
-                id(teplomer).send_command_printf("p[2].T_max_%s.txt=\"%.0f\"", fields[f_idx], tmax);
+                id(teplomer).send_command_printf("p[0].Icon_%s.pic=%d", fields_icon[f_idx], pic);
+                id(teplomer).send_command_printf("p[0].T_min_%s.txt=\"%.0f\"", fields_temp[f_idx], tmin);
+                id(teplomer).send_command_printf("p[0].T_max_%s.txt=\"%.0f\"", fields_temp[f_idx], tmax);
               }
             }
 
@@ -147,20 +193,6 @@ api:
               id(teplomer).send_command_printf("p[3].pl_t%d.txt=\"%.1f\"", idx, pluvio);
               id(teplomer).send_command_printf("p[3].%s.txt=\"%s\"", t_fields[idx], heure_texte.c_str());
             }
-
-ota:
-  password: "****"
-
-wifi:
-  ssid: !secret wifi_ssid
-  password: !secret wifi_password
-  fast_connect: true
-
-uart:
-  tx_pin: GPIO1
-  rx_pin: GPIO3
-  baud_rate: 115200
-  rx_buffer_size: 2048
 
 time:
   # Remplacement des templates HA par l'heure locale native
@@ -280,4 +312,5 @@ text_sensor:
 display:
   - platform: nextion
     id: teplomer
+    uart_id: uart_nextion
     update_interval: never

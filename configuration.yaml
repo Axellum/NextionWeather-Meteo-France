@@ -13,6 +13,14 @@ automation: !include automations.yaml
 script: !include scripts.yaml
 scene: !include scenes.yaml
 
+wake_on_lan:
+
+switch:
+  - platform: wake_on_lan
+    name: "Mon Ordinateur"
+    mac: "60:CF:84:A1:7C:44"
+    host: "192.168.0.155"
+
 ##############################################################
 template:
   - binary_sensor: !include_dir_merge_list template_binary_sensors

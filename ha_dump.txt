@@ -1,0 +1,57 @@
+sensor.saint_vincent_de_tyrosse_uv == 1
+sensor.saint_vincent_de_tyrosse_daily_precipitation == 6
+sensor.saint_vincent_de_tyrosse_cloud_cover == 90
+sensor.saint_vincent_de_tyrosse_humidity == 100
+sensor.saint_vincent_de_tyrosse_next_rain == 2026-03-11T07:50:00+00:00
+sensor.saint_vincent_de_tyrosse_rain_chance == 20
+sensor.saint_vincent_de_tyrosse_snow_chance == 0
+sensor.saint_vincent_de_tyrosse_freeze_chance == 0
+weather.saint_vincent_de_tyrosse == fog
+  - temperature: 7.1
+  - temperature_unit: °C
+  - humidity: 100
+  - pressure: 1023.0
+  - pressure_unit: hPa
+  - wind_gust_speed: 0.0
+  - wind_speed: 3.6
+  - wind_speed_unit: km/h
+  - visibility_unit: km
+  - precipitation_unit: mm
+  - attribution: Data provided by Météo-France
+  - friendly_name: Saint-Vincent-de-Tyrosse
+  - supported_features: 3
+sensor.axellum_nextionweather_meteo_france_discussions == 0
+sensor.axellum_nextionweather_meteo_france_etoiles == 3
+sensor.axellum_nextionweather_meteo_france_observateurs == 3
+sensor.axellum_nextionweather_meteo_france_forks == 0
+sensor.axellum_nextionweather_meteo_france_problemes == 0
+sensor.axellum_nextionweather_meteo_france_demandes_d_extraction == 0
+sensor.axellum_nextionweather_meteo_france_dernier_commit == Fix typo in README.md warning section
+sensor.axellum_nextionweather_meteo_france_derniere_discussion == unavailable
+sensor.axellum_nextionweather_meteo_france_derniere_version == V2 pour HA, V3 et V4 pour Arduino IDE
+sensor.axellum_nextionweather_meteo_france_dernier_probleme == unavailable
+sensor.axellum_nextionweather_meteo_france_derniere_demande_d_extraction == unavailable
+sensor.axellum_nextionweather_meteo_france_derniere_balise == 0.8x3
+device_tracker.ecran_meteo_3_5 == not_home
+device_tracker.meteo101 == home
+automation.maj_ecran_nextion_meteo35_esphome_2 == on
+update.meteo_france_weather_card_update == off
+sensor.titre_heure_meteo_1 == 9:00
+sensor.titre_heure_meteo_2 == 10:00
+sensor.titre_heure_meteo_3 == 11:00
+sensor.titre_heure_meteo_4 == 12:00
+sensor.titre_heure_meteo_5 == 13:00
+sensor.titre_heure_meteo_6 == 14:00
+sensor.titre_heure_meteo_7 == 15:00
+sensor.titre_heure_meteo_8 == 16:00
+sensor.icon_meteo == 8
+sensor.prevision_meteo_nextion_j == rainy
+sensor.prevision_meteo_nextion_h == fog
+update.meteo101_firmware == on
+update.meteo35_firmware == unavailable
+switch.reboot_nextion3_5 == unavailable
+sensor.prevision_meteo_xx_ma_ville_xx == unavailable
+sensor.prevision_meteo_saint_geours_de_maremne == unavailable
+sensor.prevision_meteo_saint_geours_de_maremne_h == unavailable
+automation.maj_ecran_nextion_meteo35_esphome == unavailable
+sensor.saint_vincent_de_tyrosse_temperature == 7.1

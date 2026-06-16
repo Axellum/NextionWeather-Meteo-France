@@ -22,13 +22,13 @@
             {{ ts_delta if ts_delta > 0 else 0 }}
           {% endif %}
         globale: "{{ states('sensor.40_weather_alert') }}"
-        vent: "{{ state_attr('sensor.40_weather_alert', 'Vent violent') | default('Vert') }}"
-        inondation: "{{ state_attr('sensor.40_weather_alert', 'Inondation') | default('Vert') }}"
-        orages: "{{ state_attr('sensor.40_weather_alert', 'Orages') | default('Vert') }}"
-        pluie_inondation: "{{ state_attr('sensor.40_weather_alert', 'Pluie-inondation') | default('Vert') }}"
-        neige_verglas: "{{ state_attr('sensor.40_weather_alert', 'Neige-verglas') | default('Vert') }}"
-        grand_froid: "{{ state_attr('sensor.40_weather_alert', 'Grand-froid') | default('Vert') }}"
-        vagues_submersion: "{{ state_attr('sensor.40_weather_alert', 'Vagues-submersion') | default('Vert') }}"
+        vent: "{{ state_attr('sensor.40_weather_alert', 'Vent violent') | default('Vert', true) }}"
+        inondation: "{{ state_attr('sensor.40_weather_alert', 'Inondation') | default('Vert', true) }}"
+        orages: "{{ state_attr('sensor.40_weather_alert', 'Orages') | default('Vert', true) }}"
+        pluie_inondation: "{{ state_attr('sensor.40_weather_alert', 'Pluie-inondation') | default('Vert', true) }}"
+        neige_verglas: "{{ state_attr('sensor.40_weather_alert', 'Neige-verglas') | default('Vert', true) }}"
+        grand_froid: "{{ state_attr('sensor.40_weather_alert', 'Grand-froid') | default('Vert', true) }}"
+        vagues_submersion: "{{ state_attr('sensor.40_weather_alert', 'Vagues-submersion') | default('Vert', true) }}"
 
     # ------ 2. Pluie dans l'heure (12 périodes de 5min) ------
     - repeat:
@@ -54,9 +54,15 @@
           - action: esphome.meteo35_maj_previsions_jours
             data:
               jour: "{{ repeat.index - 1 }}"
-              condition: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index - 1].condition | default('unknown') }}"
-              tmin: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index - 1].templow | float(0) }}"
-              tmax: "{{ daily_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index - 1].temperature | float(0) }}"
+              condition: >
+                {% set fcasts = daily_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {{ fcasts[repeat.index - 1].condition | default('unknown') if (repeat.index - 1) < fcasts|length else 'unknown' }}
+              tmin: >
+                {% set fcasts = daily_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {{ fcasts[repeat.index - 1].templow | float(0) if (repeat.index - 1) < fcasts|length else 0 }}
+              tmax: >
+                {% set fcasts = daily_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {{ fcasts[repeat.index - 1].temperature | float(0) if (repeat.index - 1) < fcasts|length else 0 }}
 
     # ------ 4. Prévisions Horaires ------
     - action: weather.get_forecasts
@@ -72,8 +78,19 @@
             data:
               heure_index: "{{ repeat.index }}"
               heure_texte: >
-                {% set dt = hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].datetime | as_datetime %}
-                {{ dt.strftime('%H:00') if dt else '00:00' }}
-              condition: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].condition | default('unknown') }}"
-              temp: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].temperature | float(0) }}"
-              pluvio: "{{ hourly_var['weather.saint_vincent_de_tyrosse'].forecast[repeat.index].precipitation | float(0) }}"
+                {% set fcasts = hourly_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {% if repeat.index < fcasts|length %}
+                  {% set dt = fcasts[repeat.index].datetime | as_datetime %}
+                  {{ dt.strftime('%H:00') if dt else '00:00' }}
+                {% else %}
+                  00:00
+                {% endif %}
+              condition: >
+                {% set fcasts = hourly_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {{ fcasts[repeat.index].condition | default('unknown') if repeat.index < fcasts|length else 'unknown' }}
+              temp: >
+                {% set fcasts = hourly_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {{ fcasts[repeat.index].temperature | float(0) if repeat.index < fcasts|length else 0 }}
+              pluvio: >
+                {% set fcasts = hourly_var['weather.saint_vincent_de_tyrosse'].forecast %}
+                {{ fcasts[repeat.index].precipitation | float(0) if repeat.index < fcasts|length else 0 }}
