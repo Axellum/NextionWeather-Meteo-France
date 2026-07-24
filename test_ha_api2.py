@@ -1,3 +1,4 @@
+import os
 import urllib.request
 import json
 import ssl
@@ -5,7 +6,7 @@ import sys
 
 url = "https://axellum.freeboxos.fr:32768/api/states"
 headers = {
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3YzU3NGZiMGE4MDU0NjIyYmUyOGM0NDdkMTFjODg1NSIsImlhdCI6MTc3MzIxNDU3MCwiZXhwIjoyMDg4NTc0NTcwfQ.R8J7JWgOyUrvlbRfArwYebblgDn4jZu8FjS3BbjcIlQ",
+    "Authorization": f"Bearer {os.environ.get('HA_TOKEN', '')}",
     "Content-Type": "application/json"
 }
 ctx = ssl.create_default_context()
@@ -16,7 +17,7 @@ req = urllib.request.Request(url, headers=headers)
 try:
     with urllib.request.urlopen(req, context=ctx) as response:
         data = json.loads(response.read().decode())
-        
+
         with open("ha_dump.txt", "w", encoding="utf-8") as f:
             for e in data:
                 uid = e['entity_id']
