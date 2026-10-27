@@ -22,8 +22,8 @@
 // ==============================================================================
 // 1. CONFIGURATION RÉSEAU ET MÉTÉO
 // ==============================================================================
-const char* ssid     = "Axel";
-const char* password = "axellumpopy6440";
+const char* ssid     = "TON_WIFI_SSID";
+const char* password = "TON_WIFI_PASSWORD";
 
 // Coordonnées GPS (Ex: Saint-Vincent-de-Tyrosse) 43.67348942494301, -1.284455246593643
 const String LATITUDE  = "43.67348942494301";

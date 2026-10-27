@@ -15,7 +15,7 @@ logger:
 api:
 
 ota:
-  password: "****"
+  password: !secret ota_password
 
 wifi:
   ssid: !secret wifi_ssid
