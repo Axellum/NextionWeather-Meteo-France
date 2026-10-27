@@ -14,7 +14,7 @@ logger:
 
 ota:
   - platform: esphome
-    password: "19cf65269fb3827505e0f68fa220b5ee"
+    password: !secret ota_password
 
 wifi:
   ssid: !secret wifi_ssid
