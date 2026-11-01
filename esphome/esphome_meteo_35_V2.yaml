@@ -30,7 +30,7 @@ uart:
 
 api:
   encryption:
-    key: "qkvhGGofxqgHWw8xN57AhxCxFcmCfsHKG8oZJOUUQpU="
+    key: !secret api_encryption_key
 
   # Événement : Envoyer les valeurs actuelles à l'écran dès que l'API Home Assistant est connectée
   on_client_connected:

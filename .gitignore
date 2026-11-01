@@ -1,0 +1,15 @@
+# Secrets ESPHome : à créer à côté du YAML, jamais dans le dépôt
+secrets.yaml
+*.pem
+*.key
+
+# Dossiers de compilation ESPHome
+.esphome/
+**/.esphome/
+
+# Sauvegardes et fichiers temporaires
+*.bak
+*.tmp
+~$*
+Thumbs.db
+desktop.ini
