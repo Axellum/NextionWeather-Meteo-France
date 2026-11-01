@@ -26,7 +26,7 @@
 substitutions:
   name: nextion-meteo
   friendly_name: Nextion Météo
-  project_version: "0.9.2"
+  project_version: "1.0.0"
   nextion_tx_pin: GPIO43
   nextion_rx_pin: GPIO44
   nextion_baud_rate: "115200"
@@ -59,7 +59,7 @@ api:
     key: !secret api_encryption_key
 
   # HA vient de se connecter : on lui demande de tout renvoyer (le blueprint
-  # écoute cet événement). Le délai laisse HA finir d'ouvrir la liaison.
+  # écoute cet événement).
   # Seulement pour Home Assistant : un autre client (journal, esphome logs,
   # script aioesphomeapi) relançait sinon un envoi complet à chaque connexion.
   on_client_connected:
@@ -67,7 +67,15 @@ api:
         condition:
           lambda: return client_info.find("Home Assistant") != std::string::npos;
         then:
-          - delay: 2s
+          # HA s'abonne aux états puis, quelques millisecondes après, aux actions
+          # et événements : un événement envoyé avant est perdu (« dropped »).
+          # On attend l'abonnement aux états plus une marge, au lieu de 2 s fixes.
+          - wait_until:
+              condition:
+                api.connected:
+                  state_subscription_only: true
+              timeout: 10s
+          - delay: 300ms
           # [AI-WARNING] Attendre l'écran : ESPHome le réinitialise (« rest ») au
           # démarrage et jette toute commande tant qu'il n'est pas prêt. Un envoi
           # fait avant était perdu (essai du 01/11/2026 : écran resté vide).
