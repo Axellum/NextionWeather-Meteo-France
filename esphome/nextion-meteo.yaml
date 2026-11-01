@@ -268,6 +268,12 @@ display:
             api.connected:
           then:
             - script.execute: demander_tout
+    # Appuis envoyés par le Nextion (composants cochés « Send Component ID »),
+    # au journal pour repérer les numéros de page et de composant.
+    on_touch:
+      - lambda: |-
+          ESP_LOGI("nextion_meteo", "Appui %s : page %u, composant %u",
+                   touch_event ? "pressé" : "relâché", page_id, component_id);
 
 # Diagnostic, visible dans HA (appareil ESPHome)
 binary_sensor:
