@@ -1,0 +1,66 @@
+# Vérifications de chaque PR et de main :
+# - yaml : syntaxe des YAML du firmware et du blueprint (yamllint) ;
+# - blueprint : entrées déclarées/utilisées, contrat avec le firmware ;
+# - esphome : le firmware se compile vraiment (secrets factices).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  yaml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yamllint==1.35.1
+      - run: yamllint -c .yamllint esphome blueprints
+
+  blueprint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml==6.0.2
+      - run: python tools/verifier_blueprint.py
+
+  esphome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Cache ESPHome / PlatformIO
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.platformio
+            ~/.cache/esphome
+            esphome/.esphome
+          key: esphome-2026.9.0-${{ hashFiles('esphome/*.yaml', 'esphome/*.h') }}
+          restore-keys: esphome-2026.9.0-
+      - run: pip install esphome==2026.9.0
+      - name: Secrets factices
+        run: |
+          {
+            echo 'wifi_ssid: "ci"'
+            echo 'wifi_password: "ci-password"'
+            echo "api_encryption_key: \"$(openssl rand -base64 32)\""
+          } > esphome/secrets.yaml
+      - run: esphome config esphome/nextion-meteo.yaml > /dev/null
+      - run: esphome compile esphome/nextion-meteo.yaml

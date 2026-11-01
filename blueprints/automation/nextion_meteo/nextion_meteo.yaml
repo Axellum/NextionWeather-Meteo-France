@@ -1,0 +1,257 @@
+blueprint:
+  name: "Nextion Météo — écran météo Météo-France"
+  description: >-
+    Envoie la météo de Home Assistant à un écran Nextion piloté par ESPHome
+    (firmware esphome/nextion-meteo.yaml du dépôt) : temps actuel, vigilance,
+    pluie dans l'heure, prévisions sur 9 jours et 8 heures.
+
+
+    Prévu pour l'intégration **Météo-France**, mais l'entité météo peut venir
+    d'une autre intégration (les alertes et la pluie dans l'heure restent alors vides).
+
+
+    L'écran est mis à jour à chaque changement de la météo, toutes les 5 minutes,
+    au démarrage de Home Assistant et dès que l'écran se (re)connecte.
+  domain: automation
+  author: Axellum
+  source_url: https://github.com/Axellum/NextionWeather-Meteo-France/blob/main/blueprints/automation/nextion_meteo/nextion_meteo.yaml
+  homeassistant:
+    min_version: "2024.10.0"
+  input:
+    ecran_section:
+      name: Écran
+      icon: mdi:monitor
+      input:
+        ecran:
+          name: Écran Nextion
+          description: L'appareil ESPHome de l'écran (intégration ESPHome).
+          selector:
+            device:
+              filter:
+                - integration: esphome
+        nom_esphome:
+          name: Nom ESPHome de l'écran (facultatif)
+          description: >-
+            Le `name:` du YAML ESPHome, par exemple `nextion-meteo` ou `meteo35`.
+            Laisser vide si le nom de l'appareil dans Home Assistant est le même.
+          default: ""
+          selector:
+            text:
+    meteo_section:
+      name: Météo
+      icon: mdi:weather-partly-cloudy
+      input:
+        meteo:
+          name: Entité météo
+          description: La ville à afficher (ex. `weather.paris` de Météo-France).
+          selector:
+            entity:
+              filter:
+                - domain: weather
+        alertes:
+          name: Vigilance du département (facultatif)
+          description: Capteur « Weather alert » de Météo-France (ex. `sensor.75_weather_alert`).
+          default: []
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+                  integration: meteo_france
+        prochaine_pluie:
+          name: Pluie dans l'heure (facultatif)
+          description: Capteur « Next rain » de Météo-France (ex. `sensor.paris_next_rain`).
+          default: []
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+                  integration: meteo_france
+    probabilites_section:
+      name: Probabilités (facultatif)
+      icon: mdi:snowflake-alert
+      collapsed: true
+      input:
+        proba_gel:
+          name: Risque de gel
+          default: []
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+        proba_neige:
+          name: Risque de neige
+          default: []
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+        proba_pluie:
+          name: Risque de pluie
+          default: []
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+        indice_uv:
+          name: Indice UV
+          default: []
+          selector:
+            entity:
+              filter:
+                - domain: sensor
+
+# Un envoi complet prend moins d'une seconde ; si un autre déclencheur arrive
+# pendant ce temps, il repasse juste après (dernier état garanti).
+mode: queued
+max: 2
+max_exceeded: silent
+
+variables:
+  ecran: !input ecran
+  nom_saisi: !input nom_esphome
+  meteo: !input meteo
+  alertes: !input alertes
+  prochaine_pluie: !input prochaine_pluie
+  proba_gel: !input proba_gel
+  proba_neige: !input proba_neige
+  proba_pluie: !input proba_pluie
+  indice_uv: !input indice_uv
+  # Préfixe des actions ESPHome : esphome.<nom>_maj_… (tirets -> soulignés)
+  nom: >-
+    {{ (nom_saisi if nom_saisi | trim else (device_attr(ecran, 'name') or '')) | slugify }}
+  # L'écran est joignable si son capteur « Statut » est allumé
+  connecte: >-
+    {{ device_entities(ecran) | select('match', 'binary_sensor\.')
+       | select('is_state', 'on') | list | count > 0 }}
+
+triggers:
+  - trigger: state
+    entity_id: !input meteo
+    id: meteo
+  - trigger: state
+    entity_id: !input alertes
+    id: meteo
+  - trigger: state
+    entity_id: !input prochaine_pluie
+    id: meteo
+  - trigger: time_pattern
+    minutes: /5
+    id: horloge
+  - trigger: homeassistant
+    event: start
+    id: demarrage
+  - trigger: event
+    event_type: esphome.nextion_meteo_connecte
+    id: connexion
+
+conditions:
+  # Événement de connexion : seulement celui de CET écran. Les autres
+  # déclencheurs : seulement si l'écran est joignable (sinon « Action not found »).
+  - condition: template
+    value_template: >-
+      {%- if trigger.id == 'connexion' -%}
+        {{ trigger.event.data.ecran | default('') | slugify == nom
+           or trigger.event.data.device_id | default('') == ecran }}
+      {%- else -%}
+        {{ nom != '' and connecte }}
+      {%- endif -%}
+
+actions:
+  # À la connexion, HA n'a pas toujours fini d'ouvrir la liaison : on attend
+  # le capteur « Statut » de l'écran, 10 s au plus.
+  - if:
+      - condition: trigger
+        id: connexion
+    then:
+      - wait_template: >-
+          {{ device_entities(ecran) | select('match', 'binary_sensor\.')
+             | select('is_state', 'on') | list | count > 0 }}
+        timeout: "00:00:10"
+        continue_on_timeout: true
+
+  # Temps actuel (température, humidité, icône, probabilités ; -1 = inconnu)
+  - action: "esphome.{{ nom }}_maj_actuel"
+    data:
+      temperature: "{{ state_attr(meteo, 'temperature') | float(0) }}"
+      humidite: "{{ state_attr(meteo, 'humidity') | float(0) }}"
+      condition: "{{ states(meteo) }}"
+      gel: "{{ states(proba_gel) | float(-1) if proba_gel else -1 }}"
+      neige: "{{ states(proba_neige) | float(-1) if proba_neige else -1 }}"
+      pluie: "{{ states(proba_pluie) | float(-1) if proba_pluie else -1 }}"
+      uv: "{{ states(indice_uv) | float(-1) if indice_uv else -1 }}"
+
+  # Vigilance et minutes avant la prochaine pluie
+  - action: "esphome.{{ nom }}_maj_alerte_meteo_france"
+    data:
+      minutes_prochaine_pluie: >-
+        {%- set debut = states(prochaine_pluie) | as_timestamp(0) if prochaine_pluie else 0 -%}
+        {%- set minutes = ((debut - now().timestamp()) / 60) | int(0) if debut else 0 -%}
+        {{ [minutes, 0] | max }}
+      globale: "{{ states(alertes) if alertes and has_value(alertes) else 'Inconnu' }}"
+      vent: "{{ state_attr(alertes, 'Vent violent') or 'Vert' if alertes else 'Vert' }}"
+      inondation: "{{ state_attr(alertes, 'Inondation') or 'Vert' if alertes else 'Vert' }}"
+      orages: "{{ state_attr(alertes, 'Orages') or 'Vert' if alertes else 'Vert' }}"
+      pluie_inondation: "{{ state_attr(alertes, 'Pluie-inondation') or 'Vert' if alertes else 'Vert' }}"
+      neige_verglas: "{{ state_attr(alertes, 'Neige-verglas') or 'Vert' if alertes else 'Vert' }}"
+      grand_froid: "{{ state_attr(alertes, 'Grand-froid') or 'Vert' if alertes else 'Vert' }}"
+      vagues_submersion: "{{ state_attr(alertes, 'Vagues-submersion') or 'Vert' if alertes else 'Vert' }}"
+
+  # Pluie dans l'heure : 12 cases de 5 minutes. Météo-France ne donne que
+  # 0 à 25 min puis 35, 45, 55 : une case sans valeur prend celle d'avant.
+  - variables:
+      pluie_1h: "{{ state_attr(prochaine_pluie, '1_hour_forecast') or {} if prochaine_pluie else {} }}"
+  - repeat:
+      count: 12
+      sequence:
+        - action: "esphome.{{ nom }}_maj_pluie_1h"
+          data:
+            index_5mn: "{{ repeat.index - 1 }}"
+            intensite: >-
+              {%- set ns = namespace(valeur='Inconnu') -%}
+              {%- for minute in range(0, (repeat.index - 1) * 5 + 1, 5) -%}
+                {%- if (minute ~ ' min') in pluie_1h -%}
+                  {%- set ns.valeur = pluie_1h[minute ~ ' min'] -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {{ ns.valeur }}
+
+  # Prévisions sur 9 jours
+  - action: weather.get_forecasts
+    target:
+      entity_id: "{{ meteo }}"
+    data:
+      type: daily
+    response_variable: jours
+    continue_on_error: true
+  - variables:
+      liste_jours: "{{ jours[meteo].forecast if jours is defined and meteo in jours else [] }}"
+  - repeat:
+      for_each: "{{ range([liste_jours | count, 9] | min) | list }}"
+      sequence:
+        - action: "esphome.{{ nom }}_maj_previsions_jours"
+          data:
+            jour: "{{ repeat.item }}"
+            condition: "{{ liste_jours[repeat.item].condition | default('unknown') }}"
+            tmin: "{{ liste_jours[repeat.item].templow | default(0) | float(0) }}"
+            tmax: "{{ liste_jours[repeat.item].temperature | default(0) | float(0) }}"
+
+  # Prévisions des 8 prochaines heures (l'heure en cours est sautée)
+  - action: weather.get_forecasts
+    target:
+      entity_id: "{{ meteo }}"
+    data:
+      type: hourly
+    response_variable: heures
+    continue_on_error: true
+  - variables:
+      liste_heures: "{{ heures[meteo].forecast if heures is defined and meteo in heures else [] }}"
+  - repeat:
+      for_each: "{{ range(1, [liste_heures | count, 9] | min) | list }}"
+      sequence:
+        - action: "esphome.{{ nom }}_maj_previsions_heures"
+          data:
+            heure_index: "{{ repeat.item }}"
+            heure_texte: "{{ (liste_heures[repeat.item].datetime | as_datetime | as_local).strftime('%H:00') }}"
+            condition: "{{ liste_heures[repeat.item].condition | default('unknown') }}"
+            temp: "{{ liste_heures[repeat.item].temperature | default(0) | float(0) }}"
+            pluvio: "{{ liste_heures[repeat.item].precipitation | default(0) | float(0) }}"

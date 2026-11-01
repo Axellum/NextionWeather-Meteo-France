@@ -1,0 +1,299 @@
+# ==============================================================================
+# Nextion Météo — firmware ESPHome (architecture « Service Push »)
+# ==============================================================================
+# Rôle : piloter un écran Nextion 3.5" (fichier nextion/NextionWeather 3.5.tft)
+# depuis un ESP32-S3 (Seeed Studio XIAO ESP32-S3 par défaut).
+#
+# Principe : le firmware ne connaît AUCUNE entité Home Assistant. C'est le
+# blueprint blueprints/automation/nextion_meteo/nextion_meteo.yaml qui choisit
+# les entités (météo, alertes, pluie, probabilités) et pousse les valeurs par
+# les actions ci-dessous. Changer de ville = changer le blueprint, sans recompiler.
+#
+# Contrat avec le blueprint (à changer des deux côtés à la fois) :
+#   - actions  : maj_actuel, maj_alerte_meteo_france, maj_pluie_1h,
+#                maj_previsions_jours, maj_previsions_heures
+#   - événement esphome.nextion_meteo_connecte (data : ecran = nom du nœud),
+#     envoyé à la connexion de HA et quand l'écran Nextion redémarre seul :
+#     le blueprint renvoie alors tout.
+#
+# Câblage (XIAO ESP32-S3) : D6 = GPIO43 (TX) -> RX de l'écran,
+#                           D7 = GPIO44 (RX) <- TX de l'écran, 5V, GND commun.
+# Secrets à mettre dans secrets.yaml (à côté de ce fichier) :
+#   wifi_ssid, wifi_password, api_encryption_key (générer : `esphome` le propose,
+#   ou 32 octets aléatoires en base64). L'OTA est chiffrée avec la même clé.
+# ==============================================================================
+
+substitutions:
+  name: nextion-meteo
+  friendly_name: Nextion Météo
+  project_version: "0.9.0"
+  nextion_tx_pin: GPIO43
+  nextion_rx_pin: GPIO44
+  nextion_baud_rate: "115200"
+  timezone: Europe/Paris
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+  project:
+    name: axellum.nextion_meteo
+    version: ${project_version}
+  # Correspondance condition météo HA -> numéro d'image du fichier HMI
+  includes:
+    - nextion_meteo.h
+
+esp32:
+  board: seeed_xiao_esp32s3
+  framework:
+    type: arduino
+
+# Journal sur l'USB de la XIAO (USB_SERIAL_JTAG) : l'UART0 (GPIO43/44) reste
+# entièrement au Nextion. INFO suffit ; VERBOSE ralentissait l'API (HA s'abonne
+# aux journaux) pour rien.
+logger:
+  hardware_uart: USB_SERIAL_JTAG
+  level: INFO
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+  # HA vient de se connecter : on lui demande de tout renvoyer (le blueprint
+  # écoute cet événement). Le délai laisse HA finir d'ouvrir la liaison.
+  on_client_connected:
+    - delay: 2s
+    - script.execute: demander_tout
+
+  actions:
+    # Météo actuelle : températures en °C, probabilités en %, -1 = inconnue.
+    - action: maj_actuel
+      variables:
+        temperature: float
+        humidite: float
+        condition: string
+        gel: float
+        neige: float
+        pluie: float
+        uv: float
+      then:
+        - lambda: |-
+            id(teplomer).set_component_value("p[0].temp_1", (int) temperature);
+            id(teplomer).set_component_value("p[0].hum_1", (int) humidite);
+            id(teplomer).send_command_printf("p[0].icon.pic=%d", icone_actuelle(condition));
+            if (gel >= 0) {
+              int pic = gel < 5 ? 91 : gel < 50 ? 92 : gel < 90 ? 93 : gel <= 100 ? 94 : 95;
+              id(teplomer).send_command_printf("p[0].gel.pic=%d", pic);
+            }
+            if (neige >= 0) {
+              int pic = neige < 5 ? 87 : neige < 50 ? 88 : neige < 90 ? 89 : neige <= 100 ? 90 : 95;
+              id(teplomer).send_command_printf("p[0].neige.pic=%d", pic);
+            }
+            if (pluie >= 0) {
+              int pic = pluie < 9 ? 80 : pluie < 40 ? 79 : pluie < 70 ? 78 : 77;
+              id(teplomer).send_command_printf("p[0].alerte_rain.pic=%d", pic);
+            }
+            if (uv >= 0) {
+              int pic = uv < 5 ? 85 : uv < 7 ? 84 : uv < 9 ? 83 : uv < 11 ? 82 : 81;
+              id(teplomer).send_command_printf("p[0].uv.pic=%d", pic);
+            }
+
+    # Vigilance Météo-France : « Vert », « Jaune », « Orange » ou « Rouge ».
+    - action: maj_alerte_meteo_france
+      variables:
+        minutes_prochaine_pluie: int
+        globale: string
+        vent: string
+        inondation: string
+        orages: string
+        pluie_inondation: string
+        neige_verglas: string
+        grand_froid: string
+        vagues_submersion: string
+      then:
+        - lambda: |-
+            id(teplomer).set_component_text_printf("p[0].proc_plu", "%d", minutes_prochaine_pluie);
+
+            // Image « Vert » de chaque alerte, +1 Jaune, +2 Orange, +3 Rouge
+            auto couleur = [](const std::string &etat, int vert) -> int {
+              if (etat == "Jaune") return vert + 1;
+              if (etat == "Orange") return vert + 2;
+              if (etat == "Rouge") return vert + 3;
+              return vert;
+            };
+            // Globale : 34 = inconnue, 35 Vert … 38 Rouge
+            int glob = 34;
+            if (globale == "Vert") glob = 35;
+            else if (globale == "Jaune") glob = 36;
+            else if (globale == "Orange") glob = 37;
+            else if (globale == "Rouge") glob = 38;
+            id(teplomer).set_component_value("p[0].alert_coul", glob);
+
+            id(teplomer).send_command_printf("p[0].alert_vent.pic=%d", couleur(vent, 47));
+            id(teplomer).send_command_printf("p[0].alert_inondat.pic=%d", couleur(inondation, 55));
+            id(teplomer).send_command_printf("p[0].alert_orages.pic=%d", couleur(orages, 59));
+            id(teplomer).send_command_printf("p[0].alert_pluie_in.pic=%d", couleur(pluie_inondation, 71));
+            id(teplomer).send_command_printf("p[0].alert_neig_ver.pic=%d", couleur(neige_verglas, 67));
+            id(teplomer).send_command_printf("p[0].alert_froid.pic=%d", couleur(grand_froid, 51));
+            id(teplomer).send_command_printf("p[0].alert_vagues.pic=%d", couleur(vagues_submersion, 63));
+
+    # Pluie dans l'heure, par tranche de 5 min (index 0 à 11).
+    - action: maj_pluie_1h
+      variables:
+        index_5mn: int
+        intensite: string
+      then:
+        - lambda: |-
+            int pic = 42;
+            if (intensite == "Pluie faible") pic = 43;
+            else if (intensite == "Pluie modérée") pic = 44;
+            else if (intensite == "Pluie forte") pic = 45;
+            else if (intensite == "Pluie très forte" || intensite == "Pluie trés forte") pic = 46;
+            id(teplomer).send_command_printf("p[0].mn_%d.pic=%d", index_5mn * 5, pic);
+
+    # Prévisions par jour (jour 0 = aujourd'hui … 8).
+    - action: maj_previsions_jours
+      variables:
+        jour: int
+        condition: string
+        tmin: float
+        tmax: float
+      then:
+        - lambda: |-
+            int pic = icone_prevision(condition);
+            if (jour == 0) {
+              id(teplomer).send_command_printf("p[0].icon_jour.pic=%d", pic);
+              id(teplomer).set_component_text_printf("p[0].T_min_jour", "%.0f", tmin);
+              id(teplomer).set_component_text_printf("p[0].T_max_jour", "%.0f", tmax);
+            } else if (jour == 1) {
+              for (int p : {0, 2}) {
+                id(teplomer).send_command_printf("p[%d].icon_dem.pic=%d", p, pic);
+                id(teplomer).send_command_printf("p[%d].T_min_dem.txt=\"%.0f\"", p, tmin);
+                id(teplomer).send_command_printf("p[%d].T_max_dem.txt=\"%.0f\"", p, tmax);
+              }
+            } else if (jour >= 2 && jour <= 8) {
+              // Page 2 : tous les jours de J+2 à J+8 ; page 0 : J+2 et J+3 en plus
+              for (int p : {2, 0}) {
+                if (p == 0 && jour > 3) break;
+                id(teplomer).send_command_printf("p[%d].Icon_%dj.pic=%d", p, jour, pic);
+                id(teplomer).send_command_printf("p[%d].T_min_j%d.txt=\"%.0f\"", p, jour, tmin);
+                id(teplomer).send_command_printf("p[%d].T_max_j%d.txt=\"%.0f\"", p, jour, tmax);
+              }
+            }
+
+    # Prévisions heure par heure (index 1 à 8), page 3.
+    - action: maj_previsions_heures
+      variables:
+        heure_index: int
+        heure_texte: string
+        condition: string
+        temp: float
+        pluvio: float
+      then:
+        - lambda: |-
+            if (heure_index < 1 || heure_index > 8) return;
+            // Noms des champs d'heure dans le fichier HMI (historiques)
+            static const char *const champs_heure[8] = {"t9", "t12", "t14", "t51", "t60", "t66", "t71", "t76"};
+            int i = heure_index - 1;
+            id(teplomer).send_command_printf("p[3].icon_h%d.pic=%d", i, icone_prevision(condition));
+            id(teplomer).send_command_printf("p[3].T_h%d.txt=\"%.0f\"", i, temp);
+            id(teplomer).send_command_printf("p[3].pl_t%d.txt=\"%.1f\"", i, pluvio);
+            id(teplomer).send_command_printf("p[3].%s.txt=\"%s\"", champs_heure[i], heure_texte.c_str());
+
+ota:
+  - platform: esphome
+    encryption:
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+
+uart:
+  id: uart_nextion
+  tx_pin: ${nextion_tx_pin}
+  rx_pin: ${nextion_rx_pin}
+  baud_rate: ${nextion_baud_rate}
+  rx_buffer_size: 2048
+
+time:
+  # Heure locale du réseau (SNTP), sans Home Assistant
+  - platform: sntp
+    id: sntp_time
+    timezone: ${timezone}
+    on_time_sync:
+      - script.execute: maj_heure
+    on_time:
+      - seconds: 0
+        minutes: "*"
+        then:
+          - script.execute: maj_heure
+
+script:
+  # Heure, minute, date et titre du jour sur la page 0
+  - id: maj_heure
+    then:
+      - lambda: |-
+          auto t = id(sntp_time).now();
+          if (!t.is_valid()) return;
+          static const char *const jours[] = {"Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"};
+          // Abréviations de 4 lettres d'origine : la police du HMI n'a pas forcément « é »
+          static const char *const mois[] = {"Janv", "Fevr", "Mars", "Avri", "Mai", "Juin",
+                                             "Juil", "Août", "Sept", "Octo", "Nove", "Dece"};
+          id(teplomer).set_component_text_printf("p[0].heure", "%02d", t.hour);
+          id(teplomer).set_component_text_printf("p[0].minute", "%02d", t.minute);
+          id(teplomer).set_component_text_printf("p[0].date", "%s %d %s", jours[t.day_of_week - 1],
+                                                 t.day_of_month, mois[t.month - 1]);
+          id(teplomer).set_component_text_printf("tit_0", "%s", jours[t.day_of_week - 1]);
+
+  # Demande à Home Assistant de renvoyer toute la météo (blueprint)
+  - id: demander_tout
+    mode: restart
+    then:
+      - homeassistant.event:
+          event: esphome.nextion_meteo_connecte
+          data:
+            ecran: ${name}
+      - script.execute: maj_heure
+
+display:
+  - platform: nextion
+    id: teplomer
+    uart_id: uart_nextion
+    update_interval: never
+    # L'écran a (re)démarré seul (coupure du Nextion, pas de l'ESP) : il a perdu
+    # ses valeurs, on redemande tout si HA est là.
+    on_setup:
+      - if:
+          condition:
+            api.connected:
+          then:
+            - script.execute: demander_tout
+
+# Diagnostic, visible dans HA (appareil ESPHome)
+binary_sensor:
+  - platform: status
+    name: Statut
+
+sensor:
+  - platform: wifi_signal
+    name: Signal Wi-Fi
+    update_interval: 60s
+    entity_category: diagnostic
+  - platform: uptime
+    name: Démarré depuis
+    entity_category: diagnostic
+
+text_sensor:
+  - platform: version
+    name: Version ESPHome
+    hide_timestamp: true
+    entity_category: diagnostic
+  - platform: wifi_info
+    ip_address:
+      name: Adresse IP
+      entity_category: diagnostic
+
+button:
+  - platform: restart
+    name: Redémarrer
+    entity_category: config
