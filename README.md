@@ -1,5 +1,7 @@
 # Nextion Weather — Météo-France ☀️🌧️
 
+> **Projet terminé (version finale 1.0.0, 01/11/2026).** Je suis passé aux écrans LVGL de mon projet [M5-Tab5-ESPHome-LVGL](https://github.com/Axellum/M5-Tab5-ESPHome-LVGL). Ce dépôt reste en ligne tel quel. Il marche chez moi, mais je n'y ajouterai plus rien.
+
 Un petit écran Nextion qui affiche la météo de Météo-France : temps actuel, vigilance du département, pluie dans l'heure, prévisions sur 9 jours et heure par heure. Un ESP32 le pilote, Home Assistant lui envoie les données.
 
 C'est l'écran météo de mon salon, partagé au cas où il servirait à quelqu'un. Le code a été écrit en grande partie avec l'IA (Gemini, puis Claude) et n'a été testé que chez moi.
@@ -55,13 +57,13 @@ L'écran est mis à jour :
 - au démarrage de Home Assistant ;
 - dès que l'écran se reconnecte : il envoie l'événement `esphome.nextion_meteo_connecte`, et le blueprint lui renvoie tout.
 
-Mesuré chez moi le 01/11/2026 (XIAO ESP32-S3, firmware 0.9.2) :
+Mesuré chez moi le 01/11/2026 (XIAO ESP32-S3, firmware 1.0.0) :
 
 | Mesure | Résultat |
 |---|---|
 | Envoi complet par Home Assistant (30 actions) | 77 ms (trace de l'automatisation) |
 | Envoi des ~96 commandes sur la liaison série, à 115 200 bauds | ~0,23 s (calculé, pas mesuré) |
-| Redémarrage de l'ESP → écran rempli | ~6 s |
+| Redémarrage de l'ESP → premier envoi de HA | 3,3 à 6,1 s (3 redémarrages ; l'écart vient du moment où HA se reconnecte) |
 
 Un comparatif avec les autres écrans que j'utilise (Nextion 2,8", Tab5, Waveshare 7") est dans [`docs/comparatif-ecrans.md`](docs/comparatif-ecrans.md).
 

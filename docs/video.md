@@ -12,7 +12,7 @@ Brouillon pour une vidéo courte (~2 min) qui présente le Nextion météo et le
 | 4 | Gros plan des pictos de vigilance et de la barre de pluie | 6 s | page 0, bas de l'écran | « La vigilance du département et la pluie dans l'heure, de Météo-France. » |
 | 5 | Le XIAO et ses 4 fils, à la main | 6 s | dos de l'écran | « Quatre fils : TX, RX, 5 V, masse. » |
 | 6 | Capture d'écran : import du blueprint dans HA | 10 s | écran du PC | « Dans Home Assistant, un blueprint : on choisit l'écran et la ville, rien à recompiler. » |
-| 7 | Redémarrage : on débranche le XIAO, on rebranche, chrono à l'écran | 12 s | Nextion vide puis rempli | « Au redémarrage, l'écran est rempli en six secondes environ. » |
+| 7 | Redémarrage : on débranche le XIAO, on rebranche, chrono à l'écran | 12 s | Nextion vide puis rempli | « Au redémarrage, l'écran est rempli en quelques secondes. » |
 | 8 | Plan sur la 7B, puis sur le Tab5 | 12 s | tableau de bord complet | « À côté, les écrans ESP32-P4 du projet Tab5 : un vrai tableau de bord tactile. » |
 | 9 | Tableau comparatif en surimpression | 15 s | tableau de `comparatif-ecrans.md` | taille, prix, installation, démarrage |
 | 10 | Retour plan large | 5 s | les écrans | « Le code est sur GitHub, partagé au cas où. » |

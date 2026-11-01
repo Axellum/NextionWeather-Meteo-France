@@ -25,7 +25,7 @@ Ce n'est pas un banc d'essai : chaque chiffre dit d'où il vient. Ceux de la vit
 | | Nextion 3,5" | M5Stack Tab5 | Waveshare 7B |
 |---|---|---|---|
 | Envoi complet par Home Assistant | 77 ms (30 actions) | non repris ici | non repris ici |
-| Démarrage | ~6 s du redémarrage de l'ESP à l'écran rempli (01/11/2026) | API de nouveau joignable 17,2 à 17,4 s après le bouton de redémarrage (07/10/2026, thème Ardoise) | première image ~4,8 s, Wi-Fi ~9,4 s (17/10/2026) |
+| Démarrage | 3,3 à 6,1 s du redémarrage de l'ESP au premier envoi de HA (01/11/2026, 3 redémarrages) | API de nouveau joignable 17,2 à 17,4 s après le bouton de redémarrage (07/10/2026, thème Ardoise) | première image ~4,8 s, Wi-Fi ~9,4 s (17/10/2026) |
 | Source | mesures du 01/11/2026, traces de l'automatisation | [performance.md](https://github.com/Axellum/M5-Tab5-ESPHome-LVGL/blob/main/docs/performance.md) du projet Tab5 | [performance.md](https://github.com/Axellum/M5-Tab5-ESPHome-LVGL/blob/main/docs/performance.md) du projet Tab5 |
 
 Le Nextion démarre vite parce qu'il ne fait presque rien : les images sont déjà dans l'écran, l'ESP ne lui envoie que des numéros d'image et des textes, environ 2,6 Ko en tout. Les écrans ESP32-P4 dessinent tout eux-mêmes, à bien plus haute résolution.
