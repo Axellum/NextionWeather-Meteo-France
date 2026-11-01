@@ -82,5 +82,11 @@ Le projet a eu quatre architectures. Seule celle-ci (la V2, « Service Push ») 
 - En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc.
 
+## Licence
+
+Le code et les fichiers du projet sont sous licence [MIT](LICENSE). Les icônes viennent d'ailleurs et gardent leur licence, y compris une fois converties en PNG ou intégrées aux fichiers Nextion (`.HMI`, `.tft`) :
+- icônes météo (`ressources/icones/svg/animated`, `static`, `icons*`) : [amCharts](https://www.amcharts.com/free-animated-svg-weather-icons/), sous licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/), certaines modifiées ;
+- icônes d'alerte (`ressources/icones/svg/alertes`) : [Material Design Icons](https://pictogrammers.com/library/mdi/) de Pictogrammers, sous licence [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0).
+
 ---
 *Conception : **Axell**. Aide et conseils de pbranly et Nico_206 sur hacf.fr. Code écrit avec Gemini (Antigravity) puis Claude.*
