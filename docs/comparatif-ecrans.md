@@ -6,7 +6,7 @@ Les quatre écrans que j'utilise avec Home Assistant :
 
 Ce n'est pas un banc d'essai : chaque chiffre dit d'où il vient. Ceux de la vitesse n'ont pas été pris avec la même méthode d'un écran à l'autre.
 
-![Nextion 3,5" devant à droite, Waveshare 7" à gauche](images/ecrans-cote-a-cote.jpg)
+![Nextion 3,5" devant à droite, Waveshare 7" à gauche, Tab5 au fond](images/ecrans-cote-a-cote.jpg)
 
 ## En bref
 

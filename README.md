@@ -4,7 +4,7 @@ Un petit écran Nextion qui affiche la météo de Météo-France : temps actuel,
 
 C'est l'écran météo de mon salon, partagé au cas où il servirait à quelqu'un. Le code a été écrit en grande partie avec l'IA (Gemini, puis Claude) et n'a été testé que chez moi.
 
-![Le Nextion 3,5" devant, à côté des écrans du projet Tab5](docs/images/ecrans-cote-a-cote.jpg)
+![Le Nextion 3,5" devant, la Waveshare 7" à gauche et le Tab5 au fond (projet Tab5)](docs/images/ecrans-cote-a-cote.jpg)
 
 ## Ce que montre l'écran
 
