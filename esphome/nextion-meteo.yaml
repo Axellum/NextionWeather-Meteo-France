@@ -47,11 +47,11 @@ esp32:
   framework:
     type: arduino
 
-# Journal sur l'USB de la XIAO (USB_SERIAL_JTAG) : l'UART0 (GPIO43/44) reste
-# entièrement au Nextion. INFO suffit ; VERBOSE ralentissait l'API (HA s'abonne
-# aux journaux) pour rien.
+# Journal série coupé (baud_rate: 0), comme depuis la première version : GPIO43/44
+# sont l'UART0 de la XIAO, réservé au Nextion. Le journal reste lisible par l'API
+# (HA, `esphome logs`). INFO suffit ; VERBOSE ralentissait l'API pour rien.
 logger:
-  hardware_uart: USB_SERIAL_JTAG
+  baud_rate: 0
   level: INFO
 
 api:
