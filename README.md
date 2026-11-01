@@ -3,7 +3,7 @@
 Ecran Nextion pour l'affichage des prévisions météo, alertes météo locales et la pluie sur 1h00 de Météo-France via un ESP32. Ce projet a pour but d'afficher l'intégralité des prévisions de la semaine sur un écran déporté autonome ou relié à la domotique.
 
 ## 🎯 Présentation des 4 Architectures
-Ce projet a évolué pour s'adapter à toutes les configurations matérielles et logicielles. Des plus simples (V1) aux plus performantes (V2) ou totalement indépendantes (V3/V4). Choisissez celle qui vous correspond dans les différents sous-dossiers !
+Ce projet a évolué pour s'adapter à toutes les configurations matérielles et logicielles. Des plus simples (V1) aux plus performantes (V2) ou totalement indépendantes (V3/V4). La V2 est dans `esphome/` ; les V1, V3 et V4 sont rangées dans [`archives/`](archives/README.md).
 # Mise en garde:
 - Le 09/03/2026: Le projet passe sur Antigravity... Et du coup l"IA a fais deux trois changements ( 100% du code vient de Gemini... Ainsi que la présentation :) ). Je test la V2 actuellement, pas encore tester les version sans HA.
 - Le 15/07/2024: Remise en marche des prévisions suite au changement de l'API et débug des titres des prévisions journaliére. Bref, la version 3.5 remarche!
@@ -38,7 +38,7 @@ Ce projet a évolué pour s'adapter à toutes les configurations matérielles et
 
 ## 📸 Captures d'écran (Nextion 3.5' et 2.8')
 
-![Nextion meteo france 3.5](/Demo%20ecran%203.5.png)
+![Nextion meteo france 3.5](docs/images/Demo%20ecran%203.5.png)
 
 Au menu :
 * Date, horloge locale (NTP/HA).
@@ -57,10 +57,10 @@ Au menu :
 * **Logiciels :** Home Assistant, module ESPHome ou le logiciel Arduino IDE (Suivant la route choisie).
 
 ### 📖 Procédure "Service Push" (La V2 Recommandée)
-1. Installez le fichier `.tft` (`Ecran 3.5/NextionWeather_3.5_3pages_v01.tft`) sur votre écran Nextion via carte SD.
-2. Créez un nouveau périphérique dans votre ESPHome et flashez le contenu du fichier `esphome_meteo_35_V2.yaml`.
+1. Installez le fichier `.tft` (`nextion/NextionWeather 3.5.tft`) sur votre écran Nextion via carte SD.
+2. Créez un nouveau périphérique dans votre ESPHome et flashez le contenu du fichier `esphome/esphome_meteo_35_V2.yaml`.
 3. Configurez l'intégration officielle **Météo-France** dans Home Assistant.
-4. Ouvrez `automations_meteo_nextion_V2.yaml`, et collez l'automatisation. **Pensez à remplacer `saint_vincent_de_tyrosse` par _votre_ ville et `40_weather_alert` par l'alerte de _votre_ département.** 
+4. Ouvrez `esphome/automations_meteo_nextion_V2.yaml`, et collez l'automatisation. **Pensez à remplacer `saint_vincent_de_tyrosse` par _votre_ ville et `40_weather_alert` par l'alerte de _votre_ département.** 
 
 ### 📖 Procédures Autonomes (La V3 / V4 IDE)
 1. Installez l'écran de la même façon (Le fichier TFT est universel).
