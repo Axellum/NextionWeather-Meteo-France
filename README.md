@@ -1,71 +1,84 @@
-# Nextion Weather - Météo France ☀️🌧️
+# Nextion Weather — Météo-France ☀️🌧️
 
-Ecran Nextion pour l'affichage des prévisions météo, alertes météo locales et la pluie sur 1h00 de Météo-France via un ESP32. Ce projet a pour but d'afficher l'intégralité des prévisions de la semaine sur un écran déporté autonome ou relié à la domotique.
+Un petit écran Nextion qui affiche la météo de Météo-France : temps actuel, vigilance du département, pluie dans l'heure, prévisions sur 9 jours et heure par heure. Un ESP32 le pilote, Home Assistant lui envoie les données.
 
-## 🎯 Présentation des 4 Architectures
-Ce projet a évolué pour s'adapter à toutes les configurations matérielles et logicielles. Des plus simples (V1) aux plus performantes (V2) ou totalement indépendantes (V3/V4). La V2 est dans `esphome/` ; les V1, V3 et V4 sont rangées dans [`archives/`](archives/README.md).
-# Mise en garde:
+C'est l'écran météo de mon salon, partagé au cas où il servirait à quelqu'un. Le code a été écrit en grande partie avec l'IA (Gemini, puis Claude) et n'a été testé que chez moi.
+
+![Le Nextion 3,5" devant, la Waveshare 7" à gauche et le Tab5 au fond (projet Tab5)](docs/images/ecrans-cote-a-cote.jpg)
+
+## Ce que montre l'écran
+
+<img src="docs/images/nextion-3.5-reel.jpg" width="420" align="right" alt="Écran Nextion 3,5 pouces : brouillard, 10 °C, 95 %, 09:04, prévisions sur 4 jours">
+
+- La date et l'heure (l'ESP les prend sur Internet, sans Home Assistant).
+- Le temps actuel : icône, température, humidité.
+- Les risques de gel, de neige, de pluie et l'indice UV (si vous avez les capteurs).
+- La vigilance Météo-France du département, par type (vent, orages, inondation…).
+- La pluie dans l'heure, par tranches de 5 minutes.
+- Les prévisions : 4 jours sur l'accueil, 9 jours et 8 heures sur les autres pages (balayage ou boutons de l'écran).
+
+<br clear="right">
+
+## Installation
+
+**Matériel**
+- Un écran Nextion 3,5" 480×320 (NX4832T035, ou son remplaçant NX4832F035 « Discovery »).
+- Un ESP32. Ici, un Seeed Studio XIAO ESP32-S3.
+- 4 fils.
+
+| XIAO ESP32-S3 | Nextion |
+|---|---|
+| D6 (GPIO43, TX) | RX |
+| D7 (GPIO44, RX) | TX |
+| 5V | 5V |
+| GND | GND |
+
+**Étapes**
+1. Copiez `nextion/NextionWeather 3.5.tft` sur une carte micro-SD, insérez-la dans l'écran, mettez-le sous tension, puis retirez la carte une fois la copie finie.
+2. Dans ESPHome, créez un appareil avec [`esphome/nextion-meteo.yaml`](esphome/nextion-meteo.yaml) et [`esphome/nextion_meteo.h`](esphome/nextion_meteo.h), à mettre dans le même dossier.
+   - Mettez `wifi_ssid`, `wifi_password` et `api_encryption_key` dans vos secrets. La mise à jour par le Wi-Fi est chiffrée avec la même clé.
+   - Flashez, puis ajoutez l'appareil dans Home Assistant.
+3. Installez l'intégration officielle **Météo-France** dans Home Assistant.
+4. Importez le blueprint : [![Importer le blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FAxellum%2FNextionWeather-Meteo-France%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Fnextion_meteo%2Fnextion_meteo.yaml)
+   - Créez une automatisation avec, puis choisissez l'écran, la ville, et si vous voulez la vigilance, la pluie dans l'heure et les probabilités.
+   - Changer de ville se fait dans l'automatisation, sans recompiler.
+
+Le fichier `NextionWeather 2.8.tft` est aussi là pour le Nextion 2,8" (320×240), mais je ne l'ai pas essayé avec ce firmware.
+
+## Comment ça marche
+
+Le firmware ne connaît aucune entité de Home Assistant. C'est le blueprint qui lit la météo et l'envoie à l'écran par des actions ESPHome (`maj_actuel`, `maj_alerte_meteo_france`, `maj_pluie_1h`, `maj_previsions_jours`, `maj_previsions_heures`).
+
+L'écran est mis à jour :
+- à chaque changement de la météo ;
+- toutes les 5 minutes ;
+- au démarrage de Home Assistant ;
+- dès que l'écran se reconnecte : il envoie l'événement `esphome.nextion_meteo_connecte`, et le blueprint lui renvoie tout.
+
+Mesuré chez moi le 01/11/2026 (XIAO ESP32-S3, firmware 0.9.2) :
+
+| Mesure | Résultat |
+|---|---|
+| Envoi complet par Home Assistant (30 actions) | 77 ms (trace de l'automatisation) |
+| Envoi des ~96 commandes sur la liaison série, à 115 200 bauds | ~0,23 s (calculé, pas mesuré) |
+| Redémarrage de l'ESP → écran rempli | ~6 s |
+
+Un comparatif avec les autres écrans que j'utilise (Nextion 2,8", Tab5, Waveshare 7") est dans [`docs/comparatif-ecrans.md`](docs/comparatif-ecrans.md).
+
+## Les anciennes versions
+
+Le projet a eu quatre architectures. Seule celle-ci (la V2, « Service Push ») est maintenue. Les autres sont rangées dans [`archives/`](archives/README.md), telles quelles :
+- **V1** : Home Assistant crée ~130 capteurs « template », qu'ESPHome affiche.
+- **V3** : ESP32 autonome sous Arduino, avec l'API Open-Meteo. Sans Home Assistant, mais sans vigilance ni pluie dans l'heure.
+- **V4** : ESP32 autonome sous Arduino, qui interroge directement l'API de l'application Météo-France. Fragile : elle cassera si le jeton change.
+
+## Mises en garde
+
+- Le 01/11/2026 : nettoyage du dépôt avec Claude. La V2 a désormais un blueprint et un firmware sans entité Home Assistant. Elle est testée tous les jours chez moi sur un Nextion 3,5".
 - Le 09/03/2026: Le projet passe sur Antigravity... Et du coup l"IA a fais deux trois changements ( 100% du code vient de Gemini... Ainsi que la présentation :) ). Je test la V2 actuellement, pas encore tester les version sans HA.
 - Le 15/07/2024: Remise en marche des prévisions suite au changement de l'API et débug des titres des prévisions journaliére. Bref, la version 3.5 remarche!
 - En partant du principe qu'il est plus judicieux de partie de ce projet pour le compléter ensuite, j'ai indexer 100 (99 sur l'index Nextion) images pour facilitée d'autres intégrations.
 - Le codage est à l'effigie de mon orthographe, fais de brique et de broc.
 
-### 🏗️ V1 : L'Architecture Classique (HA Templates + ESPHome)
-*Idéale pour débuter et comprendre comment Home Assistant transmet ses états à ESPHome.*
-* **Principe :** Home Assistant génère plus de 130 capteurs virtuels (Templates) pour décortiquer intégralement chaque attribut officiel Météo-France. ESPHome s'abonne à ces 130 capteurs pour les afficher.
-* ✅ **Avantages :** Zéro code C++ dans l'ESP. Facile à lire sous Home Assistant.
-* ❌ **Inconvénients :** Surcharge de la base de données (recorder HA). Sensible aux redémarrages (Logs d'erreurs).
-
-### 🚀 V2 : L'Architecture Haute Performance ("Service Push") - **Recommandée !**
-*L'architecture parfaite pour une domotique moderne, hyper réactive, et sans faux capteur.*
-* **Principe :** Zéro template sous Home Assistant. C'est HA qui regroupe les JSON bruts et les "pousse" vers l'ESP32 via des Services/Actions natives. L'ESP32 gère seul la conversion en images via de véloces scripts C++.
-* ✅ **Avantages :** 70% de code yaml en moins, base de données HA ultra-allégée, délai d'affichage instantané (< 500ms) pour la pluie. L'ESP gère l'heure en totale autonomie sans serveur Wi-Fi interne (SNTP).
-* ❌ **Inconvénients :** Nécessite de configurer une routine `automations:` sous HA.
-
-### 🌍 V3 : L'Architecture Standalone "Open-Meteo" (Arduino)
-*Idéale si vous n'avez pas de serveur domotique Home Assistant chez vous.*
-* **Principe :** 100% C++ sur l'IDE Arduino. L'ESP32 se connecte en WiFi et attaque directement l'API gratuite d'Open-Meteo sans compte.
-* ✅ **Avantages :** Aucun serveur requis. Plug & Play n'importe où avec juste un login Internet.
-* ❌ **Inconvénients :** Perte de la vigilance couleur départementale et de la pluie à 5 min radar (Ce sont des spécificités inaccessibles via cette API tierce).
-
-### ⚡ V4 : L'Architecture Standalone "Météo-France" (Arduino)
-*Pour les puristes voulant se passer de domotique locale (HA) tout en conservant 100% des fonctions natives de Météo-France.*
-* **Principe :** Un exploit technique ! L'ESP32 se connecte en HTTPS et reproduit l'application smartphone Météo France en usurpant leur "Token" de sécurité. Filtrage temp flux JSON intensifs pour la RAM.
-* ✅ **Avantages :** Zéro serveur, restaure les Vigilances Françaises et la pluie Radar sur l'ESP autonome !
-* ❌ **Inconvénients :** Fragile sur le long terme. Si Météo France renouvelle la clé Mobile d'ici quelques années, l'écran crashera et la communauté devra chercher un nouveau Token pour reflasher.
-
 ---
-
-## 📸 Captures d'écran (Nextion 3.5' et 2.8')
-
-![Nextion meteo france 3.5](docs/images/Demo%20ecran%203.5.png)
-
-Au menu :
-* Date, horloge locale (NTP/HA).
-* Temps Actuel Météo-France.
-* Probabilités gel, neige, et indice U.V.
-* Prévisions sur 3 jours, ou agenda 8 jours. (Geste de balayage ou boutons)
-* Températures et Icones détaillées Heure par Heure (8 H).
-* Avertissements vigilances de votre Département (40 par défaut) & Pluie à 5 mins radar (V2/V4).
-* Bouton d'intensité tactile (Luminosité Ecran)
-
----
-
-## 🛠️ Installations (Pré-requis)
-
-* **Matériel :** Un écran Nextion 3.5 ou 2.8 (série Basic/Enhanced/Intelligent), un module ESP32.
-* **Logiciels :** Home Assistant, module ESPHome ou le logiciel Arduino IDE (Suivant la route choisie).
-
-### 📖 Procédure "Service Push" (La V2 Recommandée)
-1. Installez le fichier `.tft` (`nextion/NextionWeather 3.5.tft`) sur votre écran Nextion via carte SD.
-2. Créez un nouveau périphérique dans votre ESPHome avec `esphome/nextion-meteo.yaml` et `esphome/nextion_meteo.h` (secrets : `wifi_ssid`, `wifi_password`, `api_encryption_key`), flashez-le, puis ajoutez-le dans Home Assistant.
-3. Configurez l'intégration officielle **Météo-France** dans Home Assistant.
-4. Importez le blueprint [![Importer le blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FAxellum%2FNextionWeather-Meteo-France%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Fnextion_meteo%2Fnextion_meteo.yaml), créez une automatisation avec, et choisissez l'écran, la ville, la vigilance et la pluie dans l'heure. Rien à recompiler pour changer de ville.
-### 📖 Procédures Autonomes (La V3 / V4 IDE)
-1. Installez l'écran de la même façon (Le fichier TFT est universel).
-2. Depuis le gestionnaire de bibliothèque IDE Arduino, téléchargez `ArduinoJson` (v6+) et ouvrez le code `.ino` choisi.
-3. Renseignez `ssid`, `password` locaux. Précisez `LATITUDE` et `LONGITUDE`. (Pour la V4, changez la string `DEPARTEMENT`).
-4. Flasher sur l'ESP32. Reliez les pins série (RX/TX). Enjoy !
-
----
-*Mentions : Conception par **Axell**. Aide et conseils de pbranly, Nico_206 sur hacf.fr. Architecture technique et code Standalone par **Antigravity I.A.***
+*Conception : **Axell**. Aide et conseils de pbranly et Nico_206 sur hacf.fr. Code écrit avec Gemini (Antigravity) puis Claude.*
