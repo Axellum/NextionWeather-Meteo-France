@@ -58,10 +58,9 @@ Au menu :
 
 ### 📖 Procédure "Service Push" (La V2 Recommandée)
 1. Installez le fichier `.tft` (`nextion/NextionWeather 3.5.tft`) sur votre écran Nextion via carte SD.
-2. Créez un nouveau périphérique dans votre ESPHome et flashez le contenu du fichier `esphome/esphome_meteo_35_V2.yaml`.
+2. Créez un nouveau périphérique dans votre ESPHome avec `esphome/nextion-meteo.yaml` et `esphome/nextion_meteo.h` (secrets : `wifi_ssid`, `wifi_password`, `api_encryption_key`), flashez-le, puis ajoutez-le dans Home Assistant.
 3. Configurez l'intégration officielle **Météo-France** dans Home Assistant.
-4. Ouvrez `esphome/automations_meteo_nextion_V2.yaml`, et collez l'automatisation. **Pensez à remplacer `saint_vincent_de_tyrosse` par _votre_ ville et `40_weather_alert` par l'alerte de _votre_ département.** 
-
+4. Importez le blueprint [![Importer le blueprint](https://my.home-assistant.io/badges/blueprint_import.svg)](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A%2F%2Fgithub.com%2FAxellum%2FNextionWeather-Meteo-France%2Fblob%2Fmain%2Fblueprints%2Fautomation%2Fnextion_meteo%2Fnextion_meteo.yaml), créez une automatisation avec, et choisissez l'écran, la ville, la vigilance et la pluie dans l'heure. Rien à recompiler pour changer de ville.
 ### 📖 Procédures Autonomes (La V3 / V4 IDE)
 1. Installez l'écran de la même façon (Le fichier TFT est universel).
 2. Depuis le gestionnaire de bibliothèque IDE Arduino, téléchargez `ArduinoJson` (v6+) et ouvrez le code `.ino` choisi.
